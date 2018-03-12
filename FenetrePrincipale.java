@@ -30,11 +30,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		Toolbar tool = new Toolbar();
 		this.setJMenuBar(tool);
 
-		BarreOutils barre = new BarreOutils();
+		//on instancie le panel de propriété
+		Propriete prop = new Propriete();
+		mainPanel.add(prop, BorderLayout.EAST);
+
+		BarreOutils barre = new BarreOutils(prop);
 		mainPanel.add(barre, BorderLayout.WEST);
 
 		mainPanel.add(new Button("BAS"), BorderLayout.SOUTH);
-		mainPanel.add(new Button("DROITE"), BorderLayout.EAST);
+		
 		mainPanel.add(panelDessin,BorderLayout.CENTER);
 
 		this.add(mainPanel);

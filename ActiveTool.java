@@ -1,5 +1,5 @@
 public enum ActiveTool{
-     LENTILLE("Lentille"),SOURCE("Source"),NULL("Aucun"),SELECT("Select");
+     LENTILLE("Lentille"),SOURCE("Source"),NULL("Aucun"),SELECT("Select"),SUPPR("Supprimer"), SCREENSHOT("CaptureEcran");
 
      private String name;
 
