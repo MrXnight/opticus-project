@@ -1,7 +1,11 @@
 import java.awt.*;
+import java.awt.geom.*;
+import java.awt.geom.Line2D;
 import javax.swing.*;
 
 public class Miroir extends ObjetOptique {
+
+	private Line2D line;
 
 	public Miroir (double posx, double posy, double angle, Color col, double taille) {
 		super(posx, posy, angle, col, taille);
@@ -16,8 +20,12 @@ public class Miroir extends ObjetOptique {
 	}
 
 	public void move(Point newPosition){
-		
+
 	}
+
+	public Line2D getLine(){
+       return(line);
+     }
 
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(couleur);

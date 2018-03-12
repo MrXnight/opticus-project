@@ -1,5 +1,5 @@
 public enum ActiveTool{
-     LENTILLE("Lentille"),SOURCE("Source");
+     LENTILLE("Lentille"),SOURCE("Source"),NULL("Aucun");
 
      private String name;
 

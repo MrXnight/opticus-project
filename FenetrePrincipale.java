@@ -24,7 +24,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 
-		panelDessin = new ZoneTracage();
+		panelDessin = new ZoneTracage(this);
 
 		//on instancie la barre de menu
 		Toolbar tool = new Toolbar();

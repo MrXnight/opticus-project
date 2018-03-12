@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
+
 public class Source extends ObjetOptique {
 	protected double f;
 	protected Point point1;
@@ -121,4 +122,13 @@ public class Source extends ObjetOptique {
 		Line2D lineFaisceau = new Line2D.Double(point1,point2);
 		tabFaisceau.add(lineFaisceau);
 	}
+
+
+    public Line2D getLine(){
+      return(line);
+    }
+    public Point getCentre(){
+        Point centre = new Point(centrex, centrey);
+        return(centre);
+    }
 }
