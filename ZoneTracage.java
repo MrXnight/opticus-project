@@ -23,7 +23,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      private JFrame parentFrame;
 
      public ZoneTracage(JFrame parentFrame){
-		  Source s1 = new Source(300,300,0,Color.GREEN,30,this);
+		  Source s1 = new Source(300,300,0,Color.RED,30,this);
           mooving = false;
           positionningPoint1 = null;
           positionningPoint2 = null;
@@ -201,51 +201,69 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           if(postionningLine != null){
                g2d.draw(postionningLine);
           }
-          intersection();
+          intersection(g2d);
           repaint();
      }
-	public void intersection(){
+	public void intersection(Graphics2D g2d){
 		ArrayList<Point> tabIntersection = new ArrayList<Point>();
-		Point intersec = new Point();
 		Point newintersec = new Point();
+		Point intersec = new Point();
 		for(ObjetOptique s:listeObjet){ //Pour toute les sources determination de l'equation de droite
 			if(s instanceof Source){
-				double x1 = s.getPoint1().x;
-				double y1 = s.getPoint1().y;
-
-				double x2 = s.getPoint2().x;
-				double y2 = s.getPoint2().y;
-
-				double coeffs = (y2-y1)/(x2-x1); //coef directeur de l'equation de droite de la source
-				double ordos = y1 - coeffs*x1;    //ordonée à l'origine
-			
-				Line2D faisceau = new Line2D.Double();
-
 				for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
 					if(l instanceof Lentille || l instanceof Miroir){
-
-						x1 = l.getPoint1().x;
-						y1 = l.getPoint1().y;
-
-						x2 = l.getPoint2().x;
-						y2 = l.getPoint2().y;
-
-						double coeffl = (y2-y1)/(x2-x1); //coef directeur de l'equation de droite de l'objet optique
-						double ordol = y1 - coeffl*x1;    //ordonée à l'origine
-
-						double xi = (ordol-ordos)/(coeffs-coeffl);
-						newintersec = new Point((int)xi, (int)(coeffl*xi + ordol));    //point d'intersection des deux droites
-						//System.out.println(newintersec+" lentille centre " +l.getCentre());
-						faisceau = new Line2D.Double(s.getCentre(),newintersec);
-     
-						if( (s.getPoint1()).distance(newintersec)<(s.getPoint1()).distance(intersec) && (l.getLine()).intersectsLine(faisceau)){
-							intersec = newintersec;
+                        newintersec = crossed(s,l);
+						if(isCrossed(l,newintersec)){
+							tabIntersection.add(newintersec);
 						}
 					}
 				}
+                if(tabIntersection.size() !=0){
+                    intersec = tabIntersection.get(0);
+                    for(Point x:tabIntersection){
+                        if((s.getCentre()).distance(x)<(s.getCentre()).distance(intersec)){
+                            intersec = x;
+                        }
+                    }
+                }
+                g2d.drawLine(intersec.x+10,intersec.y,intersec.x-10,intersec.y);
+                g2d.drawLine(intersec.x,intersec.y-10,intersec.x,intersec.y+10);
+                g2d.drawLine(intersec.x+10,intersec.y,intersec.x-10,intersec.y);
+                g2d.drawLine(intersec.x,intersec.y-10,intersec.x,intersec.y+10);
 			}
 		}
-		tabIntersection.add(intersec);
 		//System.out.println(intersec);
 	}
+    
+    public Point crossed(ObjetOptique a, ObjetOptique b){
+        double ax1 = a.getPoint1().x;
+        double ay1 = a.getPoint1().y;
+        double ax2 = a.getPoint2().x;
+        double ay2 = a.getPoint2().y;
+        double acoeff = (ay2-ay1)/(ax2-ax1); //coef directeur de l'equation de droite de la source
+        double aordo = ay1 - acoeff*ax1;    //ordonée à l'origine
+        
+        double bx1 = b.getPoint1().x;
+        double by1 = b.getPoint1().y;
+        double bx2 = b.getPoint2().x;
+        double by2 = b.getPoint2().y;
+        double bcoeff = (by2-by1)/(bx2-bx1); //coef directeur de l'equation de droite de la source
+        double bordo = by1 - bcoeff*bx1;    //ordonée à l'origine
+        
+        double xi = (aordo-bordo)/(bcoeff-acoeff);
+        Point i = new Point((int)xi,(int)(acoeff*xi + aordo)); 
+        return i;    
+    }
+    
+    public boolean isCrossed(ObjetOptique a, Point p){
+        double xmin = Math.min(a.getPoint1().x,a.getPoint2().x);
+        double xmax = Math.max(a.getPoint1().x,a.getPoint2().x);
+        double ymin = Math.min(a.getPoint1().y,a.getPoint2().y);
+        double ymax = Math.max(a.getPoint1().y,a.getPoint2().y);
+        
+        if(p.x<xmax && p.y<ymax && p.x>xmin && p.y>ymin){
+            return true;
+        }
+        return false;
+    }
 }
