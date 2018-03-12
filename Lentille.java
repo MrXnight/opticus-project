@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 public class Lentille extends ObjetOptique {
 	protected double f;
-	protected Point point1;
-	protected Point point2;
 	protected Line2D line;
 	protected int TAILLE_MINIMALE = 30;
 	protected JComponent parent;
@@ -108,13 +106,6 @@ public class Lentille extends ObjetOptique {
 
 	public int distancePoint(Point p){
 		return (int)(line.ptSegDist(p));
-	}
-
-	public Point getPoint1(){
-		return point1;
-	}
-	public Point getPoint2(){
-		return point2;
 	}
 
 	public Line2D getLine(){

@@ -44,7 +44,8 @@ public class BarreOutils extends JToolBar implements ActionListener{
         }
 
         if(btn == btnSelect){
-            System.out.println("Select !");
+            BarreOutils.activeTool = ActiveTool.SELECT;
+             System.out.println(BarreOutils.activeTool+" est actif !");
         }
 
         if(btn == btnSuppr){

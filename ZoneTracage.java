@@ -10,8 +10,8 @@ import java.beans.*;
 
 public class ZoneTracage extends JPanel implements MouseMotionListener,MouseListener{
 
-     Lentille l1 = new Lentille(200,200,0,Color.BLACK,100,20,this);
-     Lentille l2 = new Lentille(500,200,Math.PI/2,Color.GREEN,100,20,this);
+     //Lentille l1 = new Lentille(200,200,0,Color.BLACK,100,20,this);
+     //Lentille l2 = new Lentille(500,200,Math.PI/2,Color.GREEN,100,20,this);
      Lentille l3 = new Lentille(200,500,Math.PI/4,Color.RED,100,-20,this);
      private int cursor;
      private ObjetOptique selectedObject;
@@ -23,15 +23,17 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      private JFrame parentFrame;
 
      public ZoneTracage(JFrame parentFrame){
+		  Source s1 = new Source(300,300,0,Color.GREEN,30,this);
           mooving = false;
           positionningPoint1 = null;
           positionningPoint2 = null;
           postionningLine = null;
           listeObjet = new ArrayList<ObjetOptique>();
           this.parentFrame = parentFrame;
-          listeObjet.add(l1);
-          listeObjet.add(l2);
+          //listeObjet.add(l1);
+          //listeObjet.add(l2);
           listeObjet.add(l3);
+          listeObjet.add(s1);          
           setSize(500,500);
           setLayout(null);
           setFocusable(true);
@@ -199,48 +201,51 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           if(postionningLine != null){
                g2d.draw(postionningLine);
           }
+          intersection();
           repaint();
      }
-     /*
-     public void intersection(){
-     for(ObjetOptique s:listeObjet){ //Pour toute les sources determination de l'equation de droite
-     if(s instanceof Source){
-     int x1 = s.getPoint1().x;
-     int y1 = s.getPoint1().y;
+	public void intersection(){
+		ArrayList<Point> tabIntersection = new ArrayList<Point>();
+		Point intersec = new Point();
+		Point newintersec = new Point();
+		for(ObjetOptique s:listeObjet){ //Pour toute les sources determination de l'equation de droite
+			if(s instanceof Source){
+				double x1 = s.getPoint1().x;
+				double y1 = s.getPoint1().y;
 
-     int x2 = s.getPoint2().x;
-     int y2 = s.getPoint2().y;
+				double x2 = s.getPoint2().x;
+				double y2 = s.getPoint2().y;
 
-     double coeffs = (y2-y1)/(x2-x1); //coef directeur de l'equation de droite de la source
-     double ordos = y1 - coeff*x1;    //ordonée à l'origine
+				double coeffs = (y2-y1)/(x2-x1); //coef directeur de l'equation de droite de la source
+				double ordos = y1 - coeffs*x1;    //ordonée à l'origine
+			
+				Line2D faisceau = new Line2D.Double();
 
-     Point intersec = new Point();
-     Point newintersec = new Point();
+				for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
+					if(l instanceof Lentille || l instanceof Miroir){
 
-     Line faisceau = new Line();
+						x1 = l.getPoint1().x;
+						y1 = l.getPoint1().y;
 
-     for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
-     if(l instanceof Lentille || l instanceof Miroir){
+						x2 = l.getPoint2().x;
+						y2 = l.getPoint2().y;
 
-     x1 = l.getPoint1().x;
-     y1 = l.getPoint1().y;
+						double coeffl = (y2-y1)/(x2-x1); //coef directeur de l'equation de droite de l'objet optique
+						double ordol = y1 - coeffl*x1;    //ordonée à l'origine
 
-     x2 = l.getPoint2().x;
-     y2 = l.getPoint2().y;
-
-     double coeff = (y2-y1)/(x2-x1); //coef directeur de l'equation de droite de l'objet optique
-     double ordo = y1 - coeff*x1;    //ordonée à l'origine
-
-     double xi = (ordo-ordos)/(coeffs-coeff);
-     newintersec = Point((int)xi, (int)(coeff*xi + ordo));    //point d'intersection des deux droites
-
-     if( (s.getPoint1).distance(newintersect)<(s.getPoint1).distance(intersect) && (l.getLine()).intersectsLine(faisceau(s.getCentre(),newintersec))){
-     intersec = newintersec;
-}
-}
-}
-}
-}
-}*/
-
+						double xi = (ordol-ordos)/(coeffs-coeffl);
+						newintersec = new Point((int)xi, (int)(coeffl*xi + ordol));    //point d'intersection des deux droites
+						//System.out.println(newintersec+" lentille centre " +l.getCentre());
+						faisceau = new Line2D.Double(s.getCentre(),newintersec);
+     
+						if( (s.getPoint1()).distance(newintersec)<(s.getPoint1()).distance(intersec) && (l.getLine()).intersectsLine(faisceau)){
+							intersec = newintersec;
+						}
+					}
+				}
+			}
+		}
+		tabIntersection.add(intersec);
+		//System.out.println(intersec);
+	}
 }

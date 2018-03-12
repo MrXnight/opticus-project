@@ -12,6 +12,8 @@ public abstract class ObjetOptique {
 	protected double taille;
 	protected boolean focus;
 	protected int centrex,centrey;
+	protected Point point1;
+	protected Point point2;
 
 	public ObjetOptique (double posx, double posy, double angle, Color col, double taille) {
 		centrex = (int)posx;
@@ -42,6 +44,18 @@ public abstract class ObjetOptique {
 	public int getCentrey(){
 		return centrey;
 	}
+
+	public Point getPoint1(){
+		return point1;
+	}
+	public Point getPoint2(){
+		return point2;
+	}
+	
+    public Point getCentre(){
+        Point centre = new Point(centrex, centrey);
+        return(centre);
+    }
 
     public abstract Line2D getLine();
 }

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 
 public class Source extends ObjetOptique {
 	protected double f;
-	protected Point point1;
-	protected Point point2;
 	protected Line2D line;
 	protected int TAILLE_MINIMALE = 30;
 	protected JComponent parent;
@@ -112,10 +110,10 @@ public class Source extends ObjetOptique {
 			g2d.drawLine(point1.x,point1.y-5,point1.x,point1.y+5);
 			g2d.drawLine(point2.x+5,point2.y,point2.x-5,point2.y);
 			g2d.drawLine(point2.x,point2.y-5,point2.x,point2.y+5);
-		}
+		}/*
 		for(Line2D l : tabFaisceau){
 			g2d.draw(l);
-		}
+		}*/
 
 	}
 	public void ajouterFaisceau(Point point1, Point point2){
@@ -126,9 +124,5 @@ public class Source extends ObjetOptique {
 
     public Line2D getLine(){
       return(line);
-    }
-    public Point getCentre(){
-        Point centre = new Point(centrex, centrey);
-        return(centre);
     }
 }
