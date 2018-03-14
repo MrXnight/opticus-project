@@ -1,64 +1,105 @@
+import java.awt.Dimension;
 import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.*;
+import java.awt.*;
 
-public class Propriete extends JPanel {
-    protected JLabel nomOutil;
+public class Propriete extends JPanel implements ActionListener {
+    protected JLabel nomOutil, changerNom, changerCouleur, description;
+    protected JTextField entreNom;
+    protected JComboBox<String> choixCouleurs;
+    final String[] couleurs = { "Bleu", "Vert", "Rouge", "Rose", "Orange" };
 
-    public Propriete() {
-        this.setLayout(new FormLayout());
+    public Propriete(int width, int height) {
 
-        JLabel lblSelectedtool = new JLabel("selectedTool");
-        add(lblSelectedtool, "2, 2, 15, 1, center, default");
+        this.setPreferredSize(new Dimension((int) (width * 0.2), height));
 
-        JLabel lblTooldescription = new JLabel("toolDescription");
-        add(lblTooldescription, "2, 4, 15, 1");
+        nomOutil = new JLabel();
+        nomOutil.setForeground(Color.GRAY);
+        nomOutil.setFont(new Font("Serif", Font.BOLD, 25));
+        nomOutil.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
-        JSeparator separator = new JSeparator();
-        add(separator, "2, 6, 15, 1");
+        description = new JLabel();
+        description.setAlignmentX(JLabel.CENTER_ALIGNMENT);
+        description.setFont(new Font("Serif", Font.PLAIN, 20));
 
-        JLabel lblNomDeLobjet = new JLabel("Nom de l'objet");
-        add(lblNomDeLobjet, "2, 8, right, default");
+        changerNom = new JLabel("Entrer un nom");
+        changerCouleur = new JLabel("Choisissez une couleur");
 
-        txtLentille = new JTextField();
-        txtLentille.setText("lentille1");
-        add(txtLentille, "4, 8, fill, default");
-        txtLentille.setColumns(10);
+        choixCouleurs = new JComboBox<>(couleurs);
+        choixCouleurs.addActionListener(this);
 
-        JLabel lblCouleur = new JLabel("Couleur ");
-        add(lblCouleur, "2, 10");
+        this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        JList list = new JList();
-        add(list, "4, 10, fill, fill");*/
+        this.add(nomOutil);
+        this.add(description);
+
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.add(changerNom);
+        this.add(changerCouleur);
+        this.add(choixCouleurs);
+
     }
 
     public void propLentille() {
         nomOutil.setText("Lentille");
+        description.setText(
+            "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
+        changerNom.setText("Donner un nom à la lentille : ");
         this.repaint();
     }
 
     public void propSelect() {
-        nomOutil.setText("Select !");
+        nomOutil.setText("Selectionner");
+        description.setText(
+            "<html>Permet de deplacer des objets deja placés </html>");
         this.repaint();
     }
 
     public void propMiroir() {
-        nomOutil.setText("Mirroir !");
+        nomOutil.setText("Mirroir");
+        description.setText("Placer un miroir....");
         this.repaint();
 
     }
 
     public void propSuppr() {
-        nomOutil.setText("Suppr !");
+        nomOutil.setText("Supprimer");
         this.repaint();
 
     }
 
     public void propScreenshot() {
-        nomOutil.setText("Screenshot !");
+        nomOutil.setText("Capture d'ecran");
         this.repaint();
 
+    }
+
+    public void updateColor(String couleurChoisie) {
+        Color col = new Color(255,255,255);
+        switch (couleurChoisie) {
+        case "Bleu":col = Color.BLUE;
+            break;
+        case "Vert":col = Color.GREEN;
+            break;
+        case "Rouge":col = Color.RED;
+            break;
+        case "Violet":col = Color.PINK;
+            break;
+        case "Orange":col = Color.ORANGE;
+            break;
+        default:col = Color.RED;
+            break;
+        }
+        nomOutil.setForeground(col);
+        this.repaint();
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        JComboBox cb = (JComboBox) e.getSource();
+        String couleurChoisie = (String) cb.getSelectedItem();
+        updateColor(couleurChoisie);
     }
 
 }

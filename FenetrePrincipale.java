@@ -31,7 +31,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		this.setJMenuBar(tool);
 
 		//on instancie le panel de propriété
-		Propriete prop = new Propriete();
+		Propriete prop = new Propriete(width, height);
 		mainPanel.add(prop, BorderLayout.EAST);
 
 		BarreOutils barre = new BarreOutils(prop);
