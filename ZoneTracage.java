@@ -21,9 +21,11 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      private Point positionningPoint1 , positionningPoint2 ;
      private Line2D.Double postionningLine;
      private JFrame parentFrame;
+     public static Line2D[] bordures;
 
      public ZoneTracage(JFrame parentFrame){
 		  Source s1 = new Source(300,300,0,Color.RED,30,this);
+		  //Source s2 = new Source(400,500,0,Color.BLUE,30,this);
           mooving = false;
           positionningPoint1 = null;
           positionningPoint2 = null;
@@ -33,7 +35,8 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           //listeObjet.add(l1);
           //listeObjet.add(l2);
           listeObjet.add(l3);
-          listeObjet.add(s1);          
+          listeObjet.add(s1);    
+          //listeObjet.add(s2);       
           setSize(500,500);
           setLayout(null);
           setFocusable(true);
@@ -45,6 +48,11 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     ((JComponent)(e.getSource())).requestFocusInWindow();
                }
           });
+          bordures = new Line2D[4];
+		  bordures[0] = new Line2D.Double(0,0,this.getWidth(),0);
+          bordures[1] = new Line2D.Double(this.getWidth(),0,this.getWidth(),this.getHeight());
+          bordures[2] = new Line2D.Double(0,this.getHeight(),this.getWidth(),this.getHeight());
+          bordures[3] = new Line2D.Double(0,0,0,this.getHeight());
      }
 
      @Override
@@ -192,47 +200,51 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
 
      protected void paintComponent(Graphics g){
-          Graphics2D g2d = (Graphics2D) g.create();
-          g2d.setColor(Color.WHITE);
-          g2d.fillRect(0,0,this.getWidth(),this.getHeight());
-          for (ObjetOptique o : listeObjet){
-               o.draw(g2d);
-          }
-          if(postionningLine != null){
-               g2d.draw(postionningLine);
-          }
-          intersection(g2d);
-          repaint();
-     }
-	public void intersection(Graphics2D g2d){
-		ArrayList<Point> tabIntersection = new ArrayList<Point>();
-		Point newintersec = new Point();
-		Point intersec = new Point();
-		for(ObjetOptique s:listeObjet){ //Pour toute les sources determination de l'equation de droite
-			if(s instanceof Source){
-				for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
-					if(l instanceof Lentille || l instanceof Miroir){
-                        newintersec = crossed(s,l);
-						if(isCrossed(l,newintersec)){
-							tabIntersection.add(newintersec);
-						}
-					}
-				}
-                if(tabIntersection.size() !=0){
-                    intersec = tabIntersection.get(0);
-                    for(Point x:tabIntersection){
-                        if((s.getCentre()).distance(x)<(s.getCentre()).distance(intersec)){
-                            intersec = x;
-                        }
-                    }
-                }
-                g2d.drawLine(intersec.x+10,intersec.y,intersec.x-10,intersec.y);
-                g2d.drawLine(intersec.x,intersec.y-10,intersec.x,intersec.y+10);
-                g2d.drawLine(intersec.x+10,intersec.y,intersec.x-10,intersec.y);
-                g2d.drawLine(intersec.x,intersec.y-10,intersec.x,intersec.y+10);
+		Graphics2D g2d = (Graphics2D) g.create();
+        g2d.setColor(Color.WHITE);
+        g2d.fillRect(0,0,this.getWidth(),this.getHeight());
+        for (ObjetOptique o : listeObjet){
+			o.draw(g2d);
+            if(o instanceof Source){
+				Source s = (Source)o;
+				intersection(g2d, s);
 			}
 		}
+        if(postionningLine != null){
+			g2d.draw(postionningLine);
+        }
+        repaint();
+	}
+	public Point intersection(Graphics2D g2d, Source s){
+		ArrayList<Point> tabIntersection = new ArrayList<Point>();
+		Point newintersec = new Point();
+		Point intersec = new Point();//Pour toute les sources determination de l'equation de droite
+		for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
+			if(l instanceof Lentille || l instanceof Miroir){
+				newintersec = crossed(s,l);
+				Line2D faisceau= new Line2D.Double(s.getPoint1(), newintersec);
+				if(faisceau.intersectsLine(l.getLine())){
+					tabIntersection.add(newintersec);
+				}
+				else{
+					return null;
+				}
+			}
+		}
+        if(tabIntersection.size() !=0){
+			intersec = tabIntersection.get(0);
+            for(Point x:tabIntersection){
+				if((s.getCentre()).distance(x)<(s.getCentre()).distance(intersec)){
+					intersec = x;
+                }
+            }
+        }
+        g2d.drawLine(intersec.x+10,intersec.y,intersec.x-10,intersec.y);
+        g2d.drawLine(intersec.x,intersec.y-10,intersec.x,intersec.y+10);
+        g2d.drawLine(intersec.x+10,intersec.y,intersec.x-10,intersec.y);
+        g2d.drawLine(intersec.x,intersec.y-10,intersec.x,intersec.y+10);
 		//System.out.println(intersec);
+		return intersec;
 	}
     
     public Point crossed(ObjetOptique a, ObjetOptique b){
@@ -247,13 +259,38 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
         double by1 = b.getPoint1().y;
         double bx2 = b.getPoint2().x;
         double by2 = b.getPoint2().y;
-        double bcoeff = (by2-by1)/(bx2-bx1); //coef directeur de l'equation de droite de la source
-        double bordo = by1 - bcoeff*bx1;    //ordonée à l'origine
-        
-        double xi = (aordo-bordo)/(bcoeff-acoeff);
-        Point i = new Point((int)xi,(int)(acoeff*xi + aordo)); 
-        return i;    
+
+        if(bx2-bx1 == 0){			
+			Point i = new Point((int)bx1,(int)(acoeff*bx1 + aordo)); 
+			System.out.println(i);
+			return i;
+		}
+		else{
+			double bcoeff = (by2-by1)/(bx2-bx1); //coef directeur de l'equation de droite de la lentille
+			double bordo = by1 - bcoeff*bx1;    //ordonée à l'origine
+			double xi = (aordo-bordo)/(bcoeff-acoeff);
+			Point i = new Point((int)xi,(int)(acoeff*xi + aordo)); 
+			return i;
+		}    
     }
+	public Point lineLine(ObjetOptique a, ObjetOptique b){
+		int x1 = a.getPoint1().x;
+		int y1 = a.getPoint1().y;
+		int x2 = a.getPoint2().x;
+		int y2 = a.getPoint2().y;
+		int x3 = b.getPoint1().x;
+		int y3 = b.getPoint1().y;
+		int x4 = b.getPoint2().x;
+		int y4 = b.getPoint2().y;
+		double d = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
+		if(d != 0){
+			Point 
+			double xi=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)(x3*y4-y3*x4))/d;
+			double yi=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)(x3*y4-y3*x4))/d;
+		}
+		return null;
+		
+	}
     
     public boolean isCrossed(ObjetOptique a, Point p){
         double xmin = Math.min(a.getPoint1().x,a.getPoint2().x);
