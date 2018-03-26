@@ -30,6 +30,8 @@ public abstract class ObjetOptique {
 	public abstract int distancePoint(Point p);
 
 	public abstract void move(Point newPosition);
+	
+	public abstract Point movePoint(Point newPoint,Point clickedPoint);
 
 	public void setFocus(boolean focus){
 		this.focus = focus;
