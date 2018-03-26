@@ -223,7 +223,12 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 			if(l instanceof Lentille || l instanceof Miroir){
 				newintersec = crossed(s,l);
 				Line2D faisceau= new Line2D.Double(s.getPoint1(), newintersec);
-				if(faisceau.intersectsLine(l.getLine())){
+				if(l.getPoint1().x - l.getPoint2().x == 0){
+					if(newintersec.y <= Math.max(l.getPoint1().y,l.getPoint2().y) && newintersec.y >= Math.min(l.getPoint1().y,l.getPoint2().y)){
+						tabIntersection.add(newintersec);
+					}
+				}
+				else if(l.getLine().getBounds().contains(newintersec)){
 					tabIntersection.add(newintersec);
 				}
 				else{
