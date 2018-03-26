@@ -221,15 +221,55 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 		Point intersec = new Point();//Pour toute les sources determination de l'equation de droite
 		for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
 			if(l instanceof Lentille || l instanceof Miroir){
-				newintersec = crossed(s,l);
+				lineLine(s,l);
 				Line2D faisceau= new Line2D.Double(s.getPoint1(), newintersec);
 				if(l.getPoint1().x - l.getPoint2().x == 0){
 					if(newintersec.y <= Math.max(l.getPoint1().y,l.getPoint2().y) && newintersec.y >= Math.min(l.getPoint1().y,l.getPoint2().y)){
-						tabIntersection.add(newintersec);
+						if(s.getPoint2().x-s.getPoint1().x > 0 && newintersec.x >= s.getPoint1().x){
+							tabIntersection.add(newintersec);
+						}
+						else if(s.getPoint2().x-s.getPoint1().x < 0 && newintersec.x <= s.getPoint1().x){
+							tabIntersection.add(newintersec);
+						}
+						else if(s.getPoint2().x-s.getPoint1().x == 0){
+							if(s.getPoint2().y-s.getPoint1().y >0 && newintersec.y >= s.getPoint1().y){
+								tabIntersection.add(newintersec);
+							}
+							else if(s.getPoint2().y-s.getPoint1().y <0 && newintersec.y <= s.getPoint1().y){
+								tabIntersection.add(newintersec);
+							}
+							else{
+								return null;
+							}
+						}
+						else{
+							return null;
+						}
 					}
 				}
 				else if(l.getLine().getBounds().contains(newintersec)){
-					tabIntersection.add(newintersec);
+					System.out.println("intersect");
+					if(s.getPoint2().x-s.getPoint1().x > 0 && newintersec.x >= s.getPoint1().x){
+						tabIntersection.add(newintersec);
+					}
+					else if(s.getPoint2().x-s.getPoint1().x < 0 && newintersec.x <= s.getPoint1().x){
+						tabIntersection.add(newintersec);
+					}
+					else if(s.getPoint2().x-s.getPoint1().x == 0){
+						System.out.println("s1.x - s2.x = 0");
+						if(s.getPoint2().y-s.getPoint1().y >0 && newintersec.y >= s.getPoint1().y){
+							tabIntersection.add(newintersec);
+						}
+						else if(s.getPoint2().y-s.getPoint1().y <0 && newintersec.y <= s.getPoint1().y){
+							tabIntersection.add(newintersec);
+						}
+						else{
+							return null;
+						}
+					}
+					else{
+						return null;
+					}
 				}
 				else{
 					return null;
@@ -287,10 +327,11 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 		int y3 = b.getPoint1().y;
 		int x4 = b.getPoint2().x;
 		int y4 = b.getPoint2().y;
-		double d = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
+		int d = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
+		System.out.println("d = "+d);
 		if(d != 0){
-			double xi=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/d;
-			double yi=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/d;
+			double xi=(double)((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/(double)(d);
+			double yi=(double)((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/(double)(d);
 			Point i = new Point((int)xi,(int)yi);
 			return(i);
 		}
