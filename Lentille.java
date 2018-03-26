@@ -111,7 +111,23 @@ public class Lentille extends ObjetOptique {
 	public Line2D getLine(){
        return(line);
      }
+     
+     public Line2D translate(int transx, int transy){
+		 
+		 Point p1 = new Point (point1.x + transx, point1.y + transy);
+		 Point p2 = new Point (point2.x + transx, point2.y + transy);
+		 Line2D line = new Line2D.Double(p1, p2);
+		 return line;
+	 }
 
+	public void lineFocal(Graphics2D g2d, Point intersec){
+		int transx = intersec.x - centrex;
+		int transy = centrey-intersec.y;
+		
+		Line2D lineOrigine = translate(transx, transy);
+		g2d.draw(lineOrigine);
+	
+	}
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(couleur);
 		g2d.draw(line);
