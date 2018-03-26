@@ -284,9 +284,10 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 		int y4 = b.getPoint2().y;
 		double d = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
 		if(d != 0){
-			Point 
-			double xi=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)(x3*y4-y3*x4))/d;
-			double yi=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)(x3*y4-y3*x4))/d;
+			double xi=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/d;
+			double yi=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/d;
+			Point i = new Point((int)xi,(int)yi);
+			return(i);
 		}
 		return null;
 		
