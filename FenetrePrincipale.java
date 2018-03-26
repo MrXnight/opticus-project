@@ -9,6 +9,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 	private JPanel mainPanel,panelDessin;
 
 	public FenetrePrincipale (){
+		this.setVisible(true);
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int)(ratio*screenSize.getWidth());
@@ -19,7 +20,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		this.setTitle("Opticus Magicus");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		this.setVisible(false);
 		//on crée le panel principal
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
@@ -38,7 +39,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		mainPanel.add(barre, BorderLayout.WEST);
 
 		mainPanel.add(new Button("BAS"), BorderLayout.SOUTH);
-		
+
 		mainPanel.add(panelDessin,BorderLayout.CENTER);
 
 		this.add(mainPanel);

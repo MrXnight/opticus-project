@@ -17,6 +17,8 @@ public class Source extends ObjetOptique {
 		point2 = new Point((int)(centrex + taille*Math.cos(angle)),(int)(centrey + taille*Math.sin(-angle)));
 		line = new Line2D.Double(point1,point2);
 		this.parent = parent;
+		tabFaisceau = new ArrayList<Line2D>();
+		tabFaisceau.add(line);
 	}
 
 	public Source (double posx, double posy, double angle, double taille,JComponent parent) {
@@ -66,6 +68,8 @@ public class Source extends ObjetOptique {
 			}
 			System.out.println("angle : "+angle);
 			line = new Line2D.Double(point1,point2);
+			tabFaisceau.clear();
+			tabFaisceau.add(line);
 			return newPoint;
 		}
 		catch(Exception e){}
@@ -73,11 +77,15 @@ public class Source extends ObjetOptique {
 	}
 
 	public void move(Point newPosition){
+		int translationX = newPosition.x-centrex;
+		int translationY = newPosition.y-centrey;
 		centrex = newPosition.x;
 		centrey = newPosition.y;
-		point1 = new Point((int)(centrex - taille*Math.cos(angle)), (int)(centrey - taille*Math.sin(-angle)));
-		point2 = new Point((int)(centrex + taille*Math.cos(angle)),(int)(centrey + taille*Math.sin(-angle)));
+		point1 = new Point(point1.x+translationX,point1.y+translationY);
+		point2 = new Point(point2.x+translationX,point2.y+translationY);
 		line = new Line2D.Double(point1,point2);
+		tabFaisceau.clear();
+		tabFaisceau.add(line);
 	}
 
 	public int distancePoint(Point p){
@@ -93,7 +101,9 @@ public class Source extends ObjetOptique {
 
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(couleur);
-		g2d.draw(line);
+		for(Line2D i : tabFaisceau){
+			g2d.draw(i);
+		}
 		Point pointGauche,pointDroite;
 		if(point1.x <= point2.x){
 			pointGauche = point1;
@@ -119,6 +129,14 @@ public class Source extends ObjetOptique {
 	public void ajouterFaisceau(Point point1, Point point2){
 		Line2D lineFaisceau = new Line2D.Double(point1,point2);
 		tabFaisceau.add(lineFaisceau);
+	}
+
+	public void setTabFaisceau(ArrayList<Line2D> tabFaisceau){
+		this.tabFaisceau = tabFaisceau;
+	}
+
+	public ArrayList<Line2D> getTabFaisceau(){
+		return tabFaisceau;
 	}
 
 

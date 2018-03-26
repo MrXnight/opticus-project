@@ -97,10 +97,12 @@ public class Lentille extends ObjetOptique {
 	}
 
 	public void move(Point newPosition){
+		int translationX = newPosition.x-centrex;
+		int translationY = newPosition.y-centrey;
 		centrex = newPosition.x;
 		centrey = newPosition.y;
-		point1 = new Point((int)(centrex - taille*Math.cos(angle)), (int)(centrey - taille*Math.sin(-angle)));
-		point2 = new Point((int)(centrex + taille*Math.cos(angle)),(int)(centrey + taille*Math.sin(-angle)));
+		point1 = new Point(point1.x+translationX,point1.y+translationY);
+		point2 = new Point(point2.x+translationX,point2.y+translationY);
 		line = new Line2D.Double(point1,point2);
 	}
 
@@ -111,9 +113,9 @@ public class Lentille extends ObjetOptique {
 	public Line2D getLine(){
        return(line);
      }
-     
+
      public Line2D translate(int transx, int transy){
-		 
+
 		 Point p1 = new Point (point1.x + transx, point1.y + transy);
 		 Point p2 = new Point (point2.x + transx, point2.y + transy);
 		 Line2D line = new Line2D.Double(p1, p2);
@@ -123,10 +125,10 @@ public class Lentille extends ObjetOptique {
 	public void lineFocal(Graphics2D g2d, Point intersec){
 		int transx = intersec.x - centrex;
 		int transy = centrey-intersec.y;
-		
+
 		Line2D lineOrigine = translate(transx, transy);
 		g2d.draw(lineOrigine);
-	
+
 	}
 	public void draw(Graphics2D g2d) {
 		g2d.setColor(couleur);
