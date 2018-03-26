@@ -208,6 +208,11 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
             if(o instanceof Source){
 				Source s = (Source)o;
 				intersection(g2d, s);
+                for (Line2D l : bordures){
+                    if(intersection(g2d,s) == null && lineLine(l,s.getLine()) != null){
+                        g2d.drawLine(s.getCentrex(),s.getCentrey(),(int)lineLine(l,s.getLine()).getX(),(int)lineLine(l,s.getLine()).getY());
+                    }
+                }
 			}
 		}
         if(postionningLine != null){
@@ -221,7 +226,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 		Point intersec = new Point();//Pour toute les sources determination de l'equation de droite
 		for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
 			if(l instanceof Lentille || l instanceof Miroir){
-				lineLine(s,l);
+				newintersec = lineLine(s,l);
 				Line2D faisceau= new Line2D.Double(s.getPoint1(), newintersec);
 				if(l.getPoint1().x - l.getPoint2().x == 0){
 					if(newintersec.y <= Math.max(l.getPoint1().y,l.getPoint2().y) && newintersec.y >= Math.min(l.getPoint1().y,l.getPoint2().y)){
@@ -327,13 +332,34 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 		int y3 = b.getPoint1().y;
 		int x4 = b.getPoint2().x;
 		int y4 = b.getPoint2().y;
-		int d = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
-		System.out.println("d = "+d);
+		double d = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
 		if(d != 0){
-			double xi=(double)((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/(double)(d);
-			double yi=(double)((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/(double)(d);
-			Point i = new Point((int)xi,(int)yi);
-			return(i);
+			double xi=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/d;
+			double yi=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/d;
+            Point p = new Point((int)xi,(int)yi);
+            System.out.println(p);
+            return p;
+		}
+		return null;
+		
+	}
+
+	public Point lineLine(Line2D a, Line2D b){
+		double x1 = a.getP1().getX();
+		double y1 = a.getP1().getY();
+		double x2 = a.getP2().getX();
+		double y2 = a.getP2().getY();
+		double x3 = b.getP1().getX();
+		double y3 = b.getP1().getY();
+		double x4 = b.getP2().getX();
+		double y4 = b.getP2().getY();
+		double d = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4);
+		if(d != 0){
+			double xi=((x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4))/d;
+			double yi=((x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4))/d;
+            Point p = new Point((int)xi,(int)yi);
+            System.out.println(p);
+            return p;
 		}
 		return null;
 		
