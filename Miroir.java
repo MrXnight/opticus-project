@@ -22,6 +22,10 @@ public class Miroir extends ObjetOptique {
 	public void move(Point newPosition){
 
 	}
+	public Point movePoint(Point newPoint,Point clickedPoint){
+		return null;
+		//à implémenter
+	}
 
 	public Line2D getLine(){
        return(line);

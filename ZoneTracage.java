@@ -153,14 +153,14 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     selectedObject = i;
                     distanceMin = i.distancePoint(e.getPoint());
                }
-               if(i instanceof Lentille){
-                    if(((Lentille)i).getPoint1().distance(e.getPoint())<((Lentille)i).getPoint2().distance(e.getPoint()) && ((Lentille)i).getPoint2().distance(e.getPoint()) != ((Lentille)i).getPoint1().distance(e.getPoint())){
-                         if(((Lentille)i).getPoint1().distance(e.getPoint())<5){
-                              selectedPoint = ((Lentille)i).getPoint1();
+               if(i instanceof Lentille || i instanceof Source){
+                    if((i).getPoint1().distance(e.getPoint())<(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())){
+                         if((i).getPoint1().distance(e.getPoint())<5){
+                              selectedPoint = (i).getPoint1();
                          }
                     }
-                    else if(((Lentille)i).getPoint1().distance(e.getPoint())>((Lentille)i).getPoint2().distance(e.getPoint()) && ((Lentille)i).getPoint2().distance(e.getPoint())<5 && ((Lentille)i).getPoint2().distance(e.getPoint()) != ((Lentille)i).getPoint1().distance(e.getPoint())) {
-                         selectedPoint = ((Lentille)i).getPoint2();
+                    else if((i).getPoint1().distance(e.getPoint())>(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint())<5 && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())) {
+                         selectedPoint = (i).getPoint2();
                     }
                }
           }
@@ -186,7 +186,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                }
           }
           if(selectedPoint != null && selectedObject != null){
-               selectedPoint = ((Lentille)selectedObject).movePoint(e.getPoint(),selectedPoint);
+               selectedPoint = (selectedObject).movePoint(e.getPoint(),selectedPoint);
           }
           revalidate();
           repaint();
