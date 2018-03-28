@@ -15,14 +15,14 @@ public class Miroir extends ObjetOptique {
 		super(posx, posy, angle, Color.BLACK, taille);
 	}
 
-	public int distancePoint(Point p){
+	public int distancePoint(Point2D p){
 		return 0;
 	}
 
-	public void move(Point newPosition){
+	public void move(Point2D newPosition){
 
 	}
-	public Point movePoint(Point newPoint,Point clickedPoint){
+	public Point2D movePoint(Point2D newPoint,Point2D clickedPoint){
 		return null;
 		//à implémenter
 	}

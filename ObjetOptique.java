@@ -11,9 +11,9 @@ public abstract class ObjetOptique {
 	protected Color couleur;
 	protected double taille;
 	protected boolean focus;
-	protected int centrex,centrey;
-	protected Point point1;
-	protected Point point2;
+	protected double centrex,centrey;
+	protected Point2D point1;
+	protected Point2D point2;
 
 	public ObjetOptique (double posx, double posy, double angle, Color col, double taille) {
 		centrex = (int)posx;
@@ -27,11 +27,11 @@ public abstract class ObjetOptique {
 
 	public abstract void draw (Graphics2D g2d);
 
-	public abstract int distancePoint(Point p);
+	public abstract int distancePoint(Point2D p);
 
-	public abstract void move(Point newPosition);
-	
-	public abstract Point movePoint(Point newPoint,Point clickedPoint);
+	public abstract void move(Point2D newPosition);
+
+	public abstract Point2D movePoint(Point2D newPoint,Point2D clickedPoint);
 
 	public void setFocus(boolean focus){
 		this.focus = focus;
@@ -40,22 +40,22 @@ public abstract class ObjetOptique {
 	public boolean hasFocus(){
 		return focus;
 	}
-	public int getCentrex(){
+	public double getCentrex(){
 		return centrex;
 	}
-	public int getCentrey(){
+	public double getCentrey(){
 		return centrey;
 	}
 
-	public Point getPoint1(){
+	public Point2D getPoint1(){
 		return point1;
 	}
-	public Point getPoint2(){
+	public Point2D getPoint2(){
 		return point2;
 	}
-	
-    public Point getCentre(){
-        Point centre = new Point(centrex, centrey);
+
+    public Point2D getCentre(){
+        Point2D centre = new Point2D.Double(centrex, centrey);
         return(centre);
     }
 

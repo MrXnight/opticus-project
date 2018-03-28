@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Source extends ObjetOptique {
@@ -9,7 +10,8 @@ public class Source extends ObjetOptique {
 	protected Line2D line;
 	protected int TAILLE_MINIMALE = 30;
 	protected JComponent parent;
-    protected ArrayList<Line2D> tabFaisceau;
+     protected ArrayList<Line2D> tabFaisceau;
+	protected HashMap<Line2D,ObjetOptique> mapFaisceau;
 	public Source (double posx, double posy, double angle, Color col, double taille,JComponent parent) {
 		super(posx, posy, angle, col, taille);
 		focus = false;
@@ -18,6 +20,8 @@ public class Source extends ObjetOptique {
 		line = new Line2D.Double(point1,point2);
 		this.parent = parent;
 		tabFaisceau = new ArrayList<Line2D>();
+		mapFaisceau = new HashMap<Line2D,ObjetOptique>();
+		mapFaisceau.put(line,null);
 		tabFaisceau.add(line);
 	}
 
@@ -25,17 +29,17 @@ public class Source extends ObjetOptique {
 		this(posx, posy, angle, Color.BLACK, taille,parent);
 	}
 
-	public Point movePoint(Point newPoint,Point clickedPoint){
+	public Point2D movePoint(Point2D newPoint,Point2D clickedPoint){
 		try{
 			Robot robot = new Robot();
 
 			if(point1==clickedPoint){
-				if(Math.abs(Point.distance(newPoint.x,newPoint.y,point2.x,point2.y))/2>=30){
+				if(Math.abs(Point.distance(newPoint.getX(),newPoint.getY(),point2.getX(),point2.getY()))/2>=30){
 					point1 = newPoint;
 				}
 				else{
 					newPoint = point1;
-					Point point1Screen = new Point(point1);
+					Point point1Screen = new Point((int)point1.getX(),(int)point1.getY());
 					System.out.println("avant : "+point1Screen);
 					SwingUtilities.convertPointToScreen(point1Screen,parent);
 					System.out.println("après : "+point1Screen);
@@ -44,30 +48,31 @@ public class Source extends ObjetOptique {
 				}
 			}
 			else if(point2==clickedPoint){
-				if(Math.abs(Point.distance(point1.x,point1.y,newPoint.x,newPoint.y))/2>=30){
+				if(Math.abs(Point.distance(point1.getX(),point1.getY(),newPoint.getX(),newPoint.getY()))/2>=30){
 					point2 = newPoint;
 				}
 				else{
 					newPoint = point2;
-					Point point2Screen = new Point(point2);
+					Point point2Screen = new Point((int)point2.getX(),(int)point2.getY());
 					SwingUtilities.convertPointToScreen(point2Screen,parent);
 					robot.mouseMove(point2Screen.x,point2Screen.y);
 					System.out.println("robot");
 				}
 			}
-			taille = Math.abs(Point.distance(point1.x,point1.y,point2.x,point2.y))/2;
-			if(point1.x <= point2.x){
-				angle = -Math.atan2(point2.y-point1.y,Math.abs(point1.x-point2.x));
-				centrex = (int)(point1.x+Math.cos(angle)*taille);
-				centrey = (int)(point1.y+Math.sin(-angle)*taille);
+			taille = Math.abs(Point.distance(point1.getX(),point1.getY(),point2.getX(),point2.getY()))/2;
+			if(point1.getX() <= point2.getX()){
+				angle = -Math.atan2(point2.getY()-point1.getY(),Math.abs(point1.getX()-point2.getX()));
+				centrex = (int)(point1.getX()+Math.cos(angle)*taille);
+				centrey = (int)(point1.getY()+Math.sin(-angle)*taille);
 			}
-			else if(point1.x > point2.x){
-				angle = -Math.atan2(point1.y-point2.y,Math.abs(point1.x-point2.x));
-				centrex = (int)(point2.x+Math.cos(angle)*taille);
-				centrey = (int)(point2.y+Math.sin(-angle)*taille);
+			else if(point1.getX() > point2.getX()){
+				angle = -Math.atan2(point1.getY()-point2.getY(),Math.abs(point1.getX()-point2.getX()));
+				centrex = (int)(point2.getX()+Math.cos(angle)*taille);
+				centrey = (int)(point2.getY()+Math.sin(-angle)*taille);
 			}
 			System.out.println("angle : "+angle);
 			line = new Line2D.Double(point1,point2);
+
 			tabFaisceau.clear();
 			tabFaisceau.add(line);
 			return newPoint;
@@ -76,26 +81,26 @@ public class Source extends ObjetOptique {
 			return null;
 	}
 
-	public void move(Point newPosition){
-		int translationX = newPosition.x-centrex;
-		int translationY = newPosition.y-centrey;
-		centrex = newPosition.x;
-		centrey = newPosition.y;
-		point1 = new Point(point1.x+translationX,point1.y+translationY);
-		point2 = new Point(point2.x+translationX,point2.y+translationY);
+	public void move(Point2D newPosition){
+		double translationX = newPosition.getX()-centrex;
+		double translationY = newPosition.getY()-centrey;
+		centrex = newPosition.getX();
+		centrey = newPosition.getY();
+		point1 = new Point2D.Double(point1.getX()+translationX,point1.getY()+translationY);
+		point2 = new Point2D.Double(point2.getX()+translationX,point2.getY()+translationY);
 		line = new Line2D.Double(point1,point2);
 		tabFaisceau.clear();
 		tabFaisceau.add(line);
 	}
 
-	public int distancePoint(Point p){
+	public int distancePoint(Point2D p){
 		return (int)(line.ptSegDist(p));
 	}
 
-	public Point getPoint1(){
+	public Point2D getPoint1(){
 		return point1;
 	}
-	public Point getPoint2(){
+	public Point2D getPoint2(){
 		return point2;
 	}
 
@@ -104,8 +109,8 @@ public class Source extends ObjetOptique {
 		for(Line2D i : tabFaisceau){
 			g2d.draw(i);
 		}
-		Point pointGauche,pointDroite;
-		if(point1.x <= point2.x){
+		Point2D pointGauche,pointDroite;
+		if(point1.getX() <= point2.getX()){
 			pointGauche = point1;
 			pointDroite = point2;
 		}
@@ -115,18 +120,18 @@ public class Source extends ObjetOptique {
 		}
 		if(hasFocus()){
 			g2d.setColor(Color.black);
-			g2d.drawRect(centrex-5, centrey-5,10,10);
-			g2d.drawLine(point1.x+5,point1.y,point1.x-5,point1.y);
-			g2d.drawLine(point1.x,point1.y-5,point1.x,point1.y+5);
-			g2d.drawLine(point2.x+5,point2.y,point2.x-5,point2.y);
-			g2d.drawLine(point2.x,point2.y-5,point2.x,point2.y+5);
+			g2d.drawRect((int)centrex-5, (int)centrey-5,10,10);
+			g2d.drawLine((int)point1.getX()+5,(int)point1.getY(),(int)point1.getX()-5,(int)point1.getY());
+			g2d.drawLine((int)point1.getX(),(int)point1.getY()-5,(int)point1.getX(),(int)point1.getY()+5);
+			g2d.drawLine((int)point2.getX()+5,(int)point2.getY(),(int)point2.getX()-5,(int)point2.getY());
+			g2d.drawLine((int)point2.getX(),(int)point2.getY()-5,(int)point2.getX(),(int)point2.getY()+5);
 		}/*
 		for(Line2D l : tabFaisceau){
 			g2d.draw(l);
 		}*/
 
 	}
-	public void ajouterFaisceau(Point point1, Point point2){
+	public void ajouterFaisceau(Point2D point1, Point2D point2){
 		Line2D lineFaisceau = new Line2D.Double(point1,point2);
 		tabFaisceau.add(lineFaisceau);
 	}
@@ -139,6 +144,13 @@ public class Source extends ObjetOptique {
 		return tabFaisceau;
 	}
 
+	public void setMapFaisceau(HashMap<Line2D,ObjetOptique> mapFaisceau){
+		this.mapFaisceau = mapFaisceau;
+	}
+
+	public HashMap<Line2D,ObjetOptique> getMapFaisceau(){
+		return mapFaisceau;
+	}
 
     public Line2D getLine(){
       return(line);
