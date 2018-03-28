@@ -308,9 +308,8 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           Point2D resultPoint = null;
 
           for(ObjetOptique l:listeObjet){ //Pour tout les objets optique autres que des sources
-               if(objectToNotIntersect == l){
-                    System.out.println("NOT INTERSECT");
-               }
+               //if(objectToNotIntersect == l){
+               //}
                if((l instanceof Lentille || l instanceof Miroir) && objectToNotIntersect != l){
                     newintersec = lineLine(ligne,l.getLine());
                     if(newintersec != null){
