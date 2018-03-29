@@ -6,8 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Propriete extends JPanel implements ActionListener {
-    protected JLabel nomOutil, changerNom, changerCouleur, description;
+    protected JLabel nomOutil, changerNom, changerCouleur, description, labelFocal;
     protected JTextField entreNom;
+    protected JTextField entreFocal;
+    protected boolean f=false;
     protected JComboBox<String> choixCouleurs;
     final String[] couleurs = { "Bleu", "Vert", "Rouge", "Rose", "Orange" };
 
@@ -17,12 +19,15 @@ public class Propriete extends JPanel implements ActionListener {
 
         nomOutil = new JLabel();
         nomOutil.setForeground(Color.GRAY);
-        nomOutil.setFont(new Font("Serif", Font.BOLD, 25));
+        nomOutil.setFont(new Font("Cambria", Font.BOLD, 25));
         nomOutil.setAlignmentX(JLabel.CENTER_ALIGNMENT);
 
         description = new JLabel();
         description.setAlignmentX(JLabel.CENTER_ALIGNMENT);
-        description.setFont(new Font("Serif", Font.PLAIN, 20));
+        description.setFont(new Font("Cambria", Font.PLAIN, 20));
+        
+        labelFocal = new JLabel("f = ");       
+        entreFocal = new JTextField();
 
         changerNom = new JLabel("Entrer un nom");
         changerCouleur = new JLabel("Choisissez une couleur");
@@ -36,13 +41,28 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(description);
 
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        
+        
+        this.add(labelFocal); //ajouter que ce soit optionnel
+        this.add(entreFocal);
+        
+        
         this.add(changerNom);
         this.add(changerCouleur);
         this.add(choixCouleurs);
 
     }
 
+    public void propSource() {
+        f = false;
+        nomOutil.setText("Source");
+        description.setText(
+            "<html>Cet outil vous permet de creer une nouvelle source en definissant deux point dans l'espace.</html>");
+        this.repaint();
+    }
+    
     public void propLentille() {
+        f = true;
         nomOutil.setText("Lentille");
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
@@ -51,6 +71,7 @@ public class Propriete extends JPanel implements ActionListener {
     }
 
     public void propSelect() {
+        f = false;
         nomOutil.setText("Selectionner");
         description.setText(
             "<html>Permet de deplacer des objets deja placés </html>");
@@ -58,6 +79,7 @@ public class Propriete extends JPanel implements ActionListener {
     }
 
     public void propMiroir() {
+        f = false;
         nomOutil.setText("Mirroir");
         description.setText("Placer un miroir....");
         this.repaint();
@@ -65,12 +87,14 @@ public class Propriete extends JPanel implements ActionListener {
     }
 
     public void propSuppr() {
+        f = false;
         nomOutil.setText("Supprimer");
         this.repaint();
 
     }
 
     public void propScreenshot() {
+        f = false;
         nomOutil.setText("Capture d'ecran");
         this.repaint();
 

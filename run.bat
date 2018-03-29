@@ -1,5 +1,5 @@
 @echo off
 cls
-javac *.java
+javac -encoding UTF8 *.java
 java -cp ./ FenetrePrincipale
 pause
