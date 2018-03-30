@@ -109,8 +109,7 @@ public class Miroir extends ObjetOptique {
 		//on trace les traits perpendiculaires au miroir pour symboliser la face non reflechissante
 
 		Point2D hach1 = new Point2D.Double(centrex, centrey);
-		Point2D hach2 = new Point2D.Double((point2.getY() - point1.getY()) / 4 + centrex,
-				(point1.getX() - point2.getX()) / 4 + centrey);
+		Point2D hach2 = new Point2D.Double((point2.getY() - point1.getY()) /(taille*0.06) + centrex, (point1.getX() - point2.getX()) /(taille*0.06)+ centrey);
 		Line2D hachure = new Line2D.Double(hach1, hach2);
 
 		Double deltaX = Math.cos(angle) * ecart;
@@ -128,6 +127,17 @@ public class Miroir extends ObjetOptique {
 			coeffDirecteur = 0.0;
 		}
 		Double constante = point1.getY() - coeffDirecteur * point1.getX();
+
+		//On trace les hitobox du miroir
+
+		if(hasFocus()){
+			g2d.setColor(Color.black);
+			g2d.drawRect((int)centrex-5, (int)centrey-5,10,10);
+			g2d.drawLine((int)point1.getX()+5,(int)point1.getY(),(int)point1.getX()-5,(int)point1.getY());
+			g2d.drawLine((int)point1.getX(),(int)point1.getY()-5,(int)point1.getX(),(int)point1.getY()+5);
+			g2d.drawLine((int)point2.getX()+5,(int)point2.getY(),(int)point2.getX()-5,(int)point2.getY());
+			g2d.drawLine((int)point2.getX(),(int)point2.getY()-5,(int)point2.getX(),(int)point2.getY()+5);
+		}
 
 	}
 

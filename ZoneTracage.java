@@ -34,6 +34,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      //Lentille l1 = new Lentille(200,200,0,Color.BLACK,100,20,this);
      //Lentille l2 = new Lentille(500,200,Math.PI/2,Color.GREEN,100,20,this);
      Lentille l3 = new Lentille(200,500,Math.PI/4,Color.RED,100,100,this);
+     Miroir m1 = new Miroir(100,400,Math.PI/3, Color.BLACK, 60, this);
      private int cursor;
      private ObjetOptique selectedObject;
      private Point2D selectedPoint;
@@ -58,6 +59,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           //listeObjet.add(l2);
           listeObjet.add(l3);
           listeObjet.add(s1);
+          listeObjet.add(m1);
           //listeObjet.add(s2);
           setLayout(null);
           setFocusable(true);
@@ -196,7 +198,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     selectedObject = i;
                     distanceMin = i.distancePoint(e.getPoint());
                }
-               if(i instanceof Lentille || i instanceof Source){
+               if(i instanceof Lentille || i instanceof Source || i instanceof Miroir){
                     if((i).getPoint1().distance(e.getPoint())<(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())){
                          if((i).getPoint1().distance(e.getPoint())<5){
                               selectedPoint = (i).getPoint1();
