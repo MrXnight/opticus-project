@@ -9,7 +9,8 @@ public class Lentille extends ObjetOptique {
 	protected Line2D line;
 	protected int TAILLE_MINIMALE = 30;
 	protected JComponent parent;
-	protected Line2D planFocal;
+	protected Line2D planFocal1;
+	protected Line2D planFocal2;
 	public Lentille (double posx, double posy, double angle, Color col, double taille, double focal,JComponent parent) {
 		super(posx, posy, angle, col, taille);
 		f = focal;
@@ -110,7 +111,8 @@ public class Lentille extends ObjetOptique {
 		double dy = f*-x;
 		/*Point2D p1 = new Point2D.Double(line.getP1().getX()+dx,line.getP1().getY()+dy);
 		Point2D p1 = new Point2D.Double(line.getP2().getX()+dx,line.getP2().getY()+dy);*/
-		planFocal = Geometrie.translateLine(line,dx,dy);
+		planFocal1 = Geometrie.translateLine(line,dx,dy);
+		planFocal2 = Geometrie.translateLine(line,-dx,-dy);
 	}
 
 	public void move(Point2D newPosition){
@@ -132,14 +134,23 @@ public class Lentille extends ObjetOptique {
        return(line);
      }
 
-	public Line2D getPlanFocal(){
-		return(planFocal);
+
+	public double getFocal(){
+		return f;
 	}
 
 	public void draw(Graphics2D g2d) {
+		Stroke defaultStroke = g2d.getStroke();
+		g2d.setColor(Color.gray);
+		final float[] dash1 = {10.0f};
+		final BasicStroke dashed = new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER,10.0f, dash1, 0.0f);
+		g2d.setStroke(dashed);
+		g2d.draw(planFocal1);
+		g2d.draw(planFocal2);
+		g2d.setStroke(defaultStroke);
 		g2d.setColor(couleur);
 		g2d.draw(line);
-		g2d.draw(planFocal);
+
 		Point2D pointGauche,pointDroite;
 		if(point1.getX() <= point2.getX()){
 			pointGauche = point1;
