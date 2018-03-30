@@ -56,7 +56,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
         }
 
         if(btn == btnMiroir){
-             BarreOutils.activeTool = ActiveTool.SOURCE;
+             BarreOutils.activeTool = ActiveTool.MIROIR;
              System.out.println(BarreOutils.activeTool+" est actif !");
              prop.propMiroir();
         }

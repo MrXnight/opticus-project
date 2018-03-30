@@ -9,7 +9,12 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 	private JPanel mainPanel,panelDessin;
 
 	public FenetrePrincipale (){
-		this.setVisible(true);
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			e.printStackTrace(System.out);
+		}
+		
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int)(ratio*screenSize.getWidth());
