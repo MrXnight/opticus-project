@@ -249,7 +249,10 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           g2d.fillRect(0,0,this.getWidth(),this.getHeight());
           for(ObjetOptique o : listeObjet){
                o.draw(g2d);
-               updateIntersection(g2d);
+          }
+          updateIntersection(g2d);
+          if(postionningLine != null){
+               g2d.draw(postionningLine);
           }
           repaint();
      }
