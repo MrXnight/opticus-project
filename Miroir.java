@@ -109,7 +109,7 @@ public class Miroir extends ObjetOptique {
 		//on trace les traits perpendiculaires au miroir pour symboliser la face non reflechissante
 
 		Point2D hach1 = new Point2D.Double(centrex, centrey);
-		Point2D hach2 = new Point2D.Double((point2.getY() - point1.getY()) /(taille*0.06) + centrex, (point1.getX() - point2.getX()) /(taille*0.06)+ centrey);
+		Point2D hach2 = new Point2D.Double((point2.getY() - point1.getY()) /(taille*0.3) + centrex, (point1.getX() - point2.getX()) /(taille*0.3)+ centrey);
 		Line2D hachure = new Line2D.Double(hach1, hach2);
 
 		Double deltaX = Math.cos(angle) * ecart;
