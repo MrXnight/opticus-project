@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
+
 import java.beans.*;
 import java.util.Scanner;
 import java.util.HashMap;
@@ -245,10 +246,28 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
 
      protected void paintComponent(Graphics g){
+
+        int SUBDIVISIONS = 80;
+        int DRAWING_SIZE = this.getWidth();
+
+        int SUBDIVISION_SIZE = DRAWING_SIZE / SUBDIVISIONS;
+
           Graphics2D g2d = (Graphics2D) g.create();
 
           g2d.setColor(Color.WHITE);
           g2d.fillRect(0,0,this.getWidth(),this.getHeight());
+
+          g2d.setColor(new Color(226, 226, 226, 100));
+          for (int i = 1; i < SUBDIVISIONS; i++) {
+             int x = i * SUBDIVISION_SIZE;
+             g2d.drawLine(x, 0, x, getSize().height);
+          }
+          for (int i = 1; i < SUBDIVISIONS; i++) {
+             int y = i * SUBDIVISION_SIZE;
+             g2d.drawLine(0, y, getSize().width, y);
+          }
+
+
           for(ObjetOptique o : listeObjet){
                o.draw(g2d);
           }
