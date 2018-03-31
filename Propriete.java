@@ -11,12 +11,15 @@ public class Propriete extends JPanel implements ActionListener {
     protected JCheckBox boxPlans, boxSemiReflet;
     protected JTextField entreNom, entreX, entreY, entreTaille;
     protected JTextField entreFocal;
+    protected ZoneTracage panelDessin;
     protected static double f=10;
     protected static int n=0;
     protected JComboBox<String> choixCouleurs;
     final String[] couleurs = { "Bleu", "Vert", "Rouge", "Rose", "Orange" };
 
     public Propriete(int width, int height) {
+
+         this.panelDessin = panelDessin;
 
         this.setPreferredSize(new Dimension((int) (width * 0.2), height));
 
@@ -34,15 +37,15 @@ public class Propriete extends JPanel implements ActionListener {
 
         choixCouleurs = new JComboBox<>(couleurs);
         choixCouleurs.addActionListener(this);
-        
+
         labelX = new JLabel("x =");
         labelY = new JLabel("y =");
         labelTaille = new JLabel("Taille =");
         entreX = new JTextField();
         entreY = new JTextField();
         entreTaille = new JTextField();
-        
-        labelFocal = new JLabel("f = ");       
+
+        labelFocal = new JLabel("f = ");
         entreFocal = new JTextField();
         boxPlans = new JCheckBox("Afficher plan focal");
         boxSemiReflet = new JCheckBox("Semi réfléchissant");
@@ -65,17 +68,17 @@ public class Propriete extends JPanel implements ActionListener {
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle source en definissant deux point dans l'espace.</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
-        this.add(labelX);     
-        this.add(entreX);     
-        this.add(labelY);  
-        this.add(entreY); 
-        this.add(labelTaille);  
-        this.add(entreTaille);  
+        this.add(labelX);
+        this.add(entreX);
+        this.add(labelY);
+        this.add(entreY);
+        this.add(labelTaille);
+        this.add(entreTaille);
         this.add(changerCouleur);
         this.add(choixCouleurs);
         this.repaint();
     }
-    
+
     public void propLentille() {
         this.removeAll();
         this.add(nomOutil);
@@ -85,12 +88,12 @@ public class Propriete extends JPanel implements ActionListener {
             "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
         //changerNom.setText("Donner un nom à la lentille : ");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
-        this.add(labelX);     
-        this.add(entreX);     
-        this.add(labelY);  
-        this.add(entreY);   
-        this.add(labelTaille);  
-        this.add(entreTaille);  
+        this.add(labelX);
+        this.add(entreX);
+        this.add(labelY);
+        this.add(entreY);
+        this.add(labelTaille);
+        this.add(entreTaille);
         //this.add(changerNom);
         this.add(labelFocal);
         this.add(entreFocal);
@@ -99,7 +102,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(choixCouleurs);
         this.repaint();
     }
-    
+
     public void propLentille(Lentille l) {
         this.removeAll();
         this.add(nomOutil);
@@ -108,17 +111,17 @@ public class Propriete extends JPanel implements ActionListener {
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
         //changerNom.setText("Donner un nom à la lentille : ");
-        entreX.setText(String.valueOf(l.getCentre().x));
-        entreY.setText(String.valueOf(l.getCentre().y));
-        entreTaille.setText(String.valueOf(l.getTaille));  
+        entreX.setText(String.valueOf(l.getCentrex()));
+        entreY.setText(String.valueOf(l.getCentrey()));
+        entreTaille.setText(String.valueOf(l.getTaille()));
         entreFocal.setText(String.valueOf(l.getFocal()));
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
-        this.add(labelX);     
-        this.add(entreX);     
-        this.add(labelY);  
-        this.add(entreY);   
-        this.add(labelTaille);  
-        this.add(entreTaille);  
+        this.add(labelX);
+        this.add(entreX);
+        this.add(labelY);
+        this.add(entreY);
+        this.add(labelTaille);
+        this.add(entreTaille);
         //this.add(changerNom);
         this.add(labelFocal);
         this.add(entreFocal);
@@ -126,7 +129,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(changerCouleur);
         this.add(choixCouleurs);
         this.repaint();
-                    
+
     }
 
     public void propSelect() {
@@ -147,12 +150,12 @@ public class Propriete extends JPanel implements ActionListener {
         nomOutil.setText("Mirroir");
         description.setText("Placer un miroir....");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
-        this.add(labelX);     
-        this.add(entreX);     
-        this.add(labelY);  
-        this.add(entreY);  
-        this.add(labelTaille);  
-        this.add(entreTaille);  
+        this.add(labelX);
+        this.add(entreX);
+        this.add(labelY);
+        this.add(entreY);
+        this.add(labelTaille);
+        this.add(entreTaille);
         this.add(boxSemiReflet);
         this.add(changerCouleur);
         this.add(choixCouleurs);
@@ -198,6 +201,10 @@ public class Propriete extends JPanel implements ActionListener {
         }
         nomOutil.setForeground(col);
         this.repaint();
+    }
+
+    public void setZoneTracage(ZoneTracage panelDessin){
+         this.panelDessin = panelDessin;
     }
 
     public void actionPerformed(ActionEvent e) {

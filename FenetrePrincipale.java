@@ -6,7 +6,8 @@ import java.awt.BorderLayout;
 public class FenetrePrincipale extends JFrame implements ActionListener{
 
 	private final double ratio = 0.8;
-	private JPanel mainPanel,panelDessin;
+	private JPanel mainPanel;
+	private ZoneTracage panelDessin;
 
 	public FenetrePrincipale (){
 		try {
@@ -14,7 +15,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
 		}
-		
+
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int width = (int)(ratio*screenSize.getWidth());
@@ -38,6 +39,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 
 		//on instancie le panel de propriété
 		Propriete prop = new Propriete(width, height);
+
 		mainPanel.add(prop, BorderLayout.EAST);
 
 		BarreOutils barre = new BarreOutils(prop);
@@ -48,6 +50,10 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		mainPanel.add(panelDessin,BorderLayout.CENTER);
 
 		this.add(mainPanel);
+
+		prop.setZoneTracage(panelDessin);
+		panelDessin.setPropriete(prop);
+
 		this.setVisible(true);
 
 	}
@@ -58,6 +64,5 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
 	}
-
 
 }

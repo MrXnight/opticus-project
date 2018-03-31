@@ -6,8 +6,6 @@ import java.util.HashMap;
 
 
 public class Source extends ObjetOptique {
-	protected double f;
-	protected Line2D line;
 	protected int TAILLE_MINIMALE = 30;
 	protected JComponent parent;
      protected ArrayList<Line2D> tabFaisceau;
@@ -82,13 +80,7 @@ public class Source extends ObjetOptique {
 	}
 
 	public void move(Point2D newPosition){
-		double translationX = newPosition.getX()-centrex;
-		double translationY = newPosition.getY()-centrey;
-		centrex = newPosition.getX();
-		centrey = newPosition.getY();
-		point1 = new Point2D.Double(point1.getX()+translationX,point1.getY()+translationY);
-		point2 = new Point2D.Double(point2.getX()+translationX,point2.getY()+translationY);
-		line = new Line2D.Double(point1,point2);
+		super.move(newPosition);
 		tabFaisceau.clear();
 		tabFaisceau.add(line);
 	}

@@ -5,7 +5,6 @@ import javax.swing.*;
 
 public class Miroir extends ObjetOptique {
 
-	private Line2D line;
 	protected JComponent parent;
 	final Double ecart = 10.0;
 
@@ -23,17 +22,6 @@ public class Miroir extends ObjetOptique {
 
 	public int distancePoint(Point2D p) {
 		return (int) (line.ptSegDist(p));
-
-	}
-
-	public void move(Point2D newPosition) {
-		double translationX = newPosition.getX() - centrex;
-		double translationY = newPosition.getY() - centrey;
-		centrex = newPosition.getX();
-		centrey = newPosition.getY();
-		point1 = new Point2D.Double(point1.getX() + translationX, point1.getY() + translationY);
-		point2 = new Point2D.Double(point2.getX() + translationX, point2.getY() + translationY);
-		line = new Line2D.Double(point1, point2);
 	}
 
 	public void pointUpdate(Point2D pt1, Point2D pt2) {

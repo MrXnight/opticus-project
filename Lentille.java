@@ -6,13 +6,12 @@ import java.util.ArrayList;
 
 public class Lentille extends ObjetOptique {
 	protected double f;
-	protected Line2D line;
 	protected int TAILLE_MINIMALE = 30;
 	protected JComponent parent;
 	protected Line2D planFocal1;
 	protected Line2D planFocal2;
-    protected static int numero;
-    protected boolean planFoc = false;
+	protected int numero;
+	protected boolean planFoc = false;
 	public Lentille (double posx, double posy, double angle, Color col, double taille, double focal,JComponent parent) {
 		super(posx, posy, angle, col, taille);
 		f = focal;
@@ -22,7 +21,7 @@ public class Lentille extends ObjetOptique {
 		line = new Line2D.Double(point1,point2);
 		updatePlanFocal();
 		this.parent = parent;
-        numero += 1;
+        	numero += 1;
 	}
 
 	public Lentille (double posx, double posy, double angle, double taille,double focal,JComponent parent) {
@@ -121,13 +120,7 @@ public class Lentille extends ObjetOptique {
 	}
 
 	public void move(Point2D newPosition){
-		double translationX = newPosition.getX()-centrex;
-		double translationY = newPosition.getY()-centrey;
-		centrex = newPosition.getX();
-		centrey = newPosition.getY();
-		point1 = new Point2D.Double(point1.getX()+translationX,point1.getY()+translationY);
-		point2 = new Point2D.Double(point2.getX()+translationX,point2.getY()+translationY);
-		line = new Line2D.Double(point1,point2);
+		super.move(newPosition);
 		updatePlanFocal();
 	}
 
@@ -138,19 +131,15 @@ public class Lentille extends ObjetOptique {
 	public Line2D getLine(){
        return(line);
      }
-     
-    public void setPlanFocalOff(){
-        planFoc = false;
-    }
-    
-    public void setPlanFocalOn(){
-        planFoc = true;
+
+    public void setAffichagePlanFocal(boolean value){
+        planFoc = value;
     }
 
 	public double getFocal(){
 		return f;
 	}
-    
+
     public int getNum(){
         return numero;
     }

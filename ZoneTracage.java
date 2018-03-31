@@ -18,6 +18,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           private final Point2D intersection;
           private final ObjetOptique objetIntersect;
 
+
           public ResultIntersectionAvecObjetOptique(Point2D first, ObjetOptique second) {
                this.intersection = first;
                this.objetIntersect = second;
@@ -36,6 +37,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      //Lentille l2 = new Lentille(500,200,Math.PI/2,Color.GREEN,100,20,this);
      Lentille l3 = new Lentille(200,500,Math.PI/4,Color.RED,100,100,this);
      Miroir m1 = new Miroir(100,400,Math.PI/3, Color.BLACK, 60, this);
+     private Propriete prop;
      private int cursor;
      private ObjetOptique selectedObject;
      private Point2D selectedPoint;
@@ -193,29 +195,40 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           selectedObject = null;
           selectedPoint = null;
           System.out.println("Pressed");
-          for(ObjetOptique i : listeObjet){
-               i.setFocus(false);
-               if(i.distancePoint(e.getPoint())<distanceMin){
-                    selectedObject = i;
-                    distanceMin = i.distancePoint(e.getPoint());
-               }
-               if(i instanceof Lentille || i instanceof Source || i instanceof Miroir){
-                    if((i).getPoint1().distance(e.getPoint())<(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())){
-                         if((i).getPoint1().distance(e.getPoint())<5){
-                              selectedPoint = (i).getPoint1();
+          if(BarreOutils.activeTool == ActiveTool.SELECT){
+               for(ObjetOptique i : listeObjet){
+                    i.setFocus(false);
+                    if(i.distancePoint(e.getPoint())<distanceMin){
+                         selectedObject = i;
+                         distanceMin = i.distancePoint(e.getPoint());
+                    }
+                    if(i instanceof Lentille || i instanceof Source || i instanceof Miroir){
+                         if((i).getPoint1().distance(e.getPoint())<(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())){
+                              if((i).getPoint1().distance(e.getPoint())<5){
+                                   selectedPoint = (i).getPoint1();
+                              }
+                         }
+                         else if((i).getPoint1().distance(e.getPoint())>(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint())<5 && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())) {
+                              selectedPoint = (i).getPoint2();
                          }
                     }
-                    else if((i).getPoint1().distance(e.getPoint())>(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint())<5 && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())) {
-                         selectedPoint = (i).getPoint2();
-                    }
                }
+               if(selectedObject != null){
+                    selectedObject.setFocus(true);
+                    if(selectedObject instanceof Lentille){
+                         prop.propLentille((Lentille)selectedObject);
+                    }
+                    if(selectedObject instanceof Miroir){
+                         //prop.propMiroir((Miroir)selectedObject);
+                    }
+                    if(selectedObject instanceof Source){
+                         //prop.propSource((Source)selectedObject);
+                    }
+                    System.out.println(selectedObject.getCentrex()+" et "+selectedObject.getCentrey());
+               }
+               revalidate();
+               repaint();
           }
-          if(selectedObject != null){
-               selectedObject.setFocus(true);
-               System.out.println(selectedObject.getCentrex()+" et "+selectedObject.getCentrey());
-          }
-          revalidate();
-          repaint();
      }
 
      @Override
@@ -229,10 +242,28 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                mooving ){
                     selectedObject.move(e.getPoint());
                     mooving = true;
+                    if(selectedObject instanceof Lentille){
+                         prop.propLentille((Lentille)selectedObject);
+                    }
+                    if(selectedObject instanceof Miroir){
+                         //prop.propMiroir((Miroir)selectedObject);
+                    }
+                    if(selectedObject instanceof Source){
+                         //prop.propSource((Source)selectedObject);
+                    }
                }
           }
           if(selectedPoint != null && selectedObject != null){
                selectedPoint = (selectedObject).movePoint(e.getPoint(),selectedPoint);
+               if(selectedObject instanceof Lentille){
+                    prop.propLentille((Lentille)selectedObject);
+               }
+               if(selectedObject instanceof Miroir){
+                    //prop.propMiroir((Miroir)selectedObject);
+               }
+               if(selectedObject instanceof Source){
+                    //prop.propSource((Source)selectedObject);
+               }
           }
           revalidate();
           repaint();
@@ -247,10 +278,9 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
      protected void paintComponent(Graphics g){
 
-        int SUBDIVISIONS = 80;
-        int DRAWING_SIZE = this.getWidth();
-
-        int SUBDIVISION_SIZE = DRAWING_SIZE / SUBDIVISIONS;
+        final int SUBDIVISIONS = 80;
+        final int DRAWING_SIZE = this.getWidth();
+        final int SUBDIVISION_SIZE = DRAWING_SIZE / SUBDIVISIONS;
 
           Graphics2D g2d = (Graphics2D) g.create();
 
@@ -359,6 +389,40 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                                              toNotIntersect.put(faisceauSortie,intersectionObjet.getObjetIntersect());
                                         }
                                    }
+                                   if(intersectionObjet.getObjetIntersect() instanceof Miroir){
+                                        Miroir miroir = (Miroir)intersectionObjet.getObjetIntersect();
+
+                                        Line2D ligneIntersect = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
+                                        tabFaisceau.set(compteur,ligneIntersect);
+                                        toNotIntersect.put(ligneIntersect,toNotIntersect.get(ligneIntersect));
+
+
+                                        double x = miroir.getLine().getP2().getX()-miroir.getLine().getP1().getX();
+                              		double y = miroir.getLine().getP2().getY()-miroir.getLine().getP1().getY();
+                              		double norme = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+                              		x = x/norme;
+                              		y = y/norme;
+                              		double dx = -y;
+                              		double dy = x;
+
+                                        Line2D ligneNormale = new Line2D.Double(new Point2D.Double(miroir.getCentrex(),miroir.getCentrey()),new Point2D.Double(miroir.getCentrex()+dx,miroir.getCentrey()+dy));
+
+                                        if(Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur))<0){
+                                             //Line2D ligneNormaleAffichage = new Line2D.Double(new Point2D.Double(miroir.getCentrex(),miroir.getCentrey()),new Point2D.Double(miroir.getCentrex()+50*dx,miroir.getCentrey()+50*dy));
+                                             //g2d.setColor(Color.BLUE);
+                                             //g2d.draw(ligneNormaleAffichage);
+
+                                             double symetrieAxialX = (Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dx)*2+(tabFaisceau.get(compteur).getP2().getX()-tabFaisceau.get(compteur).getP1().getX());
+                                             double symetrieAxialY = (Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dy)*2+(tabFaisceau.get(compteur).getP2().getY()-tabFaisceau.get(compteur).getP1().getY());
+
+                                             ResultIntersectionAvecObjetOptique intersectionRayonSortie;
+                                             intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),new Point2D.Double(intersectionObjet.getIntersection().getX()+symetrieAxialX,intersectionObjet.getIntersection().getY()+symetrieAxialY)),miroir);
+                                             Line2D faisceauSortie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortie.getIntersection());
+                                             tabFaisceau.add(faisceauSortie);
+                                             toNotIntersect.put(faisceauSortie,intersectionObjet.getObjetIntersect());
+                                        }
+
+                                   }
                                    else if(intersectionObjet.getObjetIntersect() == null){
                                         Line2D faisceauSortie = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
                                         tabFaisceau.set(compteur,faisceauSortie);
@@ -444,8 +508,26 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                          }
                          else if(l.getLine().getP1().getY() - l.getLine().getP2().getY() == 0 && (newintersec.getX()<=Math.max(l.getLine().getP1().getX(),l.getLine().getP2().getX())
                          && newintersec.getX()>=Math.min(l.getLine().getP1().getX(),l.getLine().getP2().getX()))){
-                              tabIntersection.add(newintersec);
-                              tabObjetOptique.add(l);
+                              if(ligne.getP2().getX()-ligne.getP1().getX() > 0 && newintersec.getX() >= ligne.getP1().getX()){
+                                   tabIntersection.add(newintersec);
+                                   tabObjetOptique.add(l);
+                              }
+                              else if(ligne.getP2().getX()-ligne.getP1().getX() < 0 && newintersec.getX() <= ligne.getP1().getX()){
+                                   tabIntersection.add(newintersec);
+                                   tabObjetOptique.add(l);
+                              }
+                              else if(ligne.getP2().getX()-ligne.getP1().getX() == 0){
+                                   if(ligne.getP2().getY()-ligne.getP1().getY() >0 && newintersec.getY() >= ligne.getP1().getY()){
+                                        tabIntersection.add(newintersec);
+                                        tabObjetOptique.add(l);
+                                   }
+                                   else if(ligne.getP2().getY()-ligne.getP1().getY() <0 && newintersec.getY() <= ligne.getP1().getY()){
+                                        tabIntersection.add(newintersec);
+                                        tabObjetOptique.add(l);
+                                   }
+                                   else{
+                                   }
+                              }
                          }
                     }
                }
@@ -484,5 +566,13 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                }
           }
           return (new ResultIntersectionAvecObjetOptique(resultPoint,resultObjet));
+     }
+
+     public void setPropriete(Propriete prop){
+          this.prop = prop;
+     }
+
+     public ObjetOptique getSelectedObject(){
+          return selectedObject;
      }
 }

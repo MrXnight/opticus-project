@@ -48,7 +48,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
             System.out.println(BarreOutils.activeTool+" est actif !");
             prop.propSource();
         }
-        
+
         if(btn == btnLentille){
             BarreOutils.activeTool = ActiveTool.LENTILLE;
             System.out.println(BarreOutils.activeTool+" est actif !");
@@ -65,7 +65,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
             BarreOutils.activeTool = ActiveTool.SELECT;
             prop.propSelect();
             System.out.println(BarreOutils.activeTool+" est actif !");
-             
+
         }
 
         if(btn == btnSuppr){
