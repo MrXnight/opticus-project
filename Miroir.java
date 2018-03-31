@@ -7,6 +7,9 @@ public class Miroir extends ObjetOptique {
 
 	protected JComponent parent;
 	final Double ecart = 10.0;
+    protected static int compteNumero;
+    protected int numero;
+    protected boolean semiReflechissant = false;
 
 	public Miroir(double posx, double posy, double angle, Color col, double taille, JComponent parent) {
 		super(posx, posy, angle, col, taille);
@@ -14,10 +17,14 @@ public class Miroir extends ObjetOptique {
 		point2 = new Point2D.Double((centrex + taille * Math.cos(angle)), (centrey + taille * Math.sin(-angle)));
 		line = new Line2D.Double(point1, point2);
 		this.parent = parent;
+        compteNumero += 1;
+        numero = compteNumero;
 	}
 
 	public Miroir(double posx, double posy, double angle, double taille) {
 		super(posx, posy, angle, Color.BLACK, taille);
+        compteNumero += 1;
+        numero = compteNumero;
 	}
 
 	public int distancePoint(Point2D p) {
@@ -86,6 +93,18 @@ public class Miroir extends ObjetOptique {
 		return (line);
 	}
 
+    public int getNum(){
+        return numero;
+    }
+    
+    public void setSemiReflechissant(boolean value){
+        semiReflechissant = value;
+    }
+    
+    public boolean getSemiReflechissant(){
+        return semiReflechissant;
+    }
+    
 	public void draw(Graphics2D g2d) {
 
 		g2d.setColor(Color.BLACK);

@@ -10,8 +10,9 @@ public class Lentille extends ObjetOptique {
 	protected JComponent parent;
 	protected Line2D planFocal1;
 	protected Line2D planFocal2;
-	protected int numero;
-	protected boolean planFoc = false;
+	protected static int compteNumero;
+    protected int numero;
+	protected boolean planFoc = true;
 	public Lentille (double posx, double posy, double angle, Color col, double taille, double focal,JComponent parent) {
 		super(posx, posy, angle, col, taille);
 		f = focal;
@@ -21,12 +22,14 @@ public class Lentille extends ObjetOptique {
 		line = new Line2D.Double(point1,point2);
 		updatePlanFocal();
 		this.parent = parent;
-        	numero += 1;
+        compteNumero += 1;
+        numero = compteNumero;
 	}
 
 	public Lentille (double posx, double posy, double angle, double taille,double focal,JComponent parent) {
 		this(posx, posy, angle, Color.BLACK, taille,focal,parent);
-        numero += 1;
+        compteNumero += 1;
+        numero = compteNumero;
 	}
 
 	public Lentille (Point2D point1,Point2D point2,Color couleur,double focal,JComponent parent){
@@ -37,7 +40,8 @@ public class Lentille extends ObjetOptique {
 		this.point2 = point2;
 		pointUpdate(point1,point2);
 		updatePlanFocal();
-        numero += 1;
+        compteNumero += 1;
+        numero = compteNumero;
 	}
 
 	public void pointUpdate(Point2D pt1,Point2D pt2){
@@ -135,6 +139,10 @@ public class Lentille extends ObjetOptique {
     public void setAffichagePlanFocal(boolean value){
         planFoc = value;
     }
+    
+    public boolean getAffichagePlanFocal(){
+        return planFoc;
+    }
 
 	public double getFocal(){
 		return f;
@@ -150,8 +158,11 @@ public class Lentille extends ObjetOptique {
 		final float[] dash1 = {10.0f};
 		final BasicStroke dashed = new BasicStroke(1.0f,BasicStroke.CAP_BUTT,BasicStroke.JOIN_MITER,10.0f, dash1, 0.0f);
 		g2d.setStroke(dashed);
-		g2d.draw(planFocal1);
-		g2d.draw(planFocal2);
+        if(planFoc){
+            g2d.draw(planFocal1);
+            g2d.draw(planFocal2);
+        }
+
 		g2d.setStroke(defaultStroke);
 		g2d.setColor(couleur);
 		g2d.draw(line);

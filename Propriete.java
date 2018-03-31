@@ -11,6 +11,7 @@ public class Propriete extends JPanel implements ActionListener {
     protected JCheckBox boxPlans, boxSemiReflet;
     protected JTextField entreNom, entreX, entreY, entreTaille;
     protected JTextField entreFocal;
+    protected JButton btnValider;   
     protected ZoneTracage panelDessin;
     protected static double f=10;
     protected static int n=0;
@@ -48,7 +49,12 @@ public class Propriete extends JPanel implements ActionListener {
         labelFocal = new JLabel("f = ");
         entreFocal = new JTextField();
         boxPlans = new JCheckBox("Afficher plan focal");
+        boxPlans.addActionListener(this);
         boxSemiReflet = new JCheckBox("Semi réfléchissant");
+        boxSemiReflet.addActionListener(this);
+        
+        btnValider = new JButton("Valider");
+        btnValider.addActionListener(this);
         //String.valueOf(f)
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
@@ -76,6 +82,30 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreTaille);
         this.add(changerCouleur);
         this.add(choixCouleurs);
+        this.add(btnValider);
+        this.repaint();
+    }
+    
+    public void propSource(Source s) {
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
+        nomOutil.setText("Source" + s.getNum());
+        description.setText(
+            "<html>Cet outil vous permet de creer une nouvelle source en definissant deux point dans l'espace.</html>");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        entreX.setText(String.valueOf(s.getCentrex()));
+        entreY.setText(String.valueOf(s.getCentrey()));
+        entreTaille.setText(String.valueOf(s.getTaille()));
+        this.add(labelX);
+        this.add(entreX);
+        this.add(labelY);
+        this.add(entreY);
+        this.add(labelTaille);
+        this.add(entreTaille);
+        this.add(changerCouleur);
+        this.add(choixCouleurs);
+        this.add(btnValider);
         this.repaint();
     }
 
@@ -100,6 +130,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(boxPlans);
         this.add(changerCouleur);
         this.add(choixCouleurs);
+        this.add(btnValider);
         this.repaint();
     }
 
@@ -115,6 +146,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreY.setText(String.valueOf(l.getCentrey()));
         entreTaille.setText(String.valueOf(l.getTaille()));
         entreFocal.setText(String.valueOf(l.getFocal()));
+        boxPlans.setSelected(l.getAffichagePlanFocal());
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -128,6 +160,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(boxPlans);
         this.add(changerCouleur);
         this.add(choixCouleurs);
+        this.add(btnValider);
         this.repaint();
 
     }
@@ -159,8 +192,32 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(boxSemiReflet);
         this.add(changerCouleur);
         this.add(choixCouleurs);
+        this.add(btnValider);
         this.repaint();
-
+    }
+    
+    public void propMiroir(Miroir m) {
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
+        nomOutil.setText("Mirroir" + m.getNum());
+        description.setText("Placer un miroir....");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        entreX.setText(String.valueOf(m.getCentrex()));
+        entreY.setText(String.valueOf(m.getCentrey()));
+        entreTaille.setText(String.valueOf(m.getTaille()));
+        boxSemiReflet.setSelected(m.getSemiReflechissant());
+        this.add(labelX);
+        this.add(entreX);
+        this.add(labelY);
+        this.add(entreY);
+        this.add(labelTaille);
+        this.add(entreTaille);
+        this.add(boxSemiReflet);
+        this.add(changerCouleur);
+        this.add(choixCouleurs);
+        this.add(btnValider);
+        this.repaint();
     }
 
     public void propSuppr() {
@@ -208,9 +265,14 @@ public class Propriete extends JPanel implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent e) {
-        JComboBox cb = (JComboBox) e.getSource();
-        String couleurChoisie = (String) cb.getSelectedItem();
-        updateColor(couleurChoisie);
+        if(e.getSource() == choixCouleurs){
+            JComboBox cb = (JComboBox) e.getSource();
+            String couleurChoisie = (String) cb.getSelectedItem();
+            updateColor(couleurChoisie);
+        }
+        if(e.getSource() == btnValider){
+            
+        }
     }
 
 }
