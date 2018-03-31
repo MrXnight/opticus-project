@@ -11,6 +11,8 @@ public class Lentille extends ObjetOptique {
 	protected JComponent parent;
 	protected Line2D planFocal1;
 	protected Line2D planFocal2;
+    protected static int numero;
+    protected boolean planFoc = false;
 	public Lentille (double posx, double posy, double angle, Color col, double taille, double focal,JComponent parent) {
 		super(posx, posy, angle, col, taille);
 		f = focal;
@@ -20,10 +22,12 @@ public class Lentille extends ObjetOptique {
 		line = new Line2D.Double(point1,point2);
 		updatePlanFocal();
 		this.parent = parent;
+        numero += 1;
 	}
 
 	public Lentille (double posx, double posy, double angle, double taille,double focal,JComponent parent) {
 		this(posx, posy, angle, Color.BLACK, taille,focal,parent);
+        numero += 1;
 	}
 
 	public Lentille (Point2D point1,Point2D point2,Color couleur,double focal,JComponent parent){
@@ -34,6 +38,7 @@ public class Lentille extends ObjetOptique {
 		this.point2 = point2;
 		pointUpdate(point1,point2);
 		updatePlanFocal();
+        numero += 1;
 	}
 
 	public void pointUpdate(Point2D pt1,Point2D pt2){
@@ -133,11 +138,22 @@ public class Lentille extends ObjetOptique {
 	public Line2D getLine(){
        return(line);
      }
-
+     
+    public void setPlanFocalOff(){
+        planFoc = false;
+    }
+    
+    public void setPlanFocalOn(){
+        planFoc = true;
+    }
 
 	public double getFocal(){
 		return f;
 	}
+    
+    public int getNum(){
+        return numero;
+    }
 
 	public void draw(Graphics2D g2d) {
 		Stroke defaultStroke = g2d.getStroke();

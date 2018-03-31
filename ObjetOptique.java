@@ -46,6 +46,10 @@ public abstract class ObjetOptique {
 	public double getCentrey(){
 		return centrey;
 	}
+    
+	public double getTaille(){
+		return taille;
+	}
 
 	public Point2D getPoint1(){
 		return point1;

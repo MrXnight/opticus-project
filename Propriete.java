@@ -2,14 +2,17 @@ import java.awt.Dimension;
 import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
+import javax.swing.JCheckBox;
 import javax.swing.*;
 import java.awt.*;
 
 public class Propriete extends JPanel implements ActionListener {
-    protected JLabel nomOutil, changerNom, changerCouleur, description, labelFocal;
-    protected JTextField entreNom;
+    protected JLabel nomOutil, changerNom, changerCouleur, description, labelFocal, labelTaille, labelX, labelY;
+    protected JCheckBox boxPlans, boxSemiReflet;
+    protected JTextField entreNom, entreX, entreY, entreTaille;
     protected JTextField entreFocal;
-    protected boolean f=false;
+    protected static double f=10;
+    protected static int n=0;
     protected JComboBox<String> choixCouleurs;
     final String[] couleurs = { "Bleu", "Vert", "Rouge", "Rose", "Orange" };
 
@@ -25,15 +28,25 @@ public class Propriete extends JPanel implements ActionListener {
         description = new JLabel();
         description.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         description.setFont(new Font("Cambria", Font.PLAIN, 20));
-        
-        labelFocal = new JLabel("f = ");       
-        entreFocal = new JTextField();
 
-        changerNom = new JLabel("Entrer un nom");
+        //changerNom = new JLabel("Entrer un nom");
         changerCouleur = new JLabel("Choisissez une couleur");
 
         choixCouleurs = new JComboBox<>(couleurs);
         choixCouleurs.addActionListener(this);
+        
+        labelX = new JLabel("x =");
+        labelY = new JLabel("y =");
+        labelTaille = new JLabel("Taille =");
+        entreX = new JTextField();
+        entreY = new JTextField();
+        entreTaille = new JTextField();
+        
+        labelFocal = new JLabel("f = ");       
+        entreFocal = new JTextField();
+        boxPlans = new JCheckBox("Afficher plan focal");
+        boxSemiReflet = new JCheckBox("Semi réfléchissant");
+        //String.valueOf(f)
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -41,61 +54,128 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(description);
 
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
-        
-        
-        this.add(labelFocal); //ajouter que ce soit optionnel
-        this.add(entreFocal);
-        
-        
-        this.add(changerNom);
-        this.add(changerCouleur);
-        this.add(choixCouleurs);
 
     }
 
     public void propSource() {
-        f = false;
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
         nomOutil.setText("Source");
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle source en definissant deux point dans l'espace.</html>");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.add(labelX);     
+        this.add(entreX);     
+        this.add(labelY);  
+        this.add(entreY); 
+        this.add(labelTaille);  
+        this.add(entreTaille);  
+        this.add(changerCouleur);
+        this.add(choixCouleurs);
         this.repaint();
     }
     
     public void propLentille() {
-        f = true;
-        nomOutil.setText("Lentille");
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
+        nomOutil.setText("Lentille L");
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
-        changerNom.setText("Donner un nom à la lentille : ");
+        //changerNom.setText("Donner un nom à la lentille : ");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.add(labelX);     
+        this.add(entreX);     
+        this.add(labelY);  
+        this.add(entreY);   
+        this.add(labelTaille);  
+        this.add(entreTaille);  
+        //this.add(changerNom);
+        this.add(labelFocal);
+        this.add(entreFocal);
+        this.add(boxPlans);
+        this.add(changerCouleur);
+        this.add(choixCouleurs);
         this.repaint();
+    }
+    
+    public void propLentille(Lentille l) {
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
+        nomOutil.setText("Lentille L" + l.getNum());
+        description.setText(
+            "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
+        //changerNom.setText("Donner un nom à la lentille : ");
+        entreX.setText(String.valueOf(l.getCentre().x));
+        entreY.setText(String.valueOf(l.getCentre().y));
+        entreTaille.setText(String.valueOf(l.getTaille));  
+        entreFocal.setText(String.valueOf(l.getFocal()));
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.add(labelX);     
+        this.add(entreX);     
+        this.add(labelY);  
+        this.add(entreY);   
+        this.add(labelTaille);  
+        this.add(entreTaille);  
+        //this.add(changerNom);
+        this.add(labelFocal);
+        this.add(entreFocal);
+        this.add(boxPlans);
+        this.add(changerCouleur);
+        this.add(choixCouleurs);
+        this.repaint();
+                    
     }
 
     public void propSelect() {
-        f = false;
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
         nomOutil.setText("Selectionner");
         description.setText(
             "<html>Permet de deplacer des objets deja placés </html>");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
     }
 
     public void propMiroir() {
-        f = false;
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
         nomOutil.setText("Mirroir");
         description.setText("Placer un miroir....");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
+        this.add(labelX);     
+        this.add(entreX);     
+        this.add(labelY);  
+        this.add(entreY);  
+        this.add(labelTaille);  
+        this.add(entreTaille);  
+        this.add(boxSemiReflet);
+        this.add(changerCouleur);
+        this.add(choixCouleurs);
         this.repaint();
 
     }
 
     public void propSuppr() {
-        f = false;
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
         nomOutil.setText("Supprimer");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
 
     }
 
     public void propScreenshot() {
-        f = false;
+        this.removeAll();
+        this.add(nomOutil);
+        this.add(description);
         nomOutil.setText("Capture d'ecran");
+        this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
 
     }
