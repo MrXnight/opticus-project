@@ -7,9 +7,9 @@ public class Miroir extends ObjetOptique {
 
 	protected JComponent parent;
 	final Double ecart = 10.0;
-    protected static int compteNumero;
-    protected int numero;
-    protected boolean semiReflechissant = false;
+	protected static int compteNumero;
+	protected int numero;
+	protected boolean semiReflechissant = false;
 
 	public Miroir(double posx, double posy, double angle, Color col, double taille, JComponent parent) {
 		super(posx, posy, angle, col, taille);
@@ -17,34 +17,33 @@ public class Miroir extends ObjetOptique {
 		point2 = new Point2D.Double((centrex + taille * Math.cos(angle)), (centrey + taille * Math.sin(-angle)));
 		line = new Line2D.Double(point1, point2);
 		this.parent = parent;
-        compteNumero += 1;
-        numero = compteNumero;
+		compteNumero += 1;
+		numero = compteNumero;
 	}
 
 	public Miroir(double posx, double posy, double angle, double taille) {
 		super(posx, posy, angle, Color.BLACK, taille);
-        compteNumero += 1;
-        numero = compteNumero;
+		compteNumero += 1;
+		numero = compteNumero;
 	}
+
+	public Miroir(Point2D point1,Point2D point2,Color couleur,JComponent parent){
+		focus = false;
+		this.parent = parent;
+		this.point1 = point1;
+		this.point2 = point2;
+		pointUpdate(point1,point2);
+		compteNumero += 1;
+		numero = compteNumero;
+	}
+
+
+
 
 	public int distancePoint(Point2D p) {
 		return (int) (line.ptSegDist(p));
 	}
 
-	public void pointUpdate(Point2D pt1, Point2D pt2) {
-		taille = Math.abs(Point2D.distance(pt1.getX(), pt1.getY(), pt2.getX(), pt2.getY())) / 2;
-		if (pt1.getX() <= pt2.getX()) {
-			angle = -Math.atan2(pt2.getY() - pt1.getY(), Math.abs(pt1.getX() - pt2.getX()));
-			centrex = (int) (pt1.getX() + Math.cos(angle) * taille);
-			centrey = (int) (pt1.getY() + Math.sin(-angle) * taille);
-		} else if (pt1.getX() > pt2.getX()) {
-			angle = -Math.atan2(pt1.getY() - pt2.getY(), Math.abs(pt1.getX() - pt2.getX()));
-			centrex = (int) (pt2.getX() + Math.cos(angle) * taille);
-			centrey = (int) (pt2.getY() + Math.sin(-angle) * taille);
-		}
-		line = new Line2D.Double(pt1, pt2);
-
-	}
 
 	public Point2D movePoint(Point2D newPoint, Point2D clickedPoint) {
 		try {
@@ -52,7 +51,7 @@ public class Miroir extends ObjetOptique {
 
 			if (point1 == clickedPoint) {
 				if (Math.abs(Point.distance(newPoint.getX(), newPoint.getY(), point2.getX(), point2.getY()))
-						/ 2 >= 30) {
+				/ 2 >= 30) {
 					point1 = newPoint;
 				} else {
 					newPoint = point1;
@@ -62,7 +61,7 @@ public class Miroir extends ObjetOptique {
 				}
 			} else if (point2 == clickedPoint) {
 				if (Math.abs(Point2D.distance(point1.getX(), point1.getY(), newPoint.getX(), newPoint.getY()))
-						/ 2 >= 30) {
+				/ 2 >= 30) {
 					point2 = newPoint;
 				} else {
 					newPoint = point2;
@@ -93,18 +92,18 @@ public class Miroir extends ObjetOptique {
 		return (line);
 	}
 
-    public int getNum(){
-        return numero;
-    }
-    
-    public void setSemiReflechissant(boolean value){
-        semiReflechissant = value;
-    }
-    
-    public boolean getSemiReflechissant(){
-        return semiReflechissant;
-    }
-    
+	public int getNum(){
+		return numero;
+	}
+
+	public void setSemiReflechissant(boolean value){
+		semiReflechissant = value;
+	}
+
+	public boolean getSemiReflechissant(){
+		return semiReflechissant;
+	}
+
 	public void draw(Graphics2D g2d) {
 
 		g2d.setColor(Color.BLACK);

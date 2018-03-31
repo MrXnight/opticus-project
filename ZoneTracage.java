@@ -128,55 +128,63 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
      @Override
      public void mouseClicked(MouseEvent e){
-          if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){
+          if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE) || BarreOutils.activeTool.equals(ActiveTool.SOURCE) || BarreOutils.activeTool.equals(ActiveTool.MIROIR)){
                if(positionningPoint1 != null){
                     positionningPoint2 = e.getPoint();
                }
                else{
                     positionningPoint1 = e.getPoint();
                }
-               if(positionningPoint1 != null && positionningPoint2 != null){
-                    final Object[] array = new Object[2];
-                    array[0] = "Veuillez renseigner la focal de la lentille :";
-                    JTextField textField = new JTextField(10);
-                    array[1] = textField;
-                    final JOptionPane optionPane = new JOptionPane(
-                    array,
-                    JOptionPane.QUESTION_MESSAGE,
-                    JOptionPane.OK_CANCEL_OPTION,
-                    null,
-                    null);
+               if(positionningPoint1 != null && positionningPoint2 != null ){
+                    if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){
+                         final Object[] array = new Object[2];
+                         array[0] = "Veuillez renseigner la focal de la lentille :";
+                         JTextField textField = new JTextField(10);
+                         array[1] = textField;
+                         final JOptionPane optionPane = new JOptionPane(
+                         array,
+                         JOptionPane.QUESTION_MESSAGE,
+                         JOptionPane.OK_CANCEL_OPTION,
+                         null,
+                         null);
 
-                    final JDialog dialog = new JDialog(parentFrame,"Focal",true);
-                    dialog.setContentPane(optionPane);
-                    //textField.addActionListener(this);
-                    dialog.setDefaultCloseOperation(
-                    JDialog.DO_NOTHING_ON_CLOSE);
-                    dialog.addWindowListener(new WindowAdapter() {
-                         public void windowClosing(WindowEvent we) {
-                              optionPane.setValue(new Integer(JOptionPane.CLOSED_OPTION));
-                         }
-                    });
-                    optionPane.addPropertyChangeListener(
-                    new PropertyChangeListener() {
-                         public void propertyChange(PropertyChangeEvent e) {
-                              String prop = e.getPropertyName();
-
-                              if (dialog.isVisible()
-                              && (e.getSource() == optionPane)
-                              && (prop.equals(JOptionPane.VALUE_PROPERTY))
-                              && !textField.getText().isEmpty()) {
-                                   //If you were going to check something
-                                   //before closing the window, you'd do
-                                   //it here.
-                                   System.out.println(textField.getText());
-                                   dialog.setVisible(false);
+                         final JDialog dialog = new JDialog(parentFrame,"Focal",true);
+                         dialog.setContentPane(optionPane);
+                         //textField.addActionListener(this);
+                         dialog.setDefaultCloseOperation(
+                         JDialog.DO_NOTHING_ON_CLOSE);
+                         dialog.addWindowListener(new WindowAdapter() {
+                              public void windowClosing(WindowEvent we) {
+                                   optionPane.setValue(new Integer(JOptionPane.CLOSED_OPTION));
                               }
-                         }
-                    });
-                    dialog.pack();
-                    dialog.setVisible(true);
-                    listeObjet.add(new Lentille(positionningPoint1,positionningPoint2,Color.BLACK,Integer.parseInt(textField.getText()),this));
+                         });
+                         optionPane.addPropertyChangeListener(
+                         new PropertyChangeListener() {
+                              public void propertyChange(PropertyChangeEvent e) {
+                                   String prop = e.getPropertyName();
+
+                                   if (dialog.isVisible()
+                                   && (e.getSource() == optionPane)
+                                   && (prop.equals(JOptionPane.VALUE_PROPERTY))
+                                   && !textField.getText().isEmpty()) {
+                                        //If you were going to check something
+                                        //before closing the window, you'd do
+                                        //it here.
+                                        System.out.println(textField.getText());
+                                        dialog.setVisible(false);
+                                   }
+                              }
+                         });
+                         dialog.pack();
+                         dialog.setVisible(true);
+                         listeObjet.add(new Lentille(positionningPoint1,positionningPoint2,Color.BLACK,Integer.parseInt(textField.getText()),this));
+                    }
+                    else if(BarreOutils.activeTool.equals(ActiveTool.SOURCE)){
+                         listeObjet.add(new Source(positionningPoint1,positionningPoint2,Color.BLACK,this));
+                    }
+                    else if(BarreOutils.activeTool.equals(ActiveTool.MIROIR)){
+                         listeObjet.add(new Miroir(positionningPoint1,positionningPoint2,Color.BLACK,this));
+                    }
                     positionningPoint1 = null;
                     positionningPoint2 = null;
                     postionningLine = null;

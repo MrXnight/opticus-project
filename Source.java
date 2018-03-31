@@ -8,12 +8,11 @@ import java.util.HashMap;
 public class Source extends ObjetOptique {
 	protected int TAILLE_MINIMALE = 30;
 	protected JComponent parent;
-     protected ArrayList<Line2D> tabFaisceau;
-	protected HashMap<Line2D,ObjetOptique> mapFaisceau;
-    protected static int compteNumero;
-    protected int numero;
-    
-    
+	protected ArrayList<Line2D> tabFaisceau;
+	protected static int compteNumero;
+	protected int numero;
+
+
 	public Source (double posx, double posy, double angle, Color col, double taille,JComponent parent) {
 		super(posx, posy, angle, col, taille);
 		focus = false;
@@ -22,44 +21,29 @@ public class Source extends ObjetOptique {
 		line = new Line2D.Double(point1,point2);
 		this.parent = parent;
 		tabFaisceau = new ArrayList<Line2D>();
-		mapFaisceau = new HashMap<Line2D,ObjetOptique>();
-		mapFaisceau.put(line,null);
 		tabFaisceau.add(line);
-        compteNumero += 1;
-        numero = compteNumero;
+		compteNumero += 1;
+		numero = compteNumero;
 	}
 
 	public Source (double posx, double posy, double angle, double taille,JComponent parent) {
 		this(posx, posy, angle, Color.BLACK, taille,parent);
-        compteNumero += 1;
-        numero = compteNumero;
+		compteNumero += 1;
+		numero = compteNumero;
 	}
-    
+
 	public Source (Point2D point1,Point2D point2,Color couleur,JComponent parent){
 		focus = false;
+		tabFaisceau = new ArrayList<Line2D>();
 		this.parent = parent;
 		this.point1 = point1;
 		this.point2 = point2;
 		pointUpdate(point1,point2);
-        compteNumero += 1;
-        numero = compteNumero;
+		compteNumero += 1;
+		numero = compteNumero;
+		tabFaisceau.add(line);
 	}
 
-	public void pointUpdate(Point2D pt1,Point2D pt2){
-		taille = Math.abs(Point2D.distance(pt1.getX(),pt1.getY(),pt2.getX(),pt2.getY()))/2;
-		if(pt1.getX() <= pt2.getX()){
-			angle = -Math.atan2(pt2.getY()-pt1.getY(),Math.abs(pt1.getX()-pt2.getX()));
-			centrex = (int)(pt1.getX()+Math.cos(angle)*taille);
-			centrey = (int)(pt1.getY()+Math.sin(-angle)*taille);
-		}
-		else if(pt1.getX() > pt2.getX()){
-			angle = -Math.atan2(pt1.getY()-pt2.getY(),Math.abs(pt1.getX()-pt2.getX()));
-			centrex = (int)(pt2.getX()+Math.cos(angle)*taille);
-			centrey = (int)(pt2.getY()+Math.sin(-angle)*taille);
-		}
-		line = new Line2D.Double(pt1,pt2);
-	}
-    
 	public Point2D movePoint(Point2D newPoint,Point2D clickedPoint){
 		try{
 			Robot robot = new Robot();
@@ -169,18 +153,11 @@ public class Source extends ObjetOptique {
 		return tabFaisceau;
 	}
 
-	public void setMapFaisceau(HashMap<Line2D,ObjetOptique> mapFaisceau){
-		this.mapFaisceau = mapFaisceau;
-	}
-
-	public HashMap<Line2D,ObjetOptique> getMapFaisceau(){
-		return mapFaisceau;
-	}
 
     public Line2D getLine(){
       return(line);
     }
-    
+
     public int getNum(){
         return numero;
     }
