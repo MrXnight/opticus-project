@@ -183,22 +183,6 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     BarreOutils.activeTool = ActiveTool.SELECT;
                }
           }
-          
-          if(BarreOutils.activeTool.equals(ActiveTool.SOURCE)){
-               if(positionningPoint1 != null){
-                    positionningPoint2 = e.getPoint();
-               }
-               else{
-                    positionningPoint1 = e.getPoint();
-               }
-               if(positionningPoint1 != null && positionningPoint2 != null){
-                    listeObjet.add(new Source(positionningPoint1,positionningPoint2,Color.BLACK,this));
-                    positionningPoint1 = null;
-                    positionningPoint2 = null;
-                    postionningLine = null;
-                    BarreOutils.activeTool = ActiveTool.SELECT;
-               }
-          }
      }
 
      @Override
