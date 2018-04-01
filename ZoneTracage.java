@@ -33,10 +33,6 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           }
      }
 
-     //Lentille l1 = new Lentille(200,200,0,Color.BLACK,100,20,this);
-     //Lentille l2 = new Lentille(500,200,Math.PI/2,Color.GREEN,100,20,this);
-     Lentille l3 = new Lentille(200,500,Math.PI/4,Color.RED,100,100,this);
-     Miroir m1 = new Miroir(100,400,Math.PI/3, Color.ORANGE, 60, this);
      private Propriete prop;
      private int cursor;
      private ObjetOptique selectedObject;
@@ -50,20 +46,12 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
      public ZoneTracage(JFrame parentFrame){
           this.setVisible(true);
-          Source s1 = new Source(300,300,0,Color.RED,30,this);
-          //Source s2 = new Source(400,500,0,Color.BLUE,30,this);
           mooving = false;
           positionningPoint1 = null;
           positionningPoint2 = null;
           postionningLine = null;
           listeObjet = new ArrayList<ObjetOptique>();
           this.parentFrame = parentFrame;
-          //listeObjet.add(l1);
-          //listeObjet.add(l2);
-          listeObjet.add(l3);
-          listeObjet.add(s1);
-          listeObjet.add(m1);
-          //listeObjet.add(s2);
           setLayout(null);
           setFocusable(true);
           addMouseListener(this);
@@ -118,6 +106,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           }
           if(positionningPoint1 != null && (BarreOutils.activeTool.equals(ActiveTool.MIROIR) || BarreOutils.activeTool.equals(ActiveTool.SOURCE) || BarreOutils.activeTool.equals(ActiveTool.LENTILLE))){
                postionningLine = new Line2D.Double(positionningPoint1,e.getPoint());
+               repaint();
           }
           else{
                postionningLine = null;
@@ -144,7 +133,6 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                          if(propFocal != 0.0){
                               listeObjet.add(new Lentille(positionningPoint1,positionningPoint2,prop.getCouleurChoisi(),propFocal,this));
                               System.out.println(prop.getCouleurChoisi());
-                              BarreOutils.activeTool = ActiveTool.SELECT;
                          }
                     }
                     else if(BarreOutils.activeTool.equals(ActiveTool.SOURCE)){
@@ -156,6 +144,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     positionningPoint1 = null;
                     positionningPoint2 = null;
                     postionningLine = null;
+                    repaint();
                }
           }
      }
@@ -201,7 +190,9 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     }
                     System.out.println(selectedObject.getCentrex()+" et "+selectedObject.getCentrey());
                }
-               revalidate();
+               else{
+                    prop.propSelect();
+               }
                repaint();
           }
      }
@@ -221,10 +212,10 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                          prop.propLentille((Lentille)selectedObject);
                     }
                     if(selectedObject instanceof Miroir){
-                         //prop.propMiroir((Miroir)selectedObject);
+                         prop.propMiroir((Miroir)selectedObject);
                     }
                     if(selectedObject instanceof Source){
-                         //prop.propSource((Source)selectedObject);
+                         prop.propSource((Source)selectedObject);
                     }
                }
           }
@@ -234,13 +225,12 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     prop.propLentille((Lentille)selectedObject);
                }
                if(selectedObject instanceof Miroir){
-                    //prop.propMiroir((Miroir)selectedObject);
+                    prop.propMiroir((Miroir)selectedObject);
                }
                if(selectedObject instanceof Source){
-                    //prop.propSource((Source)selectedObject);
+                    prop.propSource((Source)selectedObject);
                }
           }
-          revalidate();
           repaint();
      }
 
@@ -248,6 +238,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      public void mouseReleased(MouseEvent e) {
           selectedPoint = null;
           mooving = false;
+          repaint();
      }
 
      public void resetFocus(){
@@ -258,6 +249,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           positionningPoint1 = null;
           positionningPoint2 = null;
           postionningLine = null;
+          repaint();
      }
 
      protected void paintComponent(Graphics g){
@@ -267,7 +259,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
         final int SUBDIVISION_SIZE = DRAWING_SIZE / SUBDIVISIONS;
 
           Graphics2D g2d = (Graphics2D) g.create();
-
+          updateIntersection();
           g2d.setColor(Color.WHITE);
           g2d.fillRect(0,0,this.getWidth(),this.getHeight());
 
@@ -285,22 +277,19 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           for(ObjetOptique o : listeObjet){
                o.draw(g2d);
           }
-          updateIntersection(g2d);
           if(postionningLine != null){
                g2d.setColor(Color.BLACK);
                g2d.draw(postionningLine);
           }
-          repaint();
      }
 
-     private void updateIntersection(Graphics2D g2d){
+     public void updateIntersection(){
                for (ObjetOptique o : listeObjet){
                     int compteur=0;
                     if(o instanceof Source){
                          Source s = (Source)o;
                          ArrayList<Line2D> tabFaisceau = new ArrayList<Line2D>();
                          tabFaisceau.add(s.getTabFaisceau().get(0));
-                         //System.out.println(s.getTabFaisceau().size());
                          HashMap<Line2D,ObjetOptique> toNotIntersect = new HashMap<Line2D,ObjetOptique>();
 
                          while(compteur < tabFaisceau.size()){
@@ -336,8 +325,6 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                                              }
                                         }
                                         Line2D ligneNormale = new Line2D.Double(new Point2D.Double(lentille.getCentrex(),lentille.getCentrey()),new Point2D.Double(lentille.getCentrex()+dx,lentille.getCentrey()+dy));
-                                        g2d.setColor(Color.BLUE);
-                                        g2d.draw(ligneNormale);
                                         if(Geometrie.produitScalaire(ligneCentrer,ligneNormale) > 0){
                                              if(lentille.getFocal()>0){
                                                   planFocal = Geometrie.translateLine(lentille.getLine(),dx,dy);
@@ -551,6 +538,10 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                }
           }
           return (new ResultIntersectionAvecObjetOptique(resultPoint,resultObjet));
+     }
+
+     public void addObjetOptique(ObjetOptique objetOptique){
+          listeObjet.add(objetOptique);
      }
 
      public void setPropriete(Propriete prop){

@@ -21,7 +21,7 @@ public class Propriete extends JPanel implements ActionListener {
 
     public Propriete(int width, int height) {
 
-         this.panelDessin = panelDessin;
+         this.panelDessin = null;
 
         this.setPreferredSize(new Dimension((int) (width * 0.2), height));
 
@@ -46,10 +46,45 @@ public class Propriete extends JPanel implements ActionListener {
         labelTaille = new JLabel("Taille =");
         labelAngle = new JLabel("Angle =");
         entreX = new JTextField();
+        Action actionEntreX = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                  if(panelDessin.getSelectedObject() != null){
+                     panelDessin.getSelectedObject().setCentreX(Double.parseDouble(entreX.getText()));
+                     panelDessin.repaint();
+                 }
+            }
+        };
+        entreX.addActionListener(actionEntreX);
         entreY = new JTextField();
+        Action actionEntreY = new AbstractAction()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                  if(panelDessin.getSelectedObject() != null){
+                     panelDessin.getSelectedObject().setCentreY(Double.parseDouble(entreY.getText()));
+                     panelDessin.repaint();
+                 }
+            }
+        };
+        entreY.addActionListener(actionEntreY);
         entreTaille = new JTextField();
         entreAngle = new JTextField();
-
+        Action actionEntreAngle = new AbstractAction()
+        {
+             @Override
+             public void actionPerformed(ActionEvent e)
+             {
+                  if(panelDessin.getSelectedObject() != null){
+                      panelDessin.getSelectedObject().setAngle(Double.parseDouble(entreAngle.getText())*Math.PI/180.0);
+                      panelDessin.repaint();
+                 }
+             }
+        };
+        entreAngle.addActionListener(actionEntreAngle);
         labelFocal = new JLabel("f = ");
         entreFocal = new JTextField();
         Action actionEntreFocal = new AbstractAction()
@@ -59,7 +94,8 @@ public class Propriete extends JPanel implements ActionListener {
              {
                   if(panelDessin.getSelectedObject() instanceof Lentille){
                     ((Lentille)panelDessin.getSelectedObject()).setFocal(Double.parseDouble(entreFocal.getText()));
-                 }
+                    panelDessin.repaint();
+               }
              }
         };
         entreFocal.addActionListener(actionEntreFocal);
@@ -98,7 +134,8 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreTaille);
         this.add(labelAngle);
         this.add(entreAngle);
-        this.add(changerCouleur);
+        this.add(btnCouleur);
+        this.add(btnValider);
         this.repaint();
     }
 
@@ -113,7 +150,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreX.setText(String.valueOf(s.getCentrex()));
         entreY.setText(String.valueOf(s.getCentrey()));
         entreTaille.setText(String.valueOf(s.getTaille()));
-        entreAngle.setText(String.valueOf(s.getAngle()));
+        entreAngle.setText(String.valueOf(Math.round((s.getAngle()*180/Math.PI*100))/100.0));
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
@@ -122,7 +159,6 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreTaille);
         this.add(labelAngle);
         this.add(entreAngle);
-        this.add(changerCouleur);
         this.add(btnCouleur);
         this.repaint();
     }
@@ -154,8 +190,8 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(labelFocal);
         this.add(entreFocal);
         this.add(boxPlans);
-        this.add(changerCouleur);
         this.add(btnCouleur);
+        this.add(btnValider);
         this.repaint();
     }
 
@@ -172,7 +208,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreTaille.setText(String.valueOf(l.getTaille()));
         entreFocal.setText(String.valueOf(l.getFocal()));
         boxPlans.setSelected(l.getAffichagePlanFocal());
-        entreAngle.setText(String.valueOf(l.getAngle()));
+        entreAngle.setText(String.valueOf(Math.round((l.getAngle()*180/Math.PI*100))/100.0));
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -186,13 +222,15 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(labelFocal);
         this.add(entreFocal);
         this.add(boxPlans);
-        this.add(changerCouleur);
         this.add(btnCouleur);
         this.repaint();
 
     }
 
     public void propSelect() {
+         if(panelDessin != null){
+              panelDessin.resetFocus();
+         }
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
@@ -220,8 +258,8 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(labelAngle);
         this.add(entreAngle);
         this.add(boxSemiReflet);
-        this.add(changerCouleur);
         this.add(btnCouleur);
+        this.add(btnValider);
         this.repaint();
     }
 
@@ -236,7 +274,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreY.setText(String.valueOf(m.getCentrey()));
         entreTaille.setText(String.valueOf(m.getTaille()));
         boxSemiReflet.setSelected(m.getSemiReflechissant());
-        entreAngle.setText(String.valueOf(m.getAngle()));
+        entreAngle.setText(String.valueOf(Math.round((m.getAngle()*180/Math.PI*100))/100.0));
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
@@ -246,7 +284,6 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(labelAngle);
         this.add(entreAngle);
         this.add(boxSemiReflet);
-        this.add(changerCouleur);
         this.add(btnCouleur);
         this.repaint();
     }
@@ -292,7 +329,7 @@ public class Propriete extends JPanel implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == btnCouleur){
-             JColorChooser chooser = new JColorChooser();
+             JColorChooser chooser = new JColorChooser(Color.BLACK);
              AbstractColorChooserPanel[] oldPanels = chooser.getChooserPanels();
              chooser.setPreviewPanel(new JPanel());
              for (int i = 0; i < oldPanels.length; i++) {
@@ -313,7 +350,46 @@ public class Propriete extends JPanel implements ActionListener {
             System.out.println(couleurChoisi);
         }
         if(e.getSource() == btnValider){
-
+             if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){
+                  try{
+                       double focal = Double.parseDouble(entreFocal.getText());
+                       double positionX = Double.parseDouble(entreX.getText());
+                       double positionY = Double.parseDouble(entreY.getText());
+                       double taille = Double.parseDouble(entreTaille.getText());
+                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180;
+                       panelDessin.addObjetOptique(new Lentille(positionX,positionY,angle,couleurChoisi,taille,focal,panelDessin));
+                       panelDessin.repaint();
+                  }
+                  catch(Exception except){
+                       JOptionPane.showMessageDialog(null,"Veuillez renseigner toute les valeurs nécessaire à la création d'une lentille !");
+                  }
+             }
+             else if(BarreOutils.activeTool.equals(ActiveTool.SOURCE)){
+                  try{
+                       double positionX = Double.parseDouble(entreX.getText());
+                       double positionY = Double.parseDouble(entreY.getText());
+                       double taille = Double.parseDouble(entreTaille.getText());
+                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180;
+                       panelDessin.addObjetOptique(new Source(positionX,positionY,angle,couleurChoisi,taille,panelDessin));
+                       panelDessin.repaint();
+                  }
+                  catch(Exception except){
+                       JOptionPane.showMessageDialog(null,"Veuillez renseigner toute les valeurs nécessaire à la création d'une source !");
+                  }
+             }
+             else if(BarreOutils.activeTool.equals(ActiveTool.MIROIR)){
+                  try{
+                       double positionX = Double.parseDouble(entreX.getText());
+                       double positionY = Double.parseDouble(entreY.getText());
+                       double taille = Double.parseDouble(entreTaille.getText());
+                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180;
+                       panelDessin.addObjetOptique(new Miroir(positionX,positionY,angle,couleurChoisi,taille,panelDessin));
+                       panelDessin.repaint();
+                  }
+                  catch(Exception except){
+                       JOptionPane.showMessageDialog(null,"Veuillez renseigner toute les valeurs nécessaire à la création d'un miroir !");
+                  }
+             }
         }
     }
 

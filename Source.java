@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 public class Source extends ObjetOptique {
 	protected int TAILLE_MINIMALE = 30;
-	protected JComponent parent;
 	protected ArrayList<Line2D> tabFaisceau;
 	protected static int compteNumero;
 	protected int numero;
@@ -34,6 +33,7 @@ public class Source extends ObjetOptique {
 
 	public Source (Point2D point1,Point2D point2,Color couleur,JComponent parent){
 		focus = false;
+		this.couleur = couleur;
 		tabFaisceau = new ArrayList<Line2D>();
 		this.parent = parent;
 		this.point1 = point1;
@@ -96,10 +96,32 @@ public class Source extends ObjetOptique {
 			return null;
 	}
 
+	public void setAngle(double angle){
+		super.setAngle(angle);
+		tabFaisceau.clear();
+		tabFaisceau.add(line);
+		parent.repaint();
+	}
+
+	public void setCentreX(double centreX){
+		super.setCentreX(centreX);
+		tabFaisceau.clear();
+		tabFaisceau.add(line);
+		parent.repaint();
+	}
+
+	public void setCentreY(double centreY){
+		super.setCentreY(centreY);
+		tabFaisceau.clear();
+		tabFaisceau.add(line);
+		parent.repaint();
+	}
+
 	public void move(Point2D newPosition){
 		super.move(newPosition);
 		tabFaisceau.clear();
 		tabFaisceau.add(line);
+		parent.repaint();
 	}
 
 	public int distancePoint(Point2D p){

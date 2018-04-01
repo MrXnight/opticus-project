@@ -7,7 +7,6 @@ import java.util.ArrayList;
 public class Lentille extends ObjetOptique {
 	protected double f;
 	protected int TAILLE_MINIMALE = 30;
-	protected JComponent parent;
 	protected Line2D planFocal1;
 	protected Line2D planFocal2;
 	protected static int compteNumero;
@@ -91,6 +90,7 @@ public class Lentille extends ObjetOptique {
 			System.out.println("angle : "+angle);
 			line = new Line2D.Double(point1,point2);
 			updatePlanFocal();
+			parent.repaint();
 			return newPoint;
 		}
 		catch(Exception e){}
@@ -114,6 +114,7 @@ public class Lentille extends ObjetOptique {
 		public void move(Point2D newPosition){
 			super.move(newPosition);
 			updatePlanFocal();
+			parent.repaint();
 		}
 
 		public int distancePoint(Point2D p){
@@ -138,6 +139,21 @@ public class Lentille extends ObjetOptique {
 
 		public void setFocal(double focal){
 			this.f = focal;
+			updatePlanFocal();
+		}
+
+		public void setCentreX(double centreX){
+			super.setCentreX(centreX);
+			updatePlanFocal();
+		}
+
+		public void setCentreY(double centreY){
+			super.setCentreY(centreY);
+			updatePlanFocal();
+		}
+
+		public void setAngle(double angle){
+			super.setAngle(angle);
 			updatePlanFocal();
 		}
 

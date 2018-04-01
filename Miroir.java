@@ -5,7 +5,7 @@ import javax.swing.*;
 
 public class Miroir extends ObjetOptique {
 
-	protected JComponent parent;
+
 	final Double ecart = 10.0;
 	protected static int compteNumero;
 	protected int numero;
@@ -21,14 +21,9 @@ public class Miroir extends ObjetOptique {
 		numero = compteNumero;
 	}
 
-	public Miroir(double posx, double posy, double angle, double taille) {
-		super(posx, posy, angle, Color.BLACK, taille);
-		compteNumero += 1;
-		numero = compteNumero;
-	}
-
 	public Miroir(Point2D point1,Point2D point2,Color couleur,JComponent parent){
 		focus = false;
+		this.couleur = couleur;
 		this.parent = parent;
 		this.point1 = point1;
 		this.point2 = point2;
@@ -82,6 +77,7 @@ public class Miroir extends ObjetOptique {
 				centrey = (int) (point2.getY() + Math.sin(-angle) * taille);
 			}
 			line = new Line2D.Double(point1, point2);
+			parent.repaint();
 			return newPoint;
 		} catch (Exception e) {
 		}

@@ -15,11 +15,15 @@ public abstract class ObjetOptique {
 	protected Point2D point1;
 	protected Point2D point2;
 	protected Line2D line;
+	protected JComponent parent;
 
 	public ObjetOptique (double posx, double posy, double angle, Color col, double taille) {
+		this.angle = angle % (Math.PI*2);
+		if(this.angle>Math.PI/2){
+			this.angle = this.angle - Math.PI;
+		}
 		centrex = (int)posx;
 		centrey = (int)posy;
-		this.angle = angle;
 		this.taille = taille;
 		couleur = col;
 		focus = false;
@@ -38,6 +42,7 @@ public abstract class ObjetOptique {
 		point1 = new Point2D.Double(point1.getX() + translationX, point1.getY() + translationY);
 		point2 = new Point2D.Double(point2.getX() + translationX, point2.getY() + translationY);
 		line = new Line2D.Double(point1, point2);
+		parent.repaint();
 	}
 
 	public void pointUpdate(Point2D pt1,Point2D pt2){
@@ -53,6 +58,36 @@ public abstract class ObjetOptique {
 			centrey = (int)(pt2.getY()+Math.sin(-angle)*taille);
 		}
 		line = new Line2D.Double(pt1,pt2);
+		parent.repaint();
+	}
+
+	public void setAngle(double angle){
+		this.angle = angle % (Math.PI*2);
+		if(this.angle>Math.PI/2){
+			this.angle = this.angle - Math.PI;
+		}
+		point1 = new Point2D.Double((centrex - taille * Math.cos(angle)), (centrey - taille * Math.sin(-angle)));
+		point2 = new Point2D.Double((centrex + taille * Math.cos(angle)), (centrey + taille * Math.sin(-angle)));
+		line = new Line2D.Double(point1,point2);
+		parent.repaint();
+	}
+
+	public void setCentreX(double centreX){
+		double translationX =centreX-this.centrex ;
+		centrex = centreX;
+		point1 = new Point2D.Double(point1.getX() + translationX, point1.getY());
+		point2 = new Point2D.Double(point2.getX() + translationX, point2.getY());
+		line = new Line2D.Double(point1, point2);
+		parent.repaint();
+	}
+
+	public void setCentreY(double centreY){
+		double translationY = centreY-this.centrey;
+		centrey = centreY;
+		point1 = new Point2D.Double(point1.getX(), point1.getY() + translationY);
+		point2 = new Point2D.Double(point2.getX(), point2.getY() + translationY);
+		line = new Line2D.Double(point1, point2);
+		parent.repaint();
 	}
 
 	public abstract Point2D movePoint(Point2D newPoint,Point2D clickedPoint);
