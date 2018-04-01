@@ -36,7 +36,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      //Lentille l1 = new Lentille(200,200,0,Color.BLACK,100,20,this);
      //Lentille l2 = new Lentille(500,200,Math.PI/2,Color.GREEN,100,20,this);
      Lentille l3 = new Lentille(200,500,Math.PI/4,Color.RED,100,100,this);
-     Miroir m1 = new Miroir(100,400,Math.PI/3, Color.BLACK, 60, this);
+     Miroir m1 = new Miroir(100,400,Math.PI/3, Color.ORANGE, 60, this);
      private Propriete prop;
      private int cursor;
      private ObjetOptique selectedObject;
@@ -116,8 +116,11 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     cursor = Cursor.DEFAULT_CURSOR;
                }
           }
-          if(positionningPoint1 != null && !BarreOutils.activeTool.equals(ActiveTool.NULL)){
+          if(positionningPoint1 != null && (BarreOutils.activeTool.equals(ActiveTool.MIROIR) || BarreOutils.activeTool.equals(ActiveTool.SOURCE) || BarreOutils.activeTool.equals(ActiveTool.LENTILLE))){
                postionningLine = new Line2D.Double(positionningPoint1,e.getPoint());
+          }
+          else{
+               postionningLine = null;
           }
      }
 
@@ -137,58 +140,22 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                }
                if(positionningPoint1 != null && positionningPoint2 != null ){
                     if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){
-                         final Object[] array = new Object[2];
-                         array[0] = "Veuillez renseigner la focal de la lentille :";
-                         JTextField textField = new JTextField(10);
-                         array[1] = textField;
-                         final JOptionPane optionPane = new JOptionPane(
-                         array,
-                         JOptionPane.QUESTION_MESSAGE,
-                         JOptionPane.OK_CANCEL_OPTION,
-                         null,
-                         null);
-
-                         final JDialog dialog = new JDialog(parentFrame,"Focal",true);
-                         dialog.setContentPane(optionPane);
-                         //textField.addActionListener(this);
-                         dialog.setDefaultCloseOperation(
-                         JDialog.DO_NOTHING_ON_CLOSE);
-                         dialog.addWindowListener(new WindowAdapter() {
-                              public void windowClosing(WindowEvent we) {
-                                   optionPane.setValue(new Integer(JOptionPane.CLOSED_OPTION));
-                              }
-                         });
-                         optionPane.addPropertyChangeListener(
-                         new PropertyChangeListener() {
-                              public void propertyChange(PropertyChangeEvent e) {
-                                   String prop = e.getPropertyName();
-
-                                   if (dialog.isVisible()
-                                   && (e.getSource() == optionPane)
-                                   && (prop.equals(JOptionPane.VALUE_PROPERTY))
-                                   && !textField.getText().isEmpty()) {
-                                        //If you were going to check something
-                                        //before closing the window, you'd do
-                                        //it here.
-                                        System.out.println(textField.getText());
-                                        dialog.setVisible(false);
-                                   }
-                              }
-                         });
-                         dialog.pack();
-                         dialog.setVisible(true);
-                         listeObjet.add(new Lentille(positionningPoint1,positionningPoint2,Color.BLACK,Integer.parseInt(textField.getText()),this));
+                         double propFocal = prop.getEntreFocalValue();
+                         if(propFocal != 0.0){
+                              listeObjet.add(new Lentille(positionningPoint1,positionningPoint2,prop.getCouleurChoisi(),propFocal,this));
+                              System.out.println(prop.getCouleurChoisi());
+                              BarreOutils.activeTool = ActiveTool.SELECT;
+                         }
                     }
                     else if(BarreOutils.activeTool.equals(ActiveTool.SOURCE)){
-                         listeObjet.add(new Source(positionningPoint1,positionningPoint2,Color.BLACK,this));
+                         listeObjet.add(new Source(positionningPoint1,positionningPoint2,prop.getCouleurChoisi(),this));
                     }
                     else if(BarreOutils.activeTool.equals(ActiveTool.MIROIR)){
-                         listeObjet.add(new Miroir(positionningPoint1,positionningPoint2,Color.BLACK,this));
+                         listeObjet.add(new Miroir(positionningPoint1,positionningPoint2,prop.getCouleurChoisi(),this));
                     }
                     positionningPoint1 = null;
                     positionningPoint2 = null;
                     postionningLine = null;
-                    BarreOutils.activeTool = ActiveTool.SELECT;
                }
           }
      }
@@ -283,6 +250,15 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           mooving = false;
      }
 
+     public void resetFocus(){
+          if(selectedObject!=null){
+               selectedObject.setFocus(false);
+          }
+          selectedObject = null;
+          positionningPoint1 = null;
+          positionningPoint2 = null;
+          postionningLine = null;
+     }
 
      protected void paintComponent(Graphics g){
 
@@ -311,6 +287,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           }
           updateIntersection(g2d);
           if(postionningLine != null){
+               g2d.setColor(Color.BLACK);
                g2d.draw(postionningLine);
           }
           repaint();

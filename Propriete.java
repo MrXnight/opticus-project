@@ -5,18 +5,19 @@ import javax.swing.JToolBar;
 import javax.swing.JCheckBox;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.JColorChooser;
+import javax.swing.colorchooser.AbstractColorChooserPanel;
 
 public class Propriete extends JPanel implements ActionListener {
     protected JLabel nomOutil, changerNom, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
     protected JCheckBox boxPlans, boxSemiReflet;
     protected JTextField entreNom, entreX, entreY, entreTaille, entreAngle;
     protected JTextField entreFocal;
-    protected JButton btnValider;   
+    protected JButton btnValider,btnCouleur;
     protected ZoneTracage panelDessin;
+    protected Color couleurChoisi;
     protected static double f=10;
     protected static int n=0;
-    protected JComboBox<String> choixCouleurs;
-    final String[] couleurs = { "Bleu", "Vert", "Rouge", "Rose", "Orange" };
 
     public Propriete(int width, int height) {
 
@@ -36,8 +37,9 @@ public class Propriete extends JPanel implements ActionListener {
         //changerNom = new JLabel("Entrer un nom");
         changerCouleur = new JLabel("Choisissez une couleur");
 
-        choixCouleurs = new JComboBox<>(couleurs);
-        choixCouleurs.addActionListener(this);
+        btnCouleur = new JButton("Couleur");
+        btnCouleur.addActionListener(this);
+        couleurChoisi = Color.BLACK;
 
         labelX = new JLabel("x =");
         labelY = new JLabel("y =");
@@ -50,11 +52,22 @@ public class Propriete extends JPanel implements ActionListener {
 
         labelFocal = new JLabel("f = ");
         entreFocal = new JTextField();
+        Action actionEntreFocal = new AbstractAction()
+        {
+             @Override
+             public void actionPerformed(ActionEvent e)
+             {
+                  if(panelDessin.getSelectedObject() instanceof Lentille){
+                    ((Lentille)panelDessin.getSelectedObject()).setFocal(Double.parseDouble(entreFocal.getText()));
+                 }
+             }
+        };
+        entreFocal.addActionListener(actionEntreFocal);
         boxPlans = new JCheckBox("Afficher plan focal");
         boxPlans.addActionListener(this);
         boxSemiReflet = new JCheckBox("Semi réfléchissant");
         boxSemiReflet.addActionListener(this);
-        
+
         btnValider = new JButton("Valider");
         btnValider.addActionListener(this);
         //String.valueOf(f)
@@ -69,6 +82,7 @@ public class Propriete extends JPanel implements ActionListener {
     }
 
     public void propSource() {
+        panelDessin.resetFocus();
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
@@ -85,11 +99,9 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(labelAngle);
         this.add(entreAngle);
         this.add(changerCouleur);
-        this.add(choixCouleurs);
-        this.add(btnValider);
         this.repaint();
     }
-    
+
     public void propSource(Source s) {
         this.removeAll();
         this.add(nomOutil);
@@ -101,7 +113,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreX.setText(String.valueOf(s.getCentrex()));
         entreY.setText(String.valueOf(s.getCentrey()));
         entreTaille.setText(String.valueOf(s.getTaille()));
-        entreAngle.setText(String.valueOf(s.getAngle()));       
+        entreAngle.setText(String.valueOf(s.getAngle()));
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
@@ -111,13 +123,18 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(labelAngle);
         this.add(entreAngle);
         this.add(changerCouleur);
-        this.add(choixCouleurs);
-        this.add(btnValider);
+        this.add(btnCouleur);
         this.repaint();
     }
 
     public void propLentille() {
+        panelDessin.resetFocus();
         this.removeAll();
+        entreX.setText("");
+        entreY.setText("");
+        entreTaille.setText("");
+        entreFocal.setText("");
+        entreAngle.setText("");
         this.add(nomOutil);
         this.add(description);
         nomOutil.setText("Lentille L");
@@ -138,8 +155,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreFocal);
         this.add(boxPlans);
         this.add(changerCouleur);
-        this.add(choixCouleurs);
-        this.add(btnValider);
+        this.add(btnCouleur);
         this.repaint();
     }
 
@@ -156,7 +172,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreTaille.setText(String.valueOf(l.getTaille()));
         entreFocal.setText(String.valueOf(l.getFocal()));
         boxPlans.setSelected(l.getAffichagePlanFocal());
-        entreAngle.setText(String.valueOf(l.getAngle())); 
+        entreAngle.setText(String.valueOf(l.getAngle()));
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -171,8 +187,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreFocal);
         this.add(boxPlans);
         this.add(changerCouleur);
-        this.add(choixCouleurs);
-        this.add(btnValider);
+        this.add(btnCouleur);
         this.repaint();
 
     }
@@ -189,6 +204,7 @@ public class Propriete extends JPanel implements ActionListener {
     }
 
     public void propMiroir() {
+        panelDessin.resetFocus();
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
@@ -205,11 +221,10 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreAngle);
         this.add(boxSemiReflet);
         this.add(changerCouleur);
-        this.add(choixCouleurs);
-        this.add(btnValider);
+        this.add(btnCouleur);
         this.repaint();
     }
-    
+
     public void propMiroir(Miroir m) {
         this.removeAll();
         this.add(nomOutil);
@@ -221,7 +236,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreY.setText(String.valueOf(m.getCentrey()));
         entreTaille.setText(String.valueOf(m.getTaille()));
         boxSemiReflet.setSelected(m.getSemiReflechissant());
-        entreAngle.setText(String.valueOf(m.getAngle())); 
+        entreAngle.setText(String.valueOf(m.getAngle()));
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
@@ -232,8 +247,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreAngle);
         this.add(boxSemiReflet);
         this.add(changerCouleur);
-        this.add(choixCouleurs);
-        this.add(btnValider);
+        this.add(btnCouleur);
         this.repaint();
     }
 
@@ -257,38 +271,49 @@ public class Propriete extends JPanel implements ActionListener {
 
     }
 
-    public void updateColor(String couleurChoisie) {
-        Color col = new Color(255,255,255);
-        switch (couleurChoisie) {
-        case "Bleu":col = Color.BLUE;
-            break;
-        case "Vert":col = Color.GREEN;
-            break;
-        case "Rouge":col = Color.RED;
-            break;
-        case "Violet":col = Color.PINK;
-            break;
-        case "Orange":col = Color.ORANGE;
-            break;
-        default:col = Color.RED;
-            break;
-        }
-        nomOutil.setForeground(col);
-        this.repaint();
+    public double getEntreFocalValue(){
+         try{
+              return Double.parseDouble(entreFocal.getText());
+         }
+         catch(Exception e){
+              JOptionPane.showMessageDialog(null,"Veuillez entrer une valeur de focal f.");
+         }
+         return 0.0;
     }
+
+    public Color getCouleurChoisi(){
+         return couleurChoisi;
+    }
+
 
     public void setZoneTracage(ZoneTracage panelDessin){
          this.panelDessin = panelDessin;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == choixCouleurs){
-            JComboBox cb = (JComboBox) e.getSource();
-            String couleurChoisie = (String) cb.getSelectedItem();
-            updateColor(couleurChoisie);
+        if(e.getSource() == btnCouleur){
+             JColorChooser chooser = new JColorChooser();
+             AbstractColorChooserPanel[] oldPanels = chooser.getChooserPanels();
+             chooser.setPreviewPanel(new JPanel());
+             for (int i = 0; i < oldPanels.length; i++) {
+                  String clsName = oldPanels[i].getClass().getName();
+                  if (!clsName.equals("javax.swing.colorchooser.DefaultSwatchChooserPanel")) {
+                       chooser.removeChooserPanel(oldPanels[i]);
+                  }
+             }
+            JDialog diag = JColorChooser.createDialog(this.getParent(),"Couleur de l'objet",true,chooser,new ActionListener(){
+                 public void actionPerformed(ActionEvent e){
+                      couleurChoisi = chooser.getColor();
+                 }
+            },null);
+            diag.setVisible(true);
+            if(panelDessin.getSelectedObject() != null){
+                 panelDessin.getSelectedObject().setColor(couleurChoisi);
+            }
+            System.out.println(couleurChoisi);
         }
         if(e.getSource() == btnValider){
-            
+
         }
     }
 

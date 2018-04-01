@@ -39,7 +39,7 @@ public abstract class ObjetOptique {
 		point2 = new Point2D.Double(point2.getX() + translationX, point2.getY() + translationY);
 		line = new Line2D.Double(point1, point2);
 	}
-	
+
 	public void pointUpdate(Point2D pt1,Point2D pt2){
 		taille = Math.abs(Point2D.distance(pt1.getX(),pt1.getY(),pt2.getX(),pt2.getY()))/2;
 		if(pt1.getX() <= pt2.getX()){
@@ -84,6 +84,10 @@ public abstract class ObjetOptique {
 	}
 	public Point2D getPoint2(){
 		return point2;
+	}
+
+	public void setColor(Color couleur){
+		this.couleur = couleur;
 	}
 
     public Point2D getCentre(){

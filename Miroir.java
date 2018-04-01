@@ -106,7 +106,7 @@ public class Miroir extends ObjetOptique {
 
 	public void draw(Graphics2D g2d) {
 
-		g2d.setColor(Color.BLACK);
+		g2d.setColor(couleur);
 
 		double lentx = taille * Math.cos(angle);
 		double lenty = taille * Math.sin(angle);

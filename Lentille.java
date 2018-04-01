@@ -36,6 +36,7 @@ public class Lentille extends ObjetOptique {
 	public Lentille (Point2D point1,Point2D point2,Color couleur,double focal,JComponent parent){
 		f = focal;
 		focus = false;
+		this.couleur = couleur;
 		this.parent = parent;
 		this.point1 = point1;
 		this.point2 = point2;
@@ -133,6 +134,11 @@ public class Lentille extends ObjetOptique {
 
 		public double getFocal(){
 			return f;
+		}
+
+		public void setFocal(double focal){
+			this.f = focal;
+			updatePlanFocal();
 		}
 
 		public int getNum(){
