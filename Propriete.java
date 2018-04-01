@@ -7,9 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Propriete extends JPanel implements ActionListener {
-    protected JLabel nomOutil, changerNom, changerCouleur, description, labelFocal, labelTaille, labelX, labelY;
+    protected JLabel nomOutil, changerNom, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
     protected JCheckBox boxPlans, boxSemiReflet;
-    protected JTextField entreNom, entreX, entreY, entreTaille;
+    protected JTextField entreNom, entreX, entreY, entreTaille, entreAngle;
     protected JTextField entreFocal;
     protected JButton btnValider;   
     protected ZoneTracage panelDessin;
@@ -42,9 +42,11 @@ public class Propriete extends JPanel implements ActionListener {
         labelX = new JLabel("x =");
         labelY = new JLabel("y =");
         labelTaille = new JLabel("Taille =");
+        labelAngle = new JLabel("Angle =");
         entreX = new JTextField();
         entreY = new JTextField();
         entreTaille = new JTextField();
+        entreAngle = new JTextField();
 
         labelFocal = new JLabel("f = ");
         entreFocal = new JTextField();
@@ -80,6 +82,8 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreY);
         this.add(labelTaille);
         this.add(entreTaille);
+        this.add(labelAngle);
+        this.add(entreAngle);
         this.add(changerCouleur);
         this.add(choixCouleurs);
         this.add(btnValider);
@@ -97,12 +101,15 @@ public class Propriete extends JPanel implements ActionListener {
         entreX.setText(String.valueOf(s.getCentrex()));
         entreY.setText(String.valueOf(s.getCentrey()));
         entreTaille.setText(String.valueOf(s.getTaille()));
+        entreAngle.setText(String.valueOf(s.getAngle()));       
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
         this.add(entreY);
         this.add(labelTaille);
         this.add(entreTaille);
+        this.add(labelAngle);
+        this.add(entreAngle);
         this.add(changerCouleur);
         this.add(choixCouleurs);
         this.add(btnValider);
@@ -124,6 +131,8 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreY);
         this.add(labelTaille);
         this.add(entreTaille);
+        this.add(labelAngle);
+        this.add(entreAngle);
         //this.add(changerNom);
         this.add(labelFocal);
         this.add(entreFocal);
@@ -147,6 +156,7 @@ public class Propriete extends JPanel implements ActionListener {
         entreTaille.setText(String.valueOf(l.getTaille()));
         entreFocal.setText(String.valueOf(l.getFocal()));
         boxPlans.setSelected(l.getAffichagePlanFocal());
+        entreAngle.setText(String.valueOf(l.getAngle())); 
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -154,6 +164,8 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreY);
         this.add(labelTaille);
         this.add(entreTaille);
+        this.add(labelAngle);
+        this.add(entreAngle);
         //this.add(changerNom);
         this.add(labelFocal);
         this.add(entreFocal);
@@ -189,6 +201,8 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreY);
         this.add(labelTaille);
         this.add(entreTaille);
+        this.add(labelAngle);
+        this.add(entreAngle);
         this.add(boxSemiReflet);
         this.add(changerCouleur);
         this.add(choixCouleurs);
@@ -207,12 +221,15 @@ public class Propriete extends JPanel implements ActionListener {
         entreY.setText(String.valueOf(m.getCentrey()));
         entreTaille.setText(String.valueOf(m.getTaille()));
         boxSemiReflet.setSelected(m.getSemiReflechissant());
+        entreAngle.setText(String.valueOf(m.getAngle())); 
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
         this.add(entreY);
         this.add(labelTaille);
         this.add(entreTaille);
+        this.add(labelAngle);
+        this.add(entreAngle);
         this.add(boxSemiReflet);
         this.add(changerCouleur);
         this.add(choixCouleurs);

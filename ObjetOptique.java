@@ -75,6 +75,10 @@ public abstract class ObjetOptique {
 		return taille;
 	}
 
+	public double getAngle(){
+		return angle;
+	}
+
 	public Point2D getPoint1(){
 		return point1;
 	}
