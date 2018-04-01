@@ -6,7 +6,7 @@ import javax.swing.*;
 public class BarreOutils extends JToolBar implements ActionListener{
 
     JButton btnSelect, btnSource, btnLentille, btnMiroir, btnSuppr, btnScreenshot;
-    public static ActiveTool activeTool = ActiveTool.NULL;
+    public static ActiveTool activeTool = ActiveTool.SELECT;
     Propriete prop;
 
     public BarreOutils(Propriete prop) {
