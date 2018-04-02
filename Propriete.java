@@ -10,7 +10,7 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class Propriete extends JPanel implements ActionListener, KeyListener{           //Cette classe correspond au paneau de droite dans le programme
+public class Propriete extends JPanel implements ActionListener{           //Cette classe correspond au paneau de droite dans le programme
     protected JLabel nomOutil, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
     protected JCheckBox boxPlans, boxSemiReflet;
     protected JTextField entreX, entreY, entreTaille, entreAngle, entreFocal;
@@ -133,9 +133,8 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
 
         btnSupprimer = new JButton("Supprimer");
         btnSupprimer.addActionListener(this);
-    
-        this.addKeyListener(this);
-        
+
+
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         this.add(nomOutil);         //On affiche les paramètres du premier outil sélectionné
@@ -147,6 +146,7 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
     public void propSource() {      //Methode qui affiche tout les caractéristique relative à un objet Source (affichage appelé par l'outil qui créé les sources)
         panelDessin.resetFocus();
         this.removeAll();
+        entreTaille.setEditable(true);
         this.add(nomOutil);
         this.add(description);
         nomOutil.setText("Source");
@@ -177,6 +177,7 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
         entreX.setText(String.valueOf(s.getCentrex()));
         entreY.setText(String.valueOf(s.getCentrey()));
         entreTaille.setText(String.valueOf(s.getTaille()));
+        entreTaille.setEditable(false);
         entreAngle.setText(String.valueOf(Math.round((s.getAngle()*180/Math.PI*100))/100.0));
         this.add(labelX);
         this.add(entreX);
@@ -198,6 +199,7 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
         entreX.setText("");
         entreY.setText("");
         entreTaille.setText("");
+        entreTaille.setEditable(true);
         entreFocal.setText("");
         entreAngle.setText("");
         this.add(nomOutil);
@@ -232,6 +234,7 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
         entreX.setText(String.valueOf(l.getCentrex()));
         entreY.setText(String.valueOf(l.getCentrey()));
         entreTaille.setText(String.valueOf(l.getTaille()));
+        entreTaille.setEditable(false);
         entreFocal.setText(String.valueOf(l.getFocal()));
         boxPlans.setSelected(l.getAffichagePlanFocal());
         entreAngle.setText(String.valueOf(Math.round((l.getAngle()*180/Math.PI*100))/100.0));
@@ -271,6 +274,7 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
     public void propMiroir() {      //Methode qui affiche tout les caractéristique relative à un objet Miroir (affichage appelé par l'outil qui créé les miroir)
         panelDessin.resetFocus();
         this.removeAll();
+        entreTaille.setEditable(true);
         this.add(nomOutil);
         this.add(description);
         nomOutil.setText("Mirroir");
@@ -300,6 +304,7 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
         entreX.setText(String.valueOf(m.getCentrex()));
         entreY.setText(String.valueOf(m.getCentrey()));
         entreTaille.setText(String.valueOf(m.getTaille()));
+        entreTaille.setEditable(false);
         boxSemiReflet.setSelected(m.getSemiReflechissant());
         entreAngle.setText(String.valueOf(Math.round((m.getAngle()*180/Math.PI*100))/100.0));
         this.add(labelX);
@@ -427,21 +432,5 @@ public class Propriete extends JPanel implements ActionListener, KeyListener{   
             panelDessin.repaint();
         }
     }
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("key");
-        if (e.getKeyCode()==KeyEvent.VK_DELETE){
-            panelDessin.removeObjetOptique(panelDessin.getSelectedObject());
-            panelDessin.repaint();
-        }
-    }
-    @Override
-    public void keyReleased(KeyEvent arg0) {     //Méthodes obligatoires pour l'utilisation de KeyEvent
-        
-    }
-    @Override
-    public void keyTyped(KeyEvent arg0) {
-        
-    }
-    
+
 }

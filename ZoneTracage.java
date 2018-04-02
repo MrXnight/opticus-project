@@ -33,6 +33,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           }
      }
 
+     private static final int IFW = JComponent.WHEN_IN_FOCUSED_WINDOW;
      private Propriete prop;
      private int cursor;
      private ObjetOptique selectedObject;
@@ -45,7 +46,6 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      public static Line2D[] bordures;
 
      public ZoneTracage(JFrame parentFrame){
-          this.setVisible(true);
           mooving = false;
           positionningPoint1 = null;
           positionningPoint2 = null;
@@ -56,6 +56,20 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           setFocusable(true);
           addMouseListener(this);
           addMouseMotionListener(this);
+
+           this.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0), "SUPPR_OBJECT");
+           this.getActionMap().put("SUPPR_OBJECT",new AbstractAction(){
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                     if(selectedObject != null){
+                          removeObjetOptique(selectedObject);
+                          resetFocus();
+                          prop.propSelect();
+                     }
+                     repaint();
+                }
+           });
+
           addMouseListener(new MouseAdapter() {
                @Override
                public void mousePressed(MouseEvent e) {
@@ -566,7 +580,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      public void addObjetOptique(ObjetOptique objetOptique){
           listeObjet.add(objetOptique);
      }
-     
+
      public void removeObjetOptique(ObjetOptique objetOptique){
           listeObjet.remove(objetOptique);
      }

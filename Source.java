@@ -45,55 +45,11 @@ public class Source extends ObjetOptique {
 	}
 
 	public Point2D movePoint(Point2D newPoint,Point2D clickedPoint){
-		try{
-			Robot robot = new Robot();
-
-			if(point1==clickedPoint){
-				if(Math.abs(Point.distance(newPoint.getX(),newPoint.getY(),point2.getX(),point2.getY()))/2>=30){
-					point1 = newPoint;
-				}
-				else{
-					newPoint = point1;
-					Point point1Screen = new Point((int)point1.getX(),(int)point1.getY());
-					System.out.println("avant : "+point1Screen);
-					SwingUtilities.convertPointToScreen(point1Screen,parent);
-					System.out.println("après : "+point1Screen);
-					robot.mouseMove(point1Screen.x,point1Screen.y);
-					System.out.println("robot");
-				}
-			}
-			else if(point2==clickedPoint){
-				if(Math.abs(Point.distance(point1.getX(),point1.getY(),newPoint.getX(),newPoint.getY()))/2>=30){
-					point2 = newPoint;
-				}
-				else{
-					newPoint = point2;
-					Point point2Screen = new Point((int)point2.getX(),(int)point2.getY());
-					SwingUtilities.convertPointToScreen(point2Screen,parent);
-					robot.mouseMove(point2Screen.x,point2Screen.y);
-					System.out.println("robot");
-				}
-			}
-			taille = Math.abs(Point.distance(point1.getX(),point1.getY(),point2.getX(),point2.getY()))/2;
-			if(point1.getX() <= point2.getX()){
-				angle = -Math.atan2(point2.getY()-point1.getY(),Math.abs(point1.getX()-point2.getX()));
-				centrex = (int)(point1.getX()+Math.cos(angle)*taille);
-				centrey = (int)(point1.getY()+Math.sin(-angle)*taille);
-			}
-			else if(point1.getX() > point2.getX()){
-				angle = -Math.atan2(point1.getY()-point2.getY(),Math.abs(point1.getX()-point2.getX()));
-				centrex = (int)(point2.getX()+Math.cos(angle)*taille);
-				centrey = (int)(point2.getY()+Math.sin(-angle)*taille);
-			}
-			System.out.println("angle : "+angle);
-			line = new Line2D.Double(point1,point2);
-
+			Point2D result = super.movePoint(newPoint,clickedPoint);
 			tabFaisceau.clear();
 			tabFaisceau.add(line);
-			return newPoint;
-		}
-		catch(Exception e){}
-			return null;
+			parent.repaint();
+			return result;
 	}
 
 	public void setAngle(double angle){

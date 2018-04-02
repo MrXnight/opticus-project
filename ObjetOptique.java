@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
-public abstract class ObjetOptique {        //Classe abstraite de laquelle héritera tout ce qui peut être clacé sur la zone de dessin : lentilles, sources et mirroir 
+public abstract class ObjetOptique {        //Classe abstraite de laquelle héritera tout ce qui peut être clacé sur la zone de dessin : lentilles, sources et mirroir
 	protected double angle;
 	protected Color couleur;
 	protected double taille;
@@ -18,10 +18,6 @@ public abstract class ObjetOptique {        //Classe abstraite de laquelle héri
 	protected JComponent parent;
 
 	public ObjetOptique (double posx, double posy, double angle, Color col, double taille) {
-		this.angle = angle % (Math.PI*2);
-		if(this.angle>Math.PI/2){
-			this.angle = this.angle - Math.PI;
-		}
 		centrex = (int)posx;
 		centrey = (int)posy;
 		this.taille = taille;
@@ -62,10 +58,6 @@ public abstract class ObjetOptique {        //Classe abstraite de laquelle héri
 	}
 
 	public void setAngle(double angle){     //Méthode qui retourne l'angle d'orientation de l'objet optique
-		this.angle = angle % (Math.PI*2);
-		if(this.angle>Math.PI/2){
-			this.angle = this.angle - Math.PI;
-		}
 		point1 = new Point2D.Double((centrex - taille * Math.cos(angle)), (centrey - taille * Math.sin(-angle)));
 		point2 = new Point2D.Double((centrex + taille * Math.cos(angle)), (centrey + taille * Math.sin(-angle)));
 		line = new Line2D.Double(point1,point2);
@@ -90,7 +82,49 @@ public abstract class ObjetOptique {        //Classe abstraite de laquelle héri
 		parent.repaint();
 	}
 
-	public abstract Point2D movePoint(Point2D newPoint,Point2D clickedPoint);
+	public Point2D movePoint(Point2D newPoint, Point2D clickedPoint) {
+		try {
+			Robot robot = new Robot();
+
+			if (point1 == clickedPoint) {
+				if (Math.abs(Point.distance(newPoint.getX(), newPoint.getY(), point2.getX(), point2.getY()))
+				/ 2 >= 30) {
+					point1 = newPoint;
+				} else {
+					newPoint = point1;
+					Point point1Screen = new Point((int) point1.getX(), (int) point1.getY());
+					SwingUtilities.convertPointToScreen(point1Screen, parent);
+					robot.mouseMove(point1Screen.x, point1Screen.y);
+				}
+			} else if (point2 == clickedPoint) {
+				if (Math.abs(Point2D.distance(point1.getX(), point1.getY(), newPoint.getX(), newPoint.getY()))
+				/ 2 >= 30) {
+					point2 = newPoint;
+				} else {
+					newPoint = point2;
+					Point point2Screen = new Point((int) point2.getX(), (int) point2.getY());
+					SwingUtilities.convertPointToScreen(point2Screen, parent);
+					robot.mouseMove(point2Screen.x, point2Screen.y);
+					System.out.println("robot");
+				}
+			}
+			taille = Math.abs(Point.distance(point1.getX(), point1.getY(), point2.getX(), point2.getY())) / 2;
+			if (point1.getX() <= point2.getX()) {
+				angle = -Math.atan2(point2.getY() - point1.getY(), Math.abs(point1.getX() - point2.getX()));
+				centrex = (int) (point1.getX() + Math.cos(angle) * taille);
+				centrey = (int) (point1.getY() + Math.sin(-angle) * taille);
+			} else if (point1.getX() > point2.getX()) {
+				angle = -Math.atan2(point1.getY() - point2.getY(), Math.abs(point1.getX() - point2.getX()));
+				centrex = (int) (point2.getX() + Math.cos(angle) * taille);
+				centrey = (int) (point2.getY() + Math.sin(-angle) * taille);
+			}
+			line = new Line2D.Double(point1, point2);
+			parent.repaint();
+			return newPoint;
+		} catch (Exception e) {
+		}
+		return null;
+	}
 
 	public void setFocus(boolean focus){        //Méthode qui permet de définir cet objet comme sélectionné
 		this.focus = focus;
