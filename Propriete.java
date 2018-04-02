@@ -169,10 +169,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     public void propSource(Source s) {      //Methode qui affiche tout les caractéristique relative à un objet Source lorsqu'il est sélectionné (affichage appelé par le clic sur une source)
         this.removeAll();
         this.add(nomOutil);
-        this.add(description);
         nomOutil.setText("Source S" + s.getNum());
-        description.setText(
-            "<html>Cet outil vous permet de creer une nouvelle source en definissant deux point dans l'espace.</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         entreX.setText(String.valueOf(s.getCentrex()));
         entreY.setText(String.valueOf(s.getCentrey()));
@@ -227,10 +224,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     public void propLentille(Lentille l) {      //Methode qui affiche tout les caractéristique relative à un objet Lentille lorsqu'il est sélectionné (affichage appelé par le clic sur une lentille)
         this.removeAll();
         this.add(nomOutil);
-        this.add(description);
         nomOutil.setText("Lentille L" + l.getNum());
-        description.setText(
-            "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
         entreX.setText(String.valueOf(l.getCentrex()));
         entreY.setText(String.valueOf(l.getCentrey()));
         entreTaille.setText(String.valueOf(l.getTaille()));
@@ -278,7 +272,8 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.add(nomOutil);
         this.add(description);
         nomOutil.setText("Mirroir");
-        description.setText("Placer un miroir....");
+        description.setText(
+            "<html>Cet outil vous permet de creer un nouveau miroir en definissant deux point dans l'espace.</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -297,9 +292,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     public void propMiroir(Miroir m) {      //Methode qui affiche tout les caractéristique relative à un objet Miroir lorsqu'il est sélectionné (affichage appelé par le clic sur un miroir)
         this.removeAll();
         this.add(nomOutil);
-        this.add(description);
         nomOutil.setText("Mirroir M" + m.getNum());
-        description.setText("Placer un miroir....");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         entreX.setText(String.valueOf(m.getCentrex()));
         entreY.setText(String.valueOf(m.getCentrey()));
@@ -326,7 +319,6 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         panelDessin.resetFocus();
         this.removeAll();
         this.add(nomOutil);
-        this.add(description);
         nomOutil.setText("Supprimer");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
@@ -336,7 +328,6 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     public void propScreenshot() {      //Méthode qui permet d'afficher les propriété de l'outil capture d'écran
         this.removeAll();
         this.add(nomOutil);
-        this.add(description);
         nomOutil.setText("Capture d'ecran");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
@@ -429,6 +420,8 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         }
         if(e.getSource() == btnSupprimer){                    //Affichage de la fenêtre de changement de couleur
             panelDessin.removeObjetOptique(panelDessin.getSelectedObject());
+            panelDessin.resetFocus();
+            this.propSelect();
             panelDessin.repaint();
         }
     }
