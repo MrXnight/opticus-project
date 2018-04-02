@@ -195,6 +195,29 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                }
                repaint();
           }
+          if(BarreOutils.activeTool == ActiveTool.SUPPR){
+               for(ObjetOptique i : listeObjet){
+                    i.setFocus(false);
+                    if(i.distancePoint(e.getPoint())<distanceMin){
+                         selectedObject = i;
+                         distanceMin = i.distancePoint(e.getPoint());
+                    }
+                    if(i instanceof Lentille || i instanceof Source || i instanceof Miroir){
+                         if((i).getPoint1().distance(e.getPoint())<(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())){
+                              if((i).getPoint1().distance(e.getPoint())<5){
+                                   selectedPoint = (i).getPoint1();
+                              }
+                         }
+                         else if((i).getPoint1().distance(e.getPoint())>(i).getPoint2().distance(e.getPoint()) && (i).getPoint2().distance(e.getPoint())<5 && (i).getPoint2().distance(e.getPoint()) != (i).getPoint1().distance(e.getPoint())) {
+                              selectedPoint = (i).getPoint2();
+                         }
+                    }
+               }
+               if(selectedObject != null){
+                    listeObjet.remove(selectedObject);
+                    repaint();
+               }
+          }
      }
 
      @Override
@@ -542,6 +565,10 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
      public void addObjetOptique(ObjetOptique objetOptique){
           listeObjet.add(objetOptique);
+     }
+     
+     public void removeObjetOptique(ObjetOptique objetOptique){
+          listeObjet.remove(objetOptique);
      }
 
      public void setPropriete(Propriete prop){

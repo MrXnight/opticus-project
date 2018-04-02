@@ -7,12 +7,14 @@ import javax.swing.*;
 import java.awt.*;
 import javax.swing.JColorChooser;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
-public class Propriete extends JPanel implements ActionListener {           //Cette classe correspond au paneau de droite dans le programme
+public class Propriete extends JPanel implements ActionListener, KeyListener{           //Cette classe correspond au paneau de droite dans le programme
     protected JLabel nomOutil, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
     protected JCheckBox boxPlans, boxSemiReflet;
     protected JTextField entreX, entreY, entreTaille, entreAngle, entreFocal;
-    protected JButton btnValider,btnCouleur;
+    protected JButton btnValider,btnCouleur, btnSupprimer;
     protected ZoneTracage panelDessin;
     protected Color couleurChoisi;
     protected static double f=10;
@@ -129,6 +131,11 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
         btnValider = new JButton("Valider");
         btnValider.addActionListener(this);
 
+        btnSupprimer = new JButton("Supprimer");
+        btnSupprimer.addActionListener(this);
+    
+        this.addKeyListener(this);
+        
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
         this.add(nomOutil);         //On affiche les paramètres du premier outil sélectionné
@@ -180,6 +187,8 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
         this.add(labelAngle);
         this.add(entreAngle);
         this.add(btnCouleur);
+        this.add(btnValider);
+        this.add(btnSupprimer);
         this.repaint();
     }
 
@@ -239,6 +248,8 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
         this.add(entreFocal);
         this.add(boxPlans);
         this.add(btnCouleur);
+        this.add(btnValider);
+        this.add(btnSupprimer);
         this.repaint();
 
     }
@@ -301,6 +312,8 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
         this.add(entreAngle);
         this.add(boxSemiReflet);
         this.add(btnCouleur);
+        this.add(btnValider);
+        this.add(btnSupprimer);
         this.repaint();
     }
 
@@ -409,6 +422,26 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
                   }
              }
         }
+        if(e.getSource() == btnSupprimer){                    //Affichage de la fenêtre de changement de couleur
+            panelDessin.removeObjetOptique(panelDessin.getSelectedObject());
+            panelDessin.repaint();
+        }
     }
-
+    @Override
+    public void keyPressed(KeyEvent e) {
+        System.out.println("key");
+        if (e.getKeyCode()==KeyEvent.VK_DELETE){
+            panelDessin.removeObjetOptique(panelDessin.getSelectedObject());
+            panelDessin.repaint();
+        }
+    }
+    @Override
+    public void keyReleased(KeyEvent arg0) {     //Méthodes obligatoires pour l'utilisation de KeyEvent
+        
+    }
+    @Override
+    public void keyTyped(KeyEvent arg0) {
+        
+    }
+    
 }

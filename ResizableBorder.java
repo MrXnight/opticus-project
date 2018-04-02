@@ -1,4 +1,4 @@
-import java.awt.Color;
+import java.awt.Color;      //Import des différentes librairies Java
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Graphics;
@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
-public class ResizableBorder implements Border {
+public class ResizableBorder implements Border {    //Cette classe peret de déplacer la barre d'outil n'importe où dans la fenêtre
      private int dist = 8;
 
      int locations[] = {

@@ -1,4 +1,4 @@
-import java.awt.event.*;
+import java.awt.event.*;    //Import des différentes librairies Java
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.*;
@@ -9,7 +9,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
      public static ActiveTool activeTool = ActiveTool.SELECT;
      Propriete prop;
 
-     public BarreOutils(Propriete prop) {
+     public BarreOutils(Propriete prop) {       //Constructeur de la classe qui affiche tout les boutons de la barre d'outil et qui choisit l'outil sélection au lancement du programme
           super("Barre d'outils",JToolBar.VERTICAL);
           this.prop = prop;
 
@@ -36,12 +36,12 @@ public class BarreOutils extends JToolBar implements ActionListener{
           prop.propSelect();
      }
 
-     public ActiveTool getActiveTool(){
+     public ActiveTool getActiveTool(){     //Méthode qui récupère que outil est actif
           return activeTool;
      }
 
 
-     public void actionPerformed(ActionEvent e) {
+     public void actionPerformed(ActionEvent e) {       //Lors d'un clic sur un bouton outil, on met à jour l'outil actif dans la variable activeTool 
           JButton btn = (JButton) e.getSource();
 
           if(btn == btnSource){

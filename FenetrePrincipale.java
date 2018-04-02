@@ -1,11 +1,11 @@
-import java.awt.*;
+import java.awt.*;      //Import des différentes librairies Java
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.BorderLayout;
 
-public class FenetrePrincipale extends JFrame implements ActionListener{
+public class FenetrePrincipale extends JFrame implements ActionListener{        //Cette classe correspond à la fenêtre dans laquelle toute l'interface graphique va être affichée
 
-	private final double ratio = 0.8;
+	private final double ratio = 0.8;       
 	private JPanel mainPanel;
 	private ZoneTracage panelDessin;
 
@@ -17,12 +17,12 @@ public class FenetrePrincipale extends JFrame implements ActionListener{
 		}
 
 
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();     //On détermine la taille de la fenêtre en fonction de celle de l'écran de l'utilisateur
 		int width = (int)(ratio*screenSize.getWidth());
 		int height = (int)(ratio*screenSize.getHeight());
 
 
-		this.setSize(width,height);
+		this.setSize(width,height);         //On paramètre le titre la dimension de la fenêtre
 		this.setTitle("Opticus Magicus");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

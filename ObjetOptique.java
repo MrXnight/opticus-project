@@ -1,4 +1,4 @@
-import java.awt.*;
+import java.awt.*;      //Import des différentes librairies Java
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.*;
 import java.util.ArrayList;
 
-public abstract class ObjetOptique {
+public abstract class ObjetOptique {        //Classe abstraite de laquelle héritera tout ce qui peut être clacé sur la zone de dessin : lentilles, sources et mirroir 
 	protected double angle;
 	protected Color couleur;
 	protected double taille;
@@ -28,11 +28,11 @@ public abstract class ObjetOptique {
 		couleur = col;
 		focus = false;
 	}
-	public ObjetOptique (){}
+	public ObjetOptique (){}        //Constructeur vide par défaut
 
-	public abstract void draw (Graphics2D g2d);
+	public abstract void draw (Graphics2D g2d);     //Méthode abstraite draw
 
-	public abstract int distancePoint(Point2D p);
+	public abstract int distancePoint(Point2D p);     //Méthode abstraite de distance à un point
 
 	public void move(Point2D newPosition) {
 		double translationX = newPosition.getX() - centrex;
@@ -61,7 +61,7 @@ public abstract class ObjetOptique {
 		parent.repaint();
 	}
 
-	public void setAngle(double angle){
+	public void setAngle(double angle){     //Méthode qui retourne l'angle d'orientation de l'objet optique
 		this.angle = angle % (Math.PI*2);
 		if(this.angle>Math.PI/2){
 			this.angle = this.angle - Math.PI;
@@ -72,7 +72,7 @@ public abstract class ObjetOptique {
 		parent.repaint();
 	}
 
-	public void setCentreX(double centreX){
+	public void setCentreX(double centreX){     //Méthode qui redéfini la coordonnée en X du centre le l'objet
 		double translationX =centreX-this.centrex ;
 		centrex = centreX;
 		point1 = new Point2D.Double(point1.getX() + translationX, point1.getY());
@@ -81,7 +81,7 @@ public abstract class ObjetOptique {
 		parent.repaint();
 	}
 
-	public void setCentreY(double centreY){
+	public void setCentreY(double centreY){     //Méthode qui redéfini la coordonnée en Y du centre le l'objet
 		double translationY = centreY-this.centrey;
 		centrey = centreY;
 		point1 = new Point2D.Double(point1.getX(), point1.getY() + translationY);
@@ -92,36 +92,36 @@ public abstract class ObjetOptique {
 
 	public abstract Point2D movePoint(Point2D newPoint,Point2D clickedPoint);
 
-	public void setFocus(boolean focus){
+	public void setFocus(boolean focus){        //Méthode qui permet de définir cet objet comme sélectionné
 		this.focus = focus;
 	}
 
-	public boolean hasFocus(){
+	public boolean hasFocus(){          //Méthode qui permet de savoir si cet objet est sélectionné
 		return focus;
 	}
-	public double getCentrex(){
+	public double getCentrex(){     //Méthode qui permet d'obtenir la coordonnée en X du centre le l'objet
 		return centrex;
 	}
-	public double getCentrey(){
+	public double getCentrey(){     //Méthode qui permet d'obtenir la coordonnée en Y du centre le l'objet
 		return centrey;
 	}
 
-	public double getTaille(){
+	public double getTaille(){      //Méthode qui permet d'obtenir la taille de l'objet
 		return taille;
 	}
 
-	public double getAngle(){
+	public double getAngle(){       //Méthode qui permet d'obtenir l'angle de l'objet
 		return angle;
 	}
 
-	public Point2D getPoint1(){
+	public Point2D getPoint1(){     //Méthodes qui permettent d'obtenir un des deux points composant l'objet
 		return point1;
 	}
 	public Point2D getPoint2(){
 		return point2;
 	}
 
-	public void setColor(Color couleur){
+	public void setColor(Color couleur){       //Méthode qui permet de définir la couleur
 		this.couleur = couleur;
 	}
 
@@ -130,5 +130,5 @@ public abstract class ObjetOptique {
         return(centre);
     }
 
-    public abstract Line2D getLine();
+    public abstract Line2D getLine();       //Méthode abstraite qui renvoie la ligne associée à l'objet
 }

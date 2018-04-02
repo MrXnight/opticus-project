@@ -12,3 +12,6 @@ public enum ActiveTool{
      }
 
 }
+
+//La méthode ActiveTool est une énumération, elle possède en attribut plusieurs chaines de caractères et un nom qui est susceptible de changer en prenant la valeur d'une de ses chaines.
+//C'est cet objet qui stockera l'information de quel outil est actif
