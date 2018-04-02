@@ -20,7 +20,7 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
 
     public Propriete(int width, int height) {       //Constructeur de la classe
 
-         this.panelDessin = null;                   
+         this.panelDessin = null;
 
         this.setPreferredSize(new Dimension((int) (width * 0.2), height));
 
@@ -44,9 +44,9 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
         labelTaille = new JLabel("Taille =");
         labelAngle = new JLabel("Angle =");
         labelFocal = new JLabel("f = ");
-        
+
         entreX = new JTextField();
-        Action actionEntreX = new AbstractAction()      //Permet d'actualiser les coordonnée X d'un objet sélectionné 
+        Action actionEntreX = new AbstractAction()      //Permet d'actualiser les coordonnée X d'un objet sélectionné
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -58,9 +58,9 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
             }
         };
         entreX.addActionListener(actionEntreX);
-        
+
         entreY = new JTextField();
-        Action actionEntreY = new AbstractAction()      //Permet d'actualiser les coordonnée Y d'un objet sélectionné 
+        Action actionEntreY = new AbstractAction()      //Permet d'actualiser les coordonnée Y d'un objet sélectionné
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -72,11 +72,11 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
             }
         };
         entreY.addActionListener(actionEntreY);
-        
+
         entreTaille = new JTextField();
-        
+
         entreAngle = new JTextField();
-        Action actionEntreAngle = new AbstractAction()  //Permet d'actualiser l'angle d'un objet sélectionné 
+        Action actionEntreAngle = new AbstractAction()  //Permet d'actualiser l'angle d'un objet sélectionné
         {
              @Override
              public void actionPerformed(ActionEvent e)
@@ -88,9 +88,9 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
              }
         };
         entreAngle.addActionListener(actionEntreAngle);
-        
+
         entreFocal = new JTextField();
-        Action actionEntreFocal = new AbstractAction()  //Permet d'actualiser la distance focale d'une lentille selectionnée 
+        Action actionEntreFocal = new AbstractAction()  //Permet d'actualiser la distance focale d'une lentille selectionnée
         {
              @Override
              public void actionPerformed(ActionEvent e)
@@ -104,8 +104,25 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
         entreFocal.addActionListener(actionEntreFocal);
 
         boxPlans = new JCheckBox("Afficher plan focal");
-        boxPlans.addActionListener(this);
-        
+        boxPlans.addItemListener(new ItemListener(){
+             public void itemStateChanged(ItemEvent e){
+                  Object source = e.getItemSelectable();
+                  if(source == boxPlans){
+                       if (e.getStateChange() == ItemEvent.DESELECTED){
+                            if(panelDessin.getSelectedObject() instanceof Lentille){
+                                 ((Lentille)panelDessin.getSelectedObject()).setAffichagePlanFocal(false);
+                            }
+                       }
+                       else if(e.getStateChange() == ItemEvent.SELECTED){
+                            if(panelDessin.getSelectedObject() instanceof Lentille){
+                                 ((Lentille)panelDessin.getSelectedObject()).setAffichagePlanFocal(true);
+                            }
+                       }
+                  }
+                  panelDessin.repaint();
+             }
+        });
+
         boxSemiReflet = new JCheckBox("Semi réfléchissant");
         boxSemiReflet.addActionListener(this);
 
@@ -322,7 +339,7 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
     }
 
 
-    public void setZoneTracage(ZoneTracage panelDessin){       //Méthode qui permet de récupérer le paneau de la zone de dessin sans passer par le constructeur pour qu'elle soit actualisée 
+    public void setZoneTracage(ZoneTracage panelDessin){       //Méthode qui permet de récupérer le paneau de la zone de dessin sans passer par le constructeur pour qu'elle soit actualisée
          this.panelDessin = panelDessin;
     }
 
@@ -345,6 +362,7 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
             diag.setVisible(true);
             if(panelDessin.getSelectedObject() != null){                //On applique la couleur à l'objet sélectionné
                  panelDessin.getSelectedObject().setColor(couleurChoisi);
+                 panelDessin.repaint();
             }
             System.out.println(couleurChoisi);
         }
