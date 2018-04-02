@@ -19,7 +19,7 @@ public class Lentille extends ObjetOptique {
 		if(this.angle>Math.PI/2){
 			this.angle = this.angle - Math.PI;
 		}
-		else if(this.angle<Math.PI/2){
+		else if(this.angle<-Math.PI/2){
 			this.angle = this.angle + Math.PI;
 		}
 		f = focal;
@@ -121,7 +121,7 @@ public class Lentille extends ObjetOptique {
 		if(this.angle>Math.PI/2){
 			this.angle = this.angle - Math.PI;
 		}
-		else if(this.angle<Math.PI/2){
+		else if(this.angle<-Math.PI/2){
 			this.angle = this.angle + Math.PI;
 		}
 		super.setAngle(this.angle);
