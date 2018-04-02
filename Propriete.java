@@ -1,4 +1,4 @@
-import java.awt.Dimension;
+import java.awt.Dimension;      //Import des différentes librairies Java
 import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
@@ -8,24 +8,23 @@ import java.awt.*;
 import javax.swing.JColorChooser;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 
-public class Propriete extends JPanel implements ActionListener {
-    protected JLabel nomOutil, changerNom, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
+public class Propriete extends JPanel implements ActionListener {           //Cette classe correspond au paneau de droite dans le programme
+    protected JLabel nomOutil, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
     protected JCheckBox boxPlans, boxSemiReflet;
-    protected JTextField entreNom, entreX, entreY, entreTaille, entreAngle;
-    protected JTextField entreFocal;
+    protected JTextField entreX, entreY, entreTaille, entreAngle, entreFocal;
     protected JButton btnValider,btnCouleur;
     protected ZoneTracage panelDessin;
     protected Color couleurChoisi;
     protected static double f=10;
     protected static int n=0;
 
-    public Propriete(int width, int height) {
+    public Propriete(int width, int height) {       //Constructeur de la classe
 
-         this.panelDessin = null;
+         this.panelDessin = null;                   
 
         this.setPreferredSize(new Dimension((int) (width * 0.2), height));
 
-        nomOutil = new JLabel();
+        nomOutil = new JLabel();                //On initialise tout les objets graphique qui apparaîtrons dans les propriétés
         nomOutil.setForeground(Color.GRAY);
         nomOutil.setFont(new Font("Cambria", Font.BOLD, 25));
         nomOutil.setAlignmentX(JLabel.CENTER_ALIGNMENT);
@@ -34,7 +33,6 @@ public class Propriete extends JPanel implements ActionListener {
         description.setAlignmentX(JLabel.CENTER_ALIGNMENT);
         description.setFont(new Font("Cambria", Font.PLAIN, 20));
 
-        //changerNom = new JLabel("Entrer un nom");
         changerCouleur = new JLabel("Choisissez une couleur");
 
         btnCouleur = new JButton("Couleur");
@@ -45,8 +43,10 @@ public class Propriete extends JPanel implements ActionListener {
         labelY = new JLabel("y =");
         labelTaille = new JLabel("Taille =");
         labelAngle = new JLabel("Angle =");
+        labelFocal = new JLabel("f = ");
+        
         entreX = new JTextField();
-        Action actionEntreX = new AbstractAction()
+        Action actionEntreX = new AbstractAction()      //Permet d'actualiser les coordonnée X d'un objet sélectionné 
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -58,8 +58,9 @@ public class Propriete extends JPanel implements ActionListener {
             }
         };
         entreX.addActionListener(actionEntreX);
+        
         entreY = new JTextField();
-        Action actionEntreY = new AbstractAction()
+        Action actionEntreY = new AbstractAction()      //Permet d'actualiser les coordonnée Y d'un objet sélectionné 
         {
             @Override
             public void actionPerformed(ActionEvent e)
@@ -71,9 +72,11 @@ public class Propriete extends JPanel implements ActionListener {
             }
         };
         entreY.addActionListener(actionEntreY);
+        
         entreTaille = new JTextField();
+        
         entreAngle = new JTextField();
-        Action actionEntreAngle = new AbstractAction()
+        Action actionEntreAngle = new AbstractAction()  //Permet d'actualiser l'angle d'un objet sélectionné 
         {
              @Override
              public void actionPerformed(ActionEvent e)
@@ -85,9 +88,9 @@ public class Propriete extends JPanel implements ActionListener {
              }
         };
         entreAngle.addActionListener(actionEntreAngle);
-        labelFocal = new JLabel("f = ");
+        
         entreFocal = new JTextField();
-        Action actionEntreFocal = new AbstractAction()
+        Action actionEntreFocal = new AbstractAction()  //Permet d'actualiser la distance focale d'une lentille selectionnée 
         {
              @Override
              public void actionPerformed(ActionEvent e)
@@ -99,25 +102,25 @@ public class Propriete extends JPanel implements ActionListener {
              }
         };
         entreFocal.addActionListener(actionEntreFocal);
+
         boxPlans = new JCheckBox("Afficher plan focal");
         boxPlans.addActionListener(this);
+        
         boxSemiReflet = new JCheckBox("Semi réfléchissant");
         boxSemiReflet.addActionListener(this);
 
         btnValider = new JButton("Valider");
         btnValider.addActionListener(this);
-        //String.valueOf(f)
 
         this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-        this.add(nomOutil);
+        this.add(nomOutil);         //On affiche les paramètres du premier outil sélectionné
         this.add(description);
-
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
 
     }
 
-    public void propSource() {
+    public void propSource() {      //Methode qui affiche tout les caractéristique relative à un objet Source (affichage appelé par l'outil qui créé les sources)
         panelDessin.resetFocus();
         this.removeAll();
         this.add(nomOutil);
@@ -139,11 +142,11 @@ public class Propriete extends JPanel implements ActionListener {
         this.repaint();
     }
 
-    public void propSource(Source s) {
+    public void propSource(Source s) {      //Methode qui affiche tout les caractéristique relative à un objet Source lorsqu'il est sélectionné (affichage appelé par le clic sur une source)
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
-        nomOutil.setText("Source" + s.getNum());
+        nomOutil.setText("Source S" + s.getNum());
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle source en definissant deux point dans l'espace.</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -163,7 +166,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.repaint();
     }
 
-    public void propLentille() {
+    public void propLentille() {        //Methode qui affiche tout les caractéristique relative à un objet Lentille (affichage appelé par l'outil qui créé les lentilles)
         panelDessin.resetFocus();
         this.removeAll();
         entreX.setText("");
@@ -173,10 +176,9 @@ public class Propriete extends JPanel implements ActionListener {
         entreAngle.setText("");
         this.add(nomOutil);
         this.add(description);
-        nomOutil.setText("Lentille L");
+        nomOutil.setText("Lentille");
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
-        //changerNom.setText("Donner un nom à la lentille : ");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -186,7 +188,6 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreTaille);
         this.add(labelAngle);
         this.add(entreAngle);
-        //this.add(changerNom);
         this.add(labelFocal);
         this.add(entreFocal);
         this.add(boxPlans);
@@ -195,14 +196,13 @@ public class Propriete extends JPanel implements ActionListener {
         this.repaint();
     }
 
-    public void propLentille(Lentille l) {
+    public void propLentille(Lentille l) {      //Methode qui affiche tout les caractéristique relative à un objet Lentille lorsqu'il est sélectionné (affichage appelé par le clic sur une lentille)
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
         nomOutil.setText("Lentille L" + l.getNum());
         description.setText(
             "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
-        //changerNom.setText("Donner un nom à la lentille : ");
         entreX.setText(String.valueOf(l.getCentrex()));
         entreY.setText(String.valueOf(l.getCentrey()));
         entreTaille.setText(String.valueOf(l.getTaille()));
@@ -218,7 +218,6 @@ public class Propriete extends JPanel implements ActionListener {
         this.add(entreTaille);
         this.add(labelAngle);
         this.add(entreAngle);
-        //this.add(changerNom);
         this.add(labelFocal);
         this.add(entreFocal);
         this.add(boxPlans);
@@ -227,7 +226,7 @@ public class Propriete extends JPanel implements ActionListener {
 
     }
 
-    public void propSelect() {
+    public void propSelect() {      //Méthode qui permet d'afficher les propriété de l'outil sélectionner
          if(panelDessin != null){
               panelDessin.resetFocus();
          }
@@ -241,7 +240,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.repaint();
     }
 
-    public void propMiroir() {
+    public void propMiroir() {      //Methode qui affiche tout les caractéristique relative à un objet Miroir (affichage appelé par l'outil qui créé les miroir)
         panelDessin.resetFocus();
         this.removeAll();
         this.add(nomOutil);
@@ -263,11 +262,11 @@ public class Propriete extends JPanel implements ActionListener {
         this.repaint();
     }
 
-    public void propMiroir(Miroir m) {
+    public void propMiroir(Miroir m) {      //Methode qui affiche tout les caractéristique relative à un objet Miroir lorsqu'il est sélectionné (affichage appelé par le clic sur un miroir)
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
-        nomOutil.setText("Mirroir" + m.getNum());
+        nomOutil.setText("Mirroir M" + m.getNum());
         description.setText("Placer un miroir....");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         entreX.setText(String.valueOf(m.getCentrex()));
@@ -288,7 +287,7 @@ public class Propriete extends JPanel implements ActionListener {
         this.repaint();
     }
 
-    public void propSuppr() {
+    public void propSuppr() {          //Méthode qui permet d'afficher les propriété de l'outil supprimer
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
@@ -298,7 +297,7 @@ public class Propriete extends JPanel implements ActionListener {
 
     }
 
-    public void propScreenshot() {
+    public void propScreenshot() {      //Méthode qui permet d'afficher les propriété de l'outil capture d'écran
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
@@ -308,7 +307,7 @@ public class Propriete extends JPanel implements ActionListener {
 
     }
 
-    public double getEntreFocalValue(){
+    public double getEntreFocalValue(){     //Méthode qui permet de détecter un éventuel oubli de renseignement de la distance focale par l'utilisateur lorsqu'il créé une lentille
          try{
               return Double.parseDouble(entreFocal.getText());
          }
@@ -323,12 +322,12 @@ public class Propriete extends JPanel implements ActionListener {
     }
 
 
-    public void setZoneTracage(ZoneTracage panelDessin){
+    public void setZoneTracage(ZoneTracage panelDessin){       //Méthode qui permet de récupérer le paneau de la zone de dessin sans passer par le constructeur pour qu'elle soit actualisée 
          this.panelDessin = panelDessin;
     }
 
     public void actionPerformed(ActionEvent e) {
-        if(e.getSource() == btnCouleur){
+        if(e.getSource() == btnCouleur){                    //Affichage de la fenêtre de changement de couleur
              JColorChooser chooser = new JColorChooser(Color.BLACK);
              AbstractColorChooserPanel[] oldPanels = chooser.getChooserPanels();
              chooser.setPreviewPanel(new JPanel());
@@ -344,12 +343,12 @@ public class Propriete extends JPanel implements ActionListener {
                  }
             },null);
             diag.setVisible(true);
-            if(panelDessin.getSelectedObject() != null){
+            if(panelDessin.getSelectedObject() != null){                //On applique la couleur à l'objet sélectionné
                  panelDessin.getSelectedObject().setColor(couleurChoisi);
             }
             System.out.println(couleurChoisi);
         }
-        if(e.getSource() == btnValider){
+        if(e.getSource() == btnValider){                    //Actualisation des propriété d'un objet sélectionné par le clic sur le bouton valider
              if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){
                   try{
                        double focal = Double.parseDouble(entreFocal.getText());
