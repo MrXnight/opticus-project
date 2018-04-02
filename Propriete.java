@@ -305,6 +305,7 @@ public class Propriete extends JPanel implements ActionListener {           //Ce
     }
 
     public void propSuppr() {          //Méthode qui permet d'afficher les propriété de l'outil supprimer
+        panelDessin.resetFocus();
         this.removeAll();
         this.add(nomOutil);
         this.add(description);
