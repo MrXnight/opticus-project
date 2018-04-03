@@ -592,4 +592,13 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      public ObjetOptique getSelectedObject(){
           return selectedObject;
      }
+
+     public ArrayList<ObjetOptique> getListObjetOptique(){
+       return listeObjet;
+     }
+
+     public void setListObjetOptique(ArrayList<ObjetOptique> tab){
+       listeObjet = tab;
+       this.repaint();
+     }
 }

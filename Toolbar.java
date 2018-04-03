@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -8,8 +10,10 @@ public class Toolbar extends JMenuBar {
 	JMenuItem itemImport , itemSave,itemQuit,itemCredit, menuItem2, menuItem3, menuItem4;
 	JRadioButtonMenuItem rbMenuItem;
 	JCheckBoxMenuItem cbMenuItem;
+	ZoneTracage trace;
 	
-	public Toolbar(){
+	public Toolbar(ZoneTracage trace){
+		this.trace = trace;
 
 		//FICHIER
 		menuFichier = new JMenu("Fichier");
@@ -24,8 +28,21 @@ public class Toolbar extends JMenuBar {
 				final JFileChooser fc = new JFileChooser();
     			int returnVal = fc.showOpenDialog(Toolbar.this);
     			if(returnVal == JFileChooser.APPROVE_OPTION) {
-       			System.out.println("You chose to open this file: " +
-            	fc.getSelectedFile().getName());
+       				System.out.println("You chose to open this file: " + fc.getSelectedFile().getName());
+					String path = fc.getSelectedFile().getPath();
+					System.out.println(path);
+					
+					try {
+						FileInputStream fileStream = new FileInputStream(path);
+						BufferedInputStream bf = new BufferedInputStream(fileStream);
+						ObjectInputStream object = new ObjectInputStream(bf);
+						trace.setListObjetOptique((ArrayList<ObjetOptique>)(object.readObject()));
+						System.out.println("Objet chargé : ");
+						
+					} catch (Exception i) {
+						i.printStackTrace();
+					}
+					
     			}
 			}
 		});
@@ -36,7 +53,25 @@ public class Toolbar extends JMenuBar {
 		itemSave = new JMenuItem(new AbstractAction("Sauvegarder"){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Sauvegarde demandee");
+				System.out.println("Importation demandee");
+				final JFileChooser fc = new JFileChooser();
+    			int returnVal = fc.showSaveDialog(Toolbar.this);
+    			if(returnVal == JFileChooser.APPROVE_OPTION) {
+       				System.out.println("You chose to save to this file: " + fc.getSelectedFile().getPath());
+					String path = fc.getSelectedFile().getPath();
+					System.out.println(path);
+
+					try {
+						FileOutputStream fileOut = new FileOutputStream("save.optimus");
+						ObjectOutputStream out = new ObjectOutputStream(fileOut);
+						out.writeObject(e);
+						out.close();
+						fileOut.close();
+						System.out.printf("Serialized ! ");
+					 } catch (IOException i) {
+						i.printStackTrace();
+					 }
+				}
 			}
 		});
 		itemSave.setIcon(new ImageIcon("images/save.png"));

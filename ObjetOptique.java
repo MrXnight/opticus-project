@@ -4,9 +4,10 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class ObjetOptique {        //Classe abstraite de laquelle héritera tout ce qui peut être clacé sur la zone de dessin : lentilles, sources et mirroir
+public abstract class ObjetOptique implements Serializable{        //Classe abstraite de laquelle héritera tout ce qui peut être clacé sur la zone de dessin : lentilles, sources et mirroir
 	protected double angle;
 	protected Color couleur;
 	protected double taille;
