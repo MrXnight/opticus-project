@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 
 public class FenetrePrincipale extends JFrame implements ActionListener{        //Cette classe correspond à la fenêtre dans laquelle toute l'interface graphique va être affichée
 
-	private final double ratio = 0.8;       
+	private final double ratio = 0.8;
 	private JPanel mainPanel;
 	private ZoneTracage panelDessin;
 
@@ -34,7 +34,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{        
 		panelDessin = new ZoneTracage(this);
 
 		//on instancie la barre de menu
-		Toolbar tool = new Toolbar();
+		Toolbar tool = new Toolbar(panelDessin);
 		this.setJMenuBar(tool);
 
 		//on instancie le panel de propriété

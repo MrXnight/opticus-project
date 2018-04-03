@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Source extends ObjetOptique {
 	protected int TAILLE_MINIMALE = 30;
-	protected ArrayList<Line2D> tabFaisceau;
+	protected ArrayList<Line2D.Double> tabFaisceau;
 	protected static int compteNumero;
 	protected int numero;
 
@@ -15,11 +15,11 @@ public class Source extends ObjetOptique {
 	public Source (double posx, double posy, double angle, Color col, double taille,JComponent parent) {
 		super(posx, posy, angle, col, taille);
 		focus = false;
-		point1 = new Point((int)(centrex - taille*Math.cos(angle)), (int)(centrey - taille*Math.sin(-angle)));
-		point2 = new Point((int)(centrex + taille*Math.cos(angle)),(int)(centrey + taille*Math.sin(-angle)));
+		point1 = new Point2D.Double((centrex - taille*Math.cos(angle)), (centrey - taille*Math.sin(-angle)));
+		point2 = new Point2D.Double((centrex + taille*Math.cos(angle)), (centrey + taille*Math.sin(-angle)));
 		line = new Line2D.Double(point1,point2);
 		this.parent = parent;
-		tabFaisceau = new ArrayList<Line2D>();
+		tabFaisceau = new ArrayList<Line2D.Double>();
 		tabFaisceau.add(line);
 		compteNumero += 1;
 		numero = compteNumero;
@@ -34,10 +34,10 @@ public class Source extends ObjetOptique {
 	public Source (Point2D point1,Point2D point2,Color couleur,JComponent parent){
 		focus = false;
 		this.couleur = couleur;
-		tabFaisceau = new ArrayList<Line2D>();
+		tabFaisceau = new ArrayList<Line2D.Double>();
 		this.parent = parent;
-		this.point1 = point1;
-		this.point2 = point2;
+		this.point1 = new Point2D.Double(point1.getX(),point1.getY());
+		this.point2 = new Point2D.Double(point2.getX(),point2.getY());
 		pointUpdate(point1,point2);
 		compteNumero += 1;
 		numero = compteNumero;
@@ -92,6 +92,9 @@ public class Source extends ObjetOptique {
 	}
 
 	public void draw(Graphics2D g2d) {
+		final int rayonCercleSource = 20;
+		g2d.setColor(Color.YELLOW);
+		g2d.fillOval((int)point1.getX()-rayonCercleSource/2,(int)point1.getY()-rayonCercleSource/2,20,20);
 		g2d.setColor(couleur);
 		for(Line2D i : tabFaisceau){
 			g2d.draw(i);
@@ -119,15 +122,15 @@ public class Source extends ObjetOptique {
 
 	}
 	public void ajouterFaisceau(Point2D point1, Point2D point2){
-		Line2D lineFaisceau = new Line2D.Double(point1,point2);
+		Line2D.Double lineFaisceau = new Line2D.Double(point1,point2);
 		tabFaisceau.add(lineFaisceau);
 	}
 
-	public void setTabFaisceau(ArrayList<Line2D> tabFaisceau){
+	public void setTabFaisceau(ArrayList<Line2D.Double> tabFaisceau){
 		this.tabFaisceau = tabFaisceau;
 	}
 
-	public ArrayList<Line2D> getTabFaisceau(){
+	public ArrayList<Line2D.Double> getTabFaisceau(){
 		return tabFaisceau;
 	}
 

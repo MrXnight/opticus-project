@@ -6,13 +6,14 @@ import javax.swing.*;
 public class Miroir extends ObjetOptique {
 
 
-	final Double ecart = 10.0;
+	private final Double ecart = 10.0;
 	protected static int compteNumero;
 	protected int numero;
-	protected boolean semiReflechissant = false;
+	protected boolean semiReflechissant;
 
 	public Miroir(double posx, double posy, double angle, Color col, double taille, JComponent parent) {
 		super(posx, posy, angle, col, taille);
+		semiReflechissant = false;
 		point1 = new Point2D.Double((centrex - taille * Math.cos(angle)), (centrey - taille * Math.sin(-angle)));
 		point2 = new Point2D.Double((centrex + taille * Math.cos(angle)), (centrey + taille * Math.sin(-angle)));
 		line = new Line2D.Double(point1, point2);
@@ -23,10 +24,11 @@ public class Miroir extends ObjetOptique {
 
 	public Miroir(Point2D point1,Point2D point2,Color couleur,JComponent parent){
 		focus = false;
+		semiReflechissant = false;
 		this.couleur = couleur;
 		this.parent = parent;
-		this.point1 = point1;
-		this.point2 = point2;
+		this.point1 = new Point2D.Double(point1.getX(),point1.getY());
+		this.point2 = new Point2D.Double(point2.getX(),point2.getY());
 		pointUpdate(point1,point2);
 		compteNumero += 1;
 		numero = compteNumero;
@@ -65,26 +67,18 @@ public class Miroir extends ObjetOptique {
 		g2d.draw(line);
 
 		//on trace les traits perpendiculaires au miroir pour symboliser la face non reflechissante
+		if(!semiReflechissant){
+			Point2D hach1 = new Point2D.Double(centrex, centrey);
+			Point2D hach2 = new Point2D.Double((point2.getY() - point1.getY()) /(taille*0.3) + centrex, (point1.getX() - point2.getX()) /(taille*0.3)+ centrey);
+			Line2D hachure = new Line2D.Double(hach1, hach2);
 
-		Point2D hach1 = new Point2D.Double(centrex, centrey);
-		Point2D hach2 = new Point2D.Double((point2.getY() - point1.getY()) /(taille*0.3) + centrex, (point1.getX() - point2.getX()) /(taille*0.3)+ centrey);
-		Line2D hachure = new Line2D.Double(hach1, hach2);
+			Double deltaX = Math.cos(angle) * ecart;
+			Double deltaY = Math.sin(angle) * ecart;
 
-		Double deltaX = Math.cos(angle) * ecart;
-		Double deltaY = Math.sin(angle) * ecart;
-
-		for (int i = (int) -taille / 10; i < (int) taille / 10 + 1; i++) {
-			g2d.draw(Geometrie.translateLine(hachure, deltaX * i, -deltaY * i));
+			for (int i = (int) -taille / 10; i < (int) taille / 10 + 1; i++) {
+				g2d.draw(Geometrie.translateLine(hachure, deltaX * i, -deltaY * i));
+			}
 		}
-
-		//on determine l'equation ax+b=y du miroir (pas utile pour le moement)
-		Double coeffDirecteur;
-		if (point2.getX() - point1.getX() != 0) {
-			coeffDirecteur = (point2.getY() - point1.getY()) / (point2.getX() - point1.getX());
-		} else {
-			coeffDirecteur = 0.0;
-		}
-		Double constante = point1.getY() - coeffDirecteur * point1.getX();
 
 		//On trace les hitobox du miroir
 

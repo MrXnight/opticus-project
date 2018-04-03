@@ -10,10 +10,10 @@ public class Toolbar extends JMenuBar {
 	JMenuItem itemImport , itemSave,itemQuit,itemCredit, menuItem2, menuItem3, menuItem4;
 	JRadioButtonMenuItem rbMenuItem;
 	JCheckBoxMenuItem cbMenuItem;
-	ZoneTracage trace;
-	
+	ZoneTracage panelDessin;
+
 	public Toolbar(ZoneTracage trace){
-		this.trace = trace;
+		this.panelDessin = trace;
 
 		//FICHIER
 		menuFichier = new JMenu("Fichier");
@@ -26,51 +26,54 @@ public class Toolbar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Importation demandee");
 				final JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(new OpticusFilter());
     			int returnVal = fc.showOpenDialog(Toolbar.this);
     			if(returnVal == JFileChooser.APPROVE_OPTION) {
        				System.out.println("You chose to open this file: " + fc.getSelectedFile().getName());
 					String path = fc.getSelectedFile().getPath();
 					System.out.println(path);
-					
+
 					try {
 						FileInputStream fileStream = new FileInputStream(path);
 						BufferedInputStream bf = new BufferedInputStream(fileStream);
 						ObjectInputStream object = new ObjectInputStream(bf);
-						trace.setListObjetOptique((ArrayList<ObjetOptique>)(object.readObject()));
+						panelDessin.setListObjetOptique((ArrayList<ObjetOptique>)(object.readObject()));
 						System.out.println("Objet chargé : ");
-						
+
 					} catch (Exception i) {
 						i.printStackTrace();
 					}
-					
+
     			}
 			}
 		});
 		itemImport.setIcon(new ImageIcon("images/import.png"));
 		menuFichier.add(itemImport);
 
-		//Item suvegarder
+		//Item sauvegarder
 		itemSave = new JMenuItem(new AbstractAction("Sauvegarder"){
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent event) {
 				System.out.println("Importation demandee");
 				final JFileChooser fc = new JFileChooser();
-    			int returnVal = fc.showSaveDialog(Toolbar.this);
-    			if(returnVal == JFileChooser.APPROVE_OPTION) {
-       				System.out.println("You chose to save to this file: " + fc.getSelectedFile().getPath());
+				fc.setFileFilter(new OpticusFilter());
+				int returnVal = fc.showSaveDialog(Toolbar.this);
+				if(returnVal == JFileChooser.APPROVE_OPTION) {
+					System.out.println("You chose to save to this file: " + fc.getSelectedFile().getPath());
 					String path = fc.getSelectedFile().getPath();
 					System.out.println(path);
 
 					try {
-						FileOutputStream fileOut = new FileOutputStream("save.optimus");
+						File file = new File((String)path+"."+OpticusFilter.EXTENSION);
+						FileOutputStream fileOut = new FileOutputStream(file);
 						ObjectOutputStream out = new ObjectOutputStream(fileOut);
-						out.writeObject(e);
+						out.writeObject(panelDessin.getListObjetOptique());
 						out.close();
 						fileOut.close();
 						System.out.printf("Serialized ! ");
-					 } catch (IOException i) {
+					} catch (IOException i) {
 						i.printStackTrace();
-					 }
+					}
 				}
 			}
 		});
@@ -105,11 +108,11 @@ public class Toolbar extends JMenuBar {
 		menuAffiche = new JMenu("Affichage");
 		this.add(menuAffiche);
 
-		
+
 		//A PROPOS
 		menuCredit = new JMenu("A Propos");
 		this.add(menuCredit);
-		
+
 		//on crée item crédit
 		itemCredit = new JMenuItem(new AbstractAction("Credit"){
 			@Override
@@ -119,9 +122,8 @@ public class Toolbar extends JMenuBar {
 		});
 		itemCredit.setIcon(new ImageIcon("images/credit.png"));
 		menuCredit.add(itemCredit);
-		
+
 	}
-	
-	
+
+
 }
-	

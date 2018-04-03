@@ -57,18 +57,18 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           addMouseListener(this);
           addMouseMotionListener(this);
 
-           this.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0), "SUPPR_OBJECT");
-           this.getActionMap().put("SUPPR_OBJECT",new AbstractAction(){
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                     if(selectedObject != null){
-                          removeObjetOptique(selectedObject);
-                          resetFocus();
-                          prop.propSelect();
-                     }
-                     repaint();
-                }
-           });
+          this.getInputMap(IFW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0), "SUPPR_OBJECT");
+          this.getActionMap().put("SUPPR_OBJECT",new AbstractAction(){
+               @Override
+               public void actionPerformed(ActionEvent e) {
+                    if(selectedObject != null){
+                         removeObjetOptique(selectedObject);
+                         resetFocus();
+                         prop.propSelect();
+                    }
+                    repaint();
+               }
+          });
 
           addMouseListener(new MouseAdapter() {
                @Override
@@ -257,6 +257,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                }
           }
           if(selectedPoint != null && selectedObject != null){
+               //(System.out.println(selectedPoint);
                selectedPoint = (selectedObject).movePoint(e.getPoint(),selectedPoint);
                if(selectedObject instanceof Lentille){
                     prop.propLentille((Lentille)selectedObject);
@@ -291,9 +292,9 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
      protected void paintComponent(Graphics g){
 
-        final int SUBDIVISIONS = 80;
-        final int DRAWING_SIZE = this.getWidth();
-        final int SUBDIVISION_SIZE = DRAWING_SIZE / SUBDIVISIONS;
+          final int SUBDIVISIONS = 80;
+          final int DRAWING_SIZE = this.getWidth();
+          final int SUBDIVISION_SIZE = DRAWING_SIZE / SUBDIVISIONS;
 
           Graphics2D g2d = (Graphics2D) g.create();
           updateIntersection();
@@ -302,12 +303,12 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
           g2d.setColor(new Color(226, 226, 226, 100));
           for (int i = 1; i < SUBDIVISIONS; i++) {
-             int x = i * SUBDIVISION_SIZE;
-             g2d.drawLine(x, 0, x, getSize().height);
+               int x = i * SUBDIVISION_SIZE;
+               g2d.drawLine(x, 0, x, getSize().height);
           }
           for (int i = 1; i < SUBDIVISIONS; i++) {
-             int y = i * SUBDIVISION_SIZE;
-             g2d.drawLine(0, y, getSize().width, y);
+               int y = i * SUBDIVISION_SIZE;
+               g2d.drawLine(0, y, getSize().width, y);
           }
 
 
@@ -321,130 +322,158 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      }
 
      public void updateIntersection(){
-               for (ObjetOptique o : listeObjet){
-                    int compteur=0;
-                    if(o instanceof Source){
-                         Source s = (Source)o;
-                         ArrayList<Line2D> tabFaisceau = new ArrayList<Line2D>();
-                         tabFaisceau.add(s.getTabFaisceau().get(0));
-                         HashMap<Line2D,ObjetOptique> toNotIntersect = new HashMap<Line2D,ObjetOptique>();
+          for (ObjetOptique o : listeObjet){
+               int compteur=0;
+               if(o instanceof Source){
+                    Source s = (Source)o;
+                    ArrayList<Line2D.Double> tabFaisceau = new ArrayList<Line2D.Double>();
+                    tabFaisceau.add(s.getTabFaisceau().get(0));
+                    HashMap<Line2D,ObjetOptique> toNotIntersect = new HashMap<Line2D,ObjetOptique>();
 
-                         while(compteur < tabFaisceau.size()){
+                    while(compteur < tabFaisceau.size()){
 
-                              ResultIntersectionAvecObjetOptique intersectionObjet = intersectionAvecObjetOptique(tabFaisceau.get(compteur),toNotIntersect.get(tabFaisceau.get(compteur)));
-                              if(intersectionObjet.getIntersection() != null){
-                                   if(intersectionObjet.getObjetIntersect() instanceof Lentille){
-                                        Line2D ligneIntersect = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
-                                        tabFaisceau.set(compteur,ligneIntersect);
-                                        toNotIntersect.put(ligneIntersect,toNotIntersect.get(ligneIntersect));
-                                        Lentille lentille = (Lentille)intersectionObjet.getObjetIntersect();
-                                        double xTranslate = lentille.getCentrex() - intersectionObjet.getIntersection().getX();
-                                        double yTranslate = lentille.getCentrey() - intersectionObjet.getIntersection().getY();
-                                        Line2D ligneCentrer = Geometrie.translateLine(tabFaisceau.get(compteur),xTranslate,yTranslate);
+                         ResultIntersectionAvecObjetOptique intersectionObjet = intersectionAvecObjetOptique(tabFaisceau.get(compteur),toNotIntersect.get(tabFaisceau.get(compteur)));
+                         if(intersectionObjet.getIntersection() != null){
+                              if(intersectionObjet.getObjetIntersect() instanceof Lentille){
+                                   Line2D.Double ligneIntersect = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
+                                   tabFaisceau.set(compteur,ligneIntersect);
+                                   toNotIntersect.put(ligneIntersect,toNotIntersect.get(ligneIntersect));
+                                   Lentille lentille = (Lentille)intersectionObjet.getObjetIntersect();
+                                   double xTranslate = lentille.getCentrex() - intersectionObjet.getIntersection().getX();
+                                   double yTranslate = lentille.getCentrey() - intersectionObjet.getIntersection().getY();
+                                   Line2D ligneCentrer = Geometrie.translateLine(tabFaisceau.get(compteur),xTranslate,yTranslate);
 
-                                        Line2D planFocal;
-                                        double x = lentille.getLine().getP2().getX()-lentille.getLine().getP1().getX();
-                              		double y = lentille.getLine().getP2().getY()-lentille.getLine().getP1().getY();
-                              		double norme = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
-                              		x = x/norme;
-                              		y = y/norme;
-                              		double dx = lentille.getFocal()*y;
-                              		double dy = lentille.getFocal()*-x;
+                                   Line2D.Double planFocal;
+                                   double x = lentille.getLine().getP2().getX()-lentille.getLine().getP1().getX();
+                                   double y = lentille.getLine().getP2().getY()-lentille.getLine().getP1().getY();
+                                   double norme = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+                                   x = x/norme;
+                                   y = y/norme;
+                                   double dx = lentille.getFocal()*y;
+                                   double dy = lentille.getFocal()*-x;
 
-                                        if(dx < 0){
+                                   if(dx < 0){
+                                        dx = -dx;
+                                        dy = -dy;
+                                   }
+                                   else if(dx == 0){
+                                        if(dy < 0){
                                              dx = -dx;
                                              dy = -dy;
                                         }
-                                        else if(dx == 0){
-                                             if(dy < 0){
-                                                  dx = -dx;
-                                                  dy = -dy;
-                                             }
-                                        }
-                                        Line2D ligneNormale = new Line2D.Double(new Point2D.Double(lentille.getCentrex(),lentille.getCentrey()),new Point2D.Double(lentille.getCentrex()+dx,lentille.getCentrey()+dy));
-                                        if(Geometrie.produitScalaire(ligneCentrer,ligneNormale) > 0){
-                                             if(lentille.getFocal()>0){
-                                                  planFocal = Geometrie.translateLine(lentille.getLine(),dx,dy);
-                                             }
-                                             else{
-                                                  planFocal = Geometrie.translateLine(lentille.getLine(),-dx,-dy);
-                                             }
-
+                                   }
+                                   Line2D ligneNormale = new Line2D.Double(new Point2D.Double(lentille.getCentrex(),lentille.getCentrey()),new Point2D.Double(lentille.getCentrex()+dx,lentille.getCentrey()+dy));
+                                   if(Geometrie.produitScalaire(ligneCentrer,ligneNormale) > 0){
+                                        if(lentille.getFocal()>0){
+                                             planFocal = (Line2D.Double)Geometrie.translateLine(lentille.getLine(),dx,dy);
                                         }
                                         else{
-                                             if(lentille.getFocal()>0){
-                                                  planFocal = Geometrie.translateLine(lentille.getLine(),-dx,-dy);
-                                             }
-                                             else{
-                                                  planFocal = Geometrie.translateLine(lentille.getLine(),dx,dy);
-                                             }
+                                             planFocal = (Line2D.Double)Geometrie.translateLine(lentille.getLine(),-dx,-dy);
                                         }
-                                        Point2D intersectionPlanFocal = Geometrie.lineLine(ligneCentrer,planFocal);
 
-                                        if(intersectionPlanFocal != null){
+                                   }
+                                   else{
+                                        if(lentille.getFocal()>0){
+                                             planFocal = Geometrie.translateLine(lentille.getLine(),-dx,-dy);
+                                        }
+                                        else{
+                                             planFocal = Geometrie.translateLine(lentille.getLine(),dx,dy);
+                                        }
+                                   }
+                                   Point2D intersectionPlanFocal = Geometrie.lineLine(ligneCentrer,planFocal);
+
+                                   if(intersectionPlanFocal != null){
+                                        ResultIntersectionAvecObjetOptique intersectionRayonSortie;
+                                        if(lentille.getFocal()>0){
+                                             intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),intersectionPlanFocal),intersectionObjet.getObjetIntersect());
+                                        }
+                                        else{
+                                             double symetriqueX = intersectionObjet.getIntersection().getX() - intersectionPlanFocal.getX();
+                                             double symetriqueY = intersectionObjet.getIntersection().getY() - intersectionPlanFocal.getY();
+                                             Point2D pointSymetrique = new Point2D.Double(intersectionObjet.getIntersection().getX() + symetriqueX, intersectionObjet.getIntersection().getY() + symetriqueY);
+                                             intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),pointSymetrique),intersectionObjet.getObjetIntersect());
+
+                                        }
+                                        Line2D.Double faisceauSortie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortie.getIntersection());
+                                        tabFaisceau.add(faisceauSortie);
+                                        toNotIntersect.put(faisceauSortie,intersectionObjet.getObjetIntersect());
+                                   }
+                              }
+                              if(intersectionObjet.getObjetIntersect() instanceof Miroir){
+                                   Miroir miroir = (Miroir)intersectionObjet.getObjetIntersect();
+
+                                   Line2D.Double ligneIntersect = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
+                                   tabFaisceau.set(compteur,ligneIntersect);
+                                   toNotIntersect.put(ligneIntersect,toNotIntersect.get(ligneIntersect));
+
+
+                                   double x = miroir.getLine().getP2().getX()-miroir.getLine().getP1().getX();
+                                   double y = miroir.getLine().getP2().getY()-miroir.getLine().getP1().getY();
+                                   double norme = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
+                                   x = x/norme;
+                                   y = y/norme;
+                                   double dx = -y;
+                                   double dy = x;
+
+                                   Line2D.Double ligneNormale = new Line2D.Double(new Point2D.Double(miroir.getCentrex(),miroir.getCentrey()),new Point2D.Double(miroir.getCentrex()+dx,miroir.getCentrey()+dy));
+
+                                   if(Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur))<0 && !miroir.getSemiReflechissant()){
+                                        //Line2D ligneNormaleAffichage = new Line2D.Double(new Point2D.Double(miroir.getCentrex(),miroir.getCentrey()),new Point2D.Double(miroir.getCentrex()+50*dx,miroir.getCentrey()+50*dy));
+                                        //g2d.setColor(Color.BLUE);
+                                        //g2d.draw(ligneNormaleAffichage);
+
+                                        double symetrieAxialX = (Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dx)*2+(tabFaisceau.get(compteur).getP2().getX()-tabFaisceau.get(compteur).getP1().getX());
+                                        double symetrieAxialY = (Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dy)*2+(tabFaisceau.get(compteur).getP2().getY()-tabFaisceau.get(compteur).getP1().getY());
+
+                                        ResultIntersectionAvecObjetOptique intersectionRayonSortie;
+                                        intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),new Point2D.Double(intersectionObjet.getIntersection().getX()+symetrieAxialX,intersectionObjet.getIntersection().getY()+symetrieAxialY)),miroir);
+                                        Line2D.Double faisceauSortie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortie.getIntersection());
+                                        tabFaisceau.add(faisceauSortie);
+                                        toNotIntersect.put(faisceauSortie,intersectionObjet.getObjetIntersect());
+                                   }
+                                   else if(miroir.getSemiReflechissant()){
+                                        ResultIntersectionAvecObjetOptique intersectionRayonSortieNonReflechie;
+                                        double continuiteRayonX = tabFaisceau.get(compteur).getP2().getX()-tabFaisceau.get(compteur).getP1().getX();
+                                        double continuiteRayonY = tabFaisceau.get(compteur).getP2().getY()-tabFaisceau.get(compteur).getP1().getY();
+                                        intersectionRayonSortieNonReflechie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),new Point2D.Double(intersectionObjet.getIntersection().getX()+continuiteRayonX,intersectionObjet.getIntersection().getY()+continuiteRayonY)),miroir);
+                                        Line2D.Double faisceauSortieNonReflechie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortieNonReflechie.getIntersection());
+                                        tabFaisceau.add(faisceauSortieNonReflechie);
+                                        toNotIntersect.put(faisceauSortieNonReflechie,intersectionObjet.getObjetIntersect());
+                                        if(Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur))<0 && !miroir.getSemiReflechissant()){
+                                             double symetrieAxialX = -(Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dx)*2+(tabFaisceau.get(compteur).getP2().getX()-tabFaisceau.get(compteur).getP1().getX());
+                                             double symetrieAxialY = -(Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dy)*2+(tabFaisceau.get(compteur).getP2().getY()-tabFaisceau.get(compteur).getP1().getY());
+
                                              ResultIntersectionAvecObjetOptique intersectionRayonSortie;
-                                             if(lentille.getFocal()>0){
-                                                  intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),intersectionPlanFocal),intersectionObjet.getObjetIntersect());
-                                             }
-                                             else{
-                                                  double symetriqueX = intersectionObjet.getIntersection().getX() - intersectionPlanFocal.getX();
-                                                  double symetriqueY = intersectionObjet.getIntersection().getY() - intersectionPlanFocal.getY();
-                                                  Point2D pointSymetrique = new Point2D.Double(intersectionObjet.getIntersection().getX() + symetriqueX, intersectionObjet.getIntersection().getY() + symetriqueY);
-                                                  intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),pointSymetrique),intersectionObjet.getObjetIntersect());
-
-                                             }
-                                             Line2D faisceauSortie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortie.getIntersection());
+                                             intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),new Point2D.Double(intersectionObjet.getIntersection().getX()+symetrieAxialX,intersectionObjet.getIntersection().getY()+symetrieAxialY)),miroir);
+                                             Line2D.Double faisceauSortie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortie.getIntersection());
                                              tabFaisceau.add(faisceauSortie);
                                              toNotIntersect.put(faisceauSortie,intersectionObjet.getObjetIntersect());
                                         }
-                                   }
-                                   if(intersectionObjet.getObjetIntersect() instanceof Miroir){
-                                        Miroir miroir = (Miroir)intersectionObjet.getObjetIntersect();
-
-                                        Line2D ligneIntersect = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
-                                        tabFaisceau.set(compteur,ligneIntersect);
-                                        toNotIntersect.put(ligneIntersect,toNotIntersect.get(ligneIntersect));
-
-
-                                        double x = miroir.getLine().getP2().getX()-miroir.getLine().getP1().getX();
-                              		double y = miroir.getLine().getP2().getY()-miroir.getLine().getP1().getY();
-                              		double norme = Math.sqrt(Math.pow(x,2)+Math.pow(y,2));
-                              		x = x/norme;
-                              		y = y/norme;
-                              		double dx = -y;
-                              		double dy = x;
-
-                                        Line2D ligneNormale = new Line2D.Double(new Point2D.Double(miroir.getCentrex(),miroir.getCentrey()),new Point2D.Double(miroir.getCentrex()+dx,miroir.getCentrey()+dy));
-
-                                        if(Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur))<0){
-                                             //Line2D ligneNormaleAffichage = new Line2D.Double(new Point2D.Double(miroir.getCentrex(),miroir.getCentrey()),new Point2D.Double(miroir.getCentrex()+50*dx,miroir.getCentrey()+50*dy));
-                                             //g2d.setColor(Color.BLUE);
-                                             //g2d.draw(ligneNormaleAffichage);
-
+                                        else{
                                              double symetrieAxialX = (Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dx)*2+(tabFaisceau.get(compteur).getP2().getX()-tabFaisceau.get(compteur).getP1().getX());
                                              double symetrieAxialY = (Geometrie.produitScalaire(ligneNormale,tabFaisceau.get(compteur)))*(-dy)*2+(tabFaisceau.get(compteur).getP2().getY()-tabFaisceau.get(compteur).getP1().getY());
 
                                              ResultIntersectionAvecObjetOptique intersectionRayonSortie;
                                              intersectionRayonSortie = intersectionAvecObjetOptique(new Line2D.Double(intersectionObjet.getIntersection(),new Point2D.Double(intersectionObjet.getIntersection().getX()+symetrieAxialX,intersectionObjet.getIntersection().getY()+symetrieAxialY)),miroir);
-                                             Line2D faisceauSortie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortie.getIntersection());
+                                             Line2D.Double faisceauSortie = new Line2D.Double(intersectionObjet.getIntersection(),intersectionRayonSortie.getIntersection());
                                              tabFaisceau.add(faisceauSortie);
                                              toNotIntersect.put(faisceauSortie,intersectionObjet.getObjetIntersect());
                                         }
+                                   }
 
-                                   }
-                                   else if(intersectionObjet.getObjetIntersect() == null){
-                                        Line2D faisceauSortie = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
-                                        tabFaisceau.set(compteur,faisceauSortie);
-                                        toNotIntersect.put(faisceauSortie,toNotIntersect.get(tabFaisceau.get(compteur)));
-                                        compteur = tabFaisceau.size();
-                                   }
                               }
-                              compteur++;
+                              else if(intersectionObjet.getObjetIntersect() == null){
+                                   Line2D.Double faisceauSortie = new Line2D.Double(tabFaisceau.get(compteur).getP1(),intersectionObjet.getIntersection());
+                                   tabFaisceau.set(compteur,faisceauSortie);
+                                   toNotIntersect.put(faisceauSortie,toNotIntersect.get(tabFaisceau.get(compteur)));
+                              }
                          }
-                         s.setTabFaisceau(tabFaisceau);
-
+                         compteur++;
                     }
+                    s.setTabFaisceau(tabFaisceau);
+
                }
+          }
      }
 
      public ResultIntersectionAvecObjetOptique intersectionAvecObjetOptique(Line2D ligne,ObjetOptique objectToNotIntersect){
@@ -594,11 +623,14 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      }
 
      public ArrayList<ObjetOptique> getListObjetOptique(){
-       return listeObjet;
+          return listeObjet;
      }
 
      public void setListObjetOptique(ArrayList<ObjetOptique> tab){
-       listeObjet = tab;
-       this.repaint();
+          listeObjet = tab;
+          for(ObjetOptique objets : tab){
+               objets.setParent(this);
+          }
+          this.repaint();
      }
 }

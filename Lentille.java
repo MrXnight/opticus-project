@@ -2,13 +2,14 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.geom.*;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 
-public class Lentille extends ObjetOptique {
+public class Lentille extends ObjetOptique implements Serializable{
 	protected double f;
 	protected int TAILLE_MINIMALE = 30;
-	protected Line2D planFocal1;
-	protected Line2D planFocal2;
+	protected Line2D.Double planFocal1;
+	protected Line2D.Double planFocal2;
 	protected static int compteNumero;
 	protected int numero;
 	protected boolean planFoc = true;
@@ -44,8 +45,8 @@ public class Lentille extends ObjetOptique {
 		focus = false;
 		this.couleur = couleur;
 		this.parent = parent;
-		this.point1 = point1;
-		this.point2 = point2;
+		this.point1 = new Point2D.Double(point1.getX(),point1.getY());
+		this.point2 = new Point2D.Double(point2.getX(),point2.getY());
 		pointUpdate(point1,point2);
 		updatePlanFocal();
 		compteNumero += 1;
@@ -117,14 +118,6 @@ public class Lentille extends ObjetOptique {
 	}
 
 	public void setAngle(double angle){
-		this.angle = angle % (Math.PI*2);
-		if(this.angle>Math.PI/2){
-			this.angle = this.angle - Math.PI;
-		}
-		else if(this.angle<-Math.PI/2){
-			this.angle = this.angle + Math.PI;
-		}
-		super.setAngle(this.angle);
 		updatePlanFocal();
 	}
 

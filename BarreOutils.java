@@ -41,7 +41,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
      }
 
 
-     public void actionPerformed(ActionEvent e) {       //Lors d'un clic sur un bouton outil, on met à jour l'outil actif dans la variable activeTool 
+     public void actionPerformed(ActionEvent e) {       //Lors d'un clic sur un bouton outil, on met à jour l'outil actif dans la variable activeTool
           JButton btn = (JButton) e.getSource();
 
           if(btn == btnSource){

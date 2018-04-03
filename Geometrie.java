@@ -3,11 +3,11 @@ import java.awt.geom.Point2D;
 
 public final class Geometrie{       //Cette classe contient les différentes méthodes qui réaliset des calculs de géométrie utile pour la zone de dessin
 
-     public static Line2D translateLine(Line2D line,double transx, double transy){      //Méthode qui translate des lignes
+     public static Line2D.Double translateLine(Line2D line,double transx, double transy){      //Méthode qui translate des lignes
 
            Point2D p1 = new Point2D.Double(line.getP1().getX() + transx, line.getP1().getY() + transy);
            Point2D p2 = new Point2D.Double(line.getP2().getX() + transx, line.getP2().getY() + transy);
-           Line2D result = new Line2D.Double(p1, p2);
+           Line2D.Double result = new Line2D.Double(p1, p2);
            return result;
      }
 

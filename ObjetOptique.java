@@ -13,10 +13,10 @@ public abstract class ObjetOptique implements Serializable{        //Classe abst
 	protected double taille;
 	protected boolean focus;
 	protected double centrex,centrey;
-	protected Point2D point1;
-	protected Point2D point2;
-	protected Line2D line;
-	protected JComponent parent;
+	protected Point2D.Double point1;
+	protected Point2D.Double point2;
+	protected Line2D.Double line;
+	protected transient JComponent parent;
 
 	public ObjetOptique (double posx, double posy, double angle, Color col, double taille) {
 		centrex = (int)posx;
@@ -58,7 +58,14 @@ public abstract class ObjetOptique implements Serializable{        //Classe abst
 		parent.repaint();
 	}
 
-	public void setAngle(double angle){     //Méthode qui retourne l'angle d'orientation de l'objet optique
+	public void setAngle(double angle){
+		this.angle = angle % (Math.PI*2);
+		if(this.angle>Math.PI/2){
+			this.angle = this.angle - Math.PI;
+		}
+		else if(this.angle<-Math.PI/2){
+			this.angle = this.angle + Math.PI;
+		}
 		point1 = new Point2D.Double((centrex - taille * Math.cos(angle)), (centrey - taille * Math.sin(-angle)));
 		point2 = new Point2D.Double((centrex + taille * Math.cos(angle)), (centrey + taille * Math.sin(-angle)));
 		line = new Line2D.Double(point1,point2);
@@ -87,20 +94,19 @@ public abstract class ObjetOptique implements Serializable{        //Classe abst
 		try {
 			Robot robot = new Robot();
 
-			if (point1 == clickedPoint) {
-				if (Math.abs(Point.distance(newPoint.getX(), newPoint.getY(), point2.getX(), point2.getY()))
-				/ 2 >= 30) {
-					point1 = newPoint;
+			if (point1.equals(clickedPoint)) {
+				if (Math.abs(Point2D.distance(newPoint.getX(), newPoint.getY(), point2.getX(), point2.getY()))>= 50) {
+					this.point1 = new Point2D.Double(newPoint.getX(),newPoint.getY());
+					System.out.println(point1);
 				} else {
 					newPoint = point1;
 					Point point1Screen = new Point((int) point1.getX(), (int) point1.getY());
 					SwingUtilities.convertPointToScreen(point1Screen, parent);
 					robot.mouseMove(point1Screen.x, point1Screen.y);
 				}
-			} else if (point2 == clickedPoint) {
-				if (Math.abs(Point2D.distance(point1.getX(), point1.getY(), newPoint.getX(), newPoint.getY()))
-				/ 2 >= 30) {
-					point2 = newPoint;
+			} else if (point2.equals(clickedPoint)) {
+				if (Math.abs(Point2D.distance(point1.getX(), point1.getY(), newPoint.getX(), newPoint.getY()))>= 50) {
+					this.point2 = new Point2D.Double(newPoint.getX(),newPoint.getY());
 				} else {
 					newPoint = point2;
 					Point point2Screen = new Point((int) point2.getX(), (int) point2.getY());
@@ -112,17 +118,18 @@ public abstract class ObjetOptique implements Serializable{        //Classe abst
 			taille = Math.abs(Point.distance(point1.getX(), point1.getY(), point2.getX(), point2.getY())) / 2;
 			if (point1.getX() <= point2.getX()) {
 				angle = -Math.atan2(point2.getY() - point1.getY(), Math.abs(point1.getX() - point2.getX()));
-				centrex = (int) (point1.getX() + Math.cos(angle) * taille);
-				centrey = (int) (point1.getY() + Math.sin(-angle) * taille);
+				centrex = (point1.getX() + Math.cos(angle) * taille);
+				centrey = (point1.getY() + Math.sin(-angle) * taille);
 			} else if (point1.getX() > point2.getX()) {
 				angle = -Math.atan2(point1.getY() - point2.getY(), Math.abs(point1.getX() - point2.getX()));
-				centrex = (int) (point2.getX() + Math.cos(angle) * taille);
-				centrey = (int) (point2.getY() + Math.sin(-angle) * taille);
+				centrex = (point2.getX() + Math.cos(angle) * taille);
+				centrey = (point2.getY() + Math.sin(-angle) * taille);
 			}
 			line = new Line2D.Double(point1, point2);
 			parent.repaint();
 			return newPoint;
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
@@ -163,6 +170,10 @@ public abstract class ObjetOptique implements Serializable{        //Classe abst
     public Point2D getCentre(){
         Point2D centre = new Point2D.Double(centrex, centrey);
         return(centre);
+    }
+
+    public void setParent(JComponent parent){
+	    this.parent = parent;
     }
 
     public abstract Line2D getLine();       //Méthode abstraite qui renvoie la ligne associée à l'objet

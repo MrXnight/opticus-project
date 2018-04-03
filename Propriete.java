@@ -132,7 +132,24 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         });
 
         boxSemiReflet = new JCheckBox("Semi réfléchissant");
-        boxSemiReflet.addActionListener(this);
+        boxSemiReflet.addItemListener(new ItemListener(){
+             public void itemStateChanged(ItemEvent e){
+                  Object source = e.getItemSelectable();
+                  if(source == boxSemiReflet){
+                       if (e.getStateChange() == ItemEvent.DESELECTED){
+                            if(panelDessin.getSelectedObject() instanceof Miroir){
+                                 ((Miroir)panelDessin.getSelectedObject()).setSemiReflechissant(false);
+                            }
+                       }
+                       else if(e.getStateChange() == ItemEvent.SELECTED){
+                            if(panelDessin.getSelectedObject() instanceof Miroir){
+                                 ((Miroir)panelDessin.getSelectedObject()).setSemiReflechissant(true);
+                            }
+                       }
+                  }
+                  panelDessin.repaint();
+             }
+        });
 
         btnValider = new JButton("Valider");
         btnValider.addActionListener(this);
@@ -221,7 +238,6 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.add(entreAngle);
         this.add(labelFocal);
         this.add(entreFocal);
-        this.add(boxPlans);
         this.add(btnCouleur);
         this.add(btnValider);
         this.repaint();
@@ -337,7 +353,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         nomOutil.setText("Capture d'ecran");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
-        
+
         //Récupération des dimensions de l'image
         int w = panelDessin.getWidth();
         int h = panelDessin.getHeight();
