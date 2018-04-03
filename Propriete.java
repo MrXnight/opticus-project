@@ -9,6 +9,12 @@ import javax.swing.JColorChooser;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 public class Propriete extends JPanel implements ActionListener{           //Cette classe correspond au paneau de droite dans le programme
     protected JLabel nomOutil, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
@@ -331,7 +337,33 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         nomOutil.setText("Capture d'ecran");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
+        
+        //Récupération des dimensions de l'image
+        int w = panelDessin.getWidth();
+        int h = panelDessin.getHeight();
 
+        //Création de l'image par le biais d'un buffer
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bi.createGraphics();
+        panelDessin.paint(g);
+
+        //Récupération du nom et du path que choisi l'utilisateur
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Sauvegarde du système optique");
+        int userSelection = fileChooser.showSaveDialog(panelDessin);
+
+        //Sauvegarde du fichier au format .png
+        if(userSelection == JFileChooser.APPROVE_OPTION){
+            String file_name = fileChooser.getSelectedFile().getPath() + ".png";
+            File outputFile = new File(file_name);
+            try{
+                ImageIO.write(bi, "png", outputFile);
+            } catch(IOException ex){
+                ex.printStackTrace();
+            }
+            //Message de confirmation
+            JOptionPane.showMessageDialog(null, "Image sauvegardee", "Sauvegarde", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     public double getEntreFocalValue(){     //Méthode qui permet de détecter un éventuel oubli de renseignement de la distance focale par l'utilisateur lorsqu'il créé une lentille
