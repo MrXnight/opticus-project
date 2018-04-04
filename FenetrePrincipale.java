@@ -45,8 +45,6 @@ public class FenetrePrincipale extends JFrame implements ActionListener{        
 		BarreOutils barre = new BarreOutils(prop);
 		mainPanel.add(barre, BorderLayout.WEST);
 
-		mainPanel.add(new Button("BAS"), BorderLayout.SOUTH);
-
 		mainPanel.add(panelDessin,BorderLayout.CENTER);
 
 		this.add(mainPanel);

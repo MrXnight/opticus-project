@@ -93,22 +93,6 @@ public class Toolbar extends JMenuBar {
 		itemQuit.setIcon(new ImageIcon("images/exit.png"));
 		menuFichier.add(itemQuit);
 
-
-		//on crée un séprateur
-		menuFichier.addSeparator();
-
-		menuItem2 = new JMenuItem("Deuxi\u00e8me option");
-		menuFichier.add(menuItem2);
-
-		menuItem3 = new JMenuItem("Troisi\u00e8me option");
-		menuFichier.add(menuItem3);
-
-
-		//AFFICHAGE
-		menuAffiche = new JMenu("Affichage");
-		this.add(menuAffiche);
-
-
 		//A PROPOS
 		menuCredit = new JMenu("A Propos");
 		this.add(menuCredit);

@@ -26,10 +26,11 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     protected static double f=10;
     protected static int n=0;
 
+    protected final int hauteurTextField = 15;
+
     public Propriete(int width, int height) {       //Constructeur de la classe
-
-         this.panelDessin = null;
-
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        this.panelDessin = null;
         this.setPreferredSize(new Dimension((int) (width * 0.2), height));
 
         nomOutil = new JLabel();                //On initialise tout les objets graphique qui apparaîtrons dans les propriétés
@@ -53,7 +54,11 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         labelAngle = new JLabel("Angle =");
         labelFocal = new JLabel("f = ");
 
+        
+
         entreX = new JTextField();
+        entreX.setLayout(new FlowLayout()); 
+        entreX.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
         Action actionEntreX = new AbstractAction()      //Permet d'actualiser les coordonnée X d'un objet sélectionné
         {
             @Override
@@ -68,6 +73,8 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreX.addActionListener(actionEntreX);
 
         entreY = new JTextField();
+        entreY.setLayout(new FlowLayout());
+        entreY.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
         Action actionEntreY = new AbstractAction()      //Permet d'actualiser les coordonnée Y d'un objet sélectionné
         {
             @Override
@@ -84,6 +91,8 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreTaille = new JTextField();
 
         entreAngle = new JTextField();
+        entreAngle.setLayout(new FlowLayout());
+        entreAngle.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
         Action actionEntreAngle = new AbstractAction()  //Permet d'actualiser l'angle d'un objet sélectionné
         {
              @Override
@@ -98,6 +107,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreAngle.addActionListener(actionEntreAngle);
 
         entreFocal = new JTextField();
+        entreFocal.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
         Action actionEntreFocal = new AbstractAction()  //Permet d'actualiser la distance focale d'une lentille selectionnée
         {
              @Override
