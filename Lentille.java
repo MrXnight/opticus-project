@@ -118,6 +118,7 @@ public class Lentille extends ObjetOptique implements Serializable{
 	}
 
 	public void setAngle(double angle){
+		super.setAngle(angle);
 		updatePlanFocal();
 	}
 
