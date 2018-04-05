@@ -19,8 +19,8 @@ import java.awt.event.*;
  * @author Antoine BAILLET
  */
 public class Credit extends JFrame implements ActionListener{
-	private final ImageIcon yoshi = new ImageIcon(Credit.class.getResource("images/vega.gif"));
-	private JButton quitter = new JButton ("Revenir au menu");
+	private final ImageIcon magicus = new ImageIcon(Credit.class.getResource("images/magicus.gif"));
+	private JButton quitter = new JButton ("Revenir à Opticus Magicus !");
 	private JButton scrollHaut = new JButton("Haut");
 	private JButton scrollBas = new JButton("Bas");
 	private Boolean versLeBas;
@@ -44,7 +44,6 @@ public class Credit extends JFrame implements ActionListener{
 		JPanel titre = new JPanel();
 		JPanel ligne1 = new JPanel();
 		JPanel ligne2 = new JPanel();
-		JPanel ligne3 = new JPanel();
 		
 		
 		scrollHaut.addActionListener(new ActionListener(){
@@ -66,7 +65,8 @@ public class Credit extends JFrame implements ActionListener{
 		});
 				
 		
-		textArea = new JTextArea("	texte a ecrire ^^...................................Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ");
+		textArea = new JTextArea(
+			"C'est avant tout l'histoire d'un projet qui a mal tourné... Un soir de pleine lune après la fameuse journée Premier Cycle où les \" Qu'est-ce que se passe ? \" reignaient à tout va, un groupe d'étudiants venait de trouver une idée fabuleuse pour son projet d'informatique. Les jeux n'étant pas tolérées, ils avaient alors cru choisir un sujet original... Il n'en était rien, après de brèves discussions avec les autres groupes de la classe, la magie noire que constitue l'optique géométrique avait été l'élue de nombreux étudiants qui vouaient décidément un culte profond pour ce domaine dans lequel peu brillaient notamment lors de la démonstration de la relation de Newton (cf. partiel 1er semestre 1ère année). Cette histoire se poursuit donc avec des nuits à plancher sur les rayons incidents et ses intersections capricieuses à travers des Line2D capricieuses. Java est-il fait pour l'optique géométrique ? Nul ne saurait le dire mais ce que ces braves étudiants peuvent affirmer c'est que dans ce projet d'info, ils auront fait (compris ?) plus de maths que pendant la dernière IE. Au final, le \".magicus\" est né, une extension de fichier qui envahira bientôt les ordinateurs du monde entier. Enrichi des meilleurs tableaux d'objets optiques dénichés aux 4 coins du monde, il saura ravir vos désirs de vergence et de plan focaux !");
 		//taille=1092
 		textArea.setEditable(false);
 		textArea.setWrapStyleWord(true); // creation du texte et de la mise en page
@@ -80,7 +80,7 @@ public class Credit extends JFrame implements ActionListener{
 		JLabel image = new JLabel();
 		/*JLabel content = new JLabel();*/
 		
-		image.setIcon(yoshi);
+		image.setIcon(magicus);
 		Animation anim = new Animation(image, "Bienvenue dans la page Cr\u00e9dit !!", 32);
         anim.start();
 	

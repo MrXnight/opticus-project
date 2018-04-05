@@ -25,6 +25,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     protected Color couleurChoisi;
     protected static double f=10;
     protected static int n=0;
+    protected Font font1;
 
     protected final int hauteurTextField = 15;
 
@@ -48,6 +49,8 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         btnCouleur.addActionListener(this);
         couleurChoisi = Color.BLACK;
 
+        font1 = new Font("Cambria", Font.PLAIN, 20);
+
         labelX = new JLabel("x =");
         labelY = new JLabel("y =");
         labelTaille = new JLabel("Taille =");
@@ -57,8 +60,8 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         
 
         entreX = new JTextField();
-        entreX.setLayout(new FlowLayout()); 
-        entreX.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
+        entreX.setFont(font1); 
+        entreX.setHorizontalAlignment(JTextField.CENTER);
         Action actionEntreX = new AbstractAction()      //Permet d'actualiser les coordonnée X d'un objet sélectionné
         {
             @Override
@@ -73,8 +76,9 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreX.addActionListener(actionEntreX);
 
         entreY = new JTextField();
-        entreY.setLayout(new FlowLayout());
-        entreY.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
+        entreY.setFont(font1);
+        entreY.setHorizontalAlignment(JTextField.CENTER);
+        //entreY.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
         Action actionEntreY = new AbstractAction()      //Permet d'actualiser les coordonnée Y d'un objet sélectionné
         {
             @Override
@@ -89,10 +93,13 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreY.addActionListener(actionEntreY);
 
         entreTaille = new JTextField();
+        entreTaille.setFont(font1);
+        entreTaille.setHorizontalAlignment(JTextField.CENTER);
 
         entreAngle = new JTextField();
-        entreAngle.setLayout(new FlowLayout());
-        entreAngle.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
+        entreAngle.setFont(font1);
+        entreAngle.setHorizontalAlignment(JTextField.CENTER);
+    
         Action actionEntreAngle = new AbstractAction()  //Permet d'actualiser l'angle d'un objet sélectionné
         {
              @Override
@@ -107,7 +114,8 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreAngle.addActionListener(actionEntreAngle);
 
         entreFocal = new JTextField();
-        entreFocal.setPreferredSize( new Dimension( (int) (width * 0.2), hauteurTextField ) );
+        entreFocal.setFont(font1);
+        entreFocal.setHorizontalAlignment(JTextField.CENTER);
         Action actionEntreFocal = new AbstractAction()  //Permet d'actualiser la distance focale d'une lentille selectionnée
         {
              @Override
