@@ -192,7 +192,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.add(description);
         nomOutil.setText("Source");
         description.setText(
-            "<html>Cet outil vous permet de creer une nouvelle source en definissant deux point dans l'espace.</html>");
+            "<html>Cet outil vous permet de créer une nouvelle source en definissant deux point dans l'espace.</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -244,7 +244,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.add(description);
         nomOutil.setText("Lentille");
         description.setText(
-            "<html>Cet outil vous permet de creer une nouvelle lentille en definissant deux point dans l'espace.</html>");
+            "<html>Cet outil vous permet de créer une nouvelle lentille en definissant d'abord la distance focale puis deux point dans l'espace (ou alors en saisissant les paramètres ci-dessous).</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -290,6 +290,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.repaint();
 
     }
+    
 
     public void propSelect() {      //Méthode qui permet d'afficher les propriété de l'outil sélectionner
          if(panelDessin != null){
@@ -300,7 +301,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.add(description);
         nomOutil.setText("Selectionner");
         description.setText(
-            "<html>Permet de deplacer des objets deja placés </html>");
+            "<html>Cet outil permet de séléctionner et déplacer des objets déjà placés dans la zone de traçage</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.repaint();
     }
@@ -313,7 +314,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.add(description);
         nomOutil.setText("Mirroir");
         description.setText(
-            "<html>Cet outil vous permet de creer un nouveau miroir en definissant deux point dans l'espace.</html>");
+            "<html>Cet outil vous permet de créer un nouveau miroir en definissant deux point dans l'espace.</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
