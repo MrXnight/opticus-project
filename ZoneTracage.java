@@ -5,11 +5,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
 
 import java.beans.*;
-import java.util.Scanner;
 import java.util.HashMap;
 
 public class ZoneTracage extends JPanel implements MouseMotionListener,MouseListener{
@@ -146,7 +143,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                          double propFocal = prop.getEntreFocalValue();
                          if(propFocal != 0.0){
                               listeObjet.add(new Lentille(positionningPoint1,positionningPoint2,prop.getCouleurChoisi(),propFocal,this));
-                              System.out.println(prop.getCouleurChoisi());
+                              //System.out.println(prop.getCouleurChoisi());
                          }
                     }
                     else if(BarreOutils.activeTool.equals(ActiveTool.SOURCE)){
@@ -172,7 +169,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
           int distanceMin = 5;
           selectedObject = null;
           selectedPoint = null;
-          System.out.println("Pressed");
+          //System.out.println("Pressed");
           if(BarreOutils.activeTool == ActiveTool.SELECT){
                for(ObjetOptique i : listeObjet){
                     i.setFocus(false);
@@ -202,7 +199,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
                     if(selectedObject instanceof Source){
                          prop.propSource((Source)selectedObject);
                     }
-                    System.out.println(selectedObject.getCentrex()+" et "+selectedObject.getCentrey());
+                    //System.out.println(selectedObject.getCentrex()+" et "+selectedObject.getCentrey());
                }
                else{
                     prop.propSelect();

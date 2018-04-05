@@ -1,14 +1,11 @@
 import java.awt.Dimension;      //Import des différentes librairies Java
 import java.awt.event.*;
 import javax.swing.JButton;
-import javax.swing.JToolBar;
 import javax.swing.JCheckBox;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.JColorChooser;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -441,7 +438,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
                  panelDessin.getSelectedObject().setColor(couleurChoisi);
                  panelDessin.repaint();
             }
-            System.out.println(couleurChoisi);
+            //System.out.println(couleurChoisi);
         }
         if(e.getSource() == btnValider){                    //Actualisation des propriété d'un objet sélectionné par le clic sur le bouton valider
              if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){

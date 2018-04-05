@@ -1,4 +1,3 @@
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.*;
 import java.util.ArrayList;
@@ -24,21 +23,23 @@ public class Toolbar extends JMenuBar {
 		itemImport = new JMenuItem(new AbstractAction("Importer/Charger un fichier"){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Importation demandee");
+				//System.out.println("Importation demandee");
 				final JFileChooser fc = new JFileChooser();
 				fc.setFileFilter(new OpticusFilter());
     			int returnVal = fc.showOpenDialog(Toolbar.this);
     			if(returnVal == JFileChooser.APPROVE_OPTION) {
-       				System.out.println("You chose to open this file: " + fc.getSelectedFile().getName());
+       				//System.out.println("You chose to open this file: " + fc.getSelectedFile().getName());
 					String path = fc.getSelectedFile().getPath();
-					System.out.println(path);
+					//System.out.println(path);
 
 					try {
 						FileInputStream fileStream = new FileInputStream(path);
 						BufferedInputStream bf = new BufferedInputStream(fileStream);
 						ObjectInputStream object = new ObjectInputStream(bf);
 						panelDessin.setListObjetOptique((ArrayList<ObjetOptique>)(object.readObject()));
-						System.out.println("Objet chargé : ");
+						//System.out.println("Objet chargé : ");
+
+						object.close();
 
 					} catch (Exception i) {
 						i.printStackTrace();
@@ -54,14 +55,14 @@ public class Toolbar extends JMenuBar {
 		itemSave = new JMenuItem(new AbstractAction("Sauvegarder"){
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				System.out.println("Importation demandee");
+				//System.out.println("Importation demandee");
 				final JFileChooser fc = new JFileChooser();
 				fc.setFileFilter(new OpticusFilter());
 				int returnVal = fc.showSaveDialog(Toolbar.this);
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
-					System.out.println("You chose to save to this file: " + fc.getSelectedFile().getPath());
+					//System.out.println("You chose to save to this file: " + fc.getSelectedFile().getPath());
 					String path = fc.getSelectedFile().getPath();
-					System.out.println(path);
+					//System.out.println(path);
 
 					try {
 						File file = new File((String)path+"."+OpticusFilter.EXTENSION);
@@ -70,7 +71,7 @@ public class Toolbar extends JMenuBar {
 						out.writeObject(panelDessin.getListObjetOptique());
 						out.close();
 						fileOut.close();
-						System.out.printf("Serialized ! ");
+						//System.out.printf("Serialized ! ");
 					} catch (IOException i) {
 						i.printStackTrace();
 					}

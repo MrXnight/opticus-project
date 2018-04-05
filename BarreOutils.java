@@ -47,7 +47,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
           if(btn == btnSource){
                if(!BarreOutils.activeTool.equals(ActiveTool.SOURCE)){
                     BarreOutils.activeTool = ActiveTool.SOURCE;
-                    System.out.println(BarreOutils.activeTool+" est actif !");
+                    //System.out.println(BarreOutils.activeTool+" est actif !");
                     prop.propSource();
                }
           }
@@ -55,7 +55,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
           if(btn == btnLentille){
                if(!BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){
                     BarreOutils.activeTool = ActiveTool.LENTILLE;
-                    System.out.println(BarreOutils.activeTool+" est actif !");
+                    //System.out.println(BarreOutils.activeTool+" est actif !");
                     prop.propLentille();
 
                }
@@ -64,7 +64,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
           if(btn == btnMiroir){
                if(!BarreOutils.activeTool.equals(ActiveTool.MIROIR)){
                     BarreOutils.activeTool = ActiveTool.MIROIR;
-                    System.out.println(BarreOutils.activeTool+" est actif !");
+                    //System.out.println(BarreOutils.activeTool+" est actif !");
                     prop.propMiroir();
                }
           }
@@ -73,7 +73,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
                if(!BarreOutils.activeTool.equals(ActiveTool.SELECT)){
                     BarreOutils.activeTool = ActiveTool.SELECT;
                     prop.propSelect();
-                    System.out.println(BarreOutils.activeTool+" est actif !");
+                    //System.out.println(BarreOutils.activeTool+" est actif !");
                }
 
           }
@@ -81,7 +81,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
           if(btn == btnSuppr){
                if(!BarreOutils.activeTool.equals(ActiveTool.SUPPR)){
                     BarreOutils.activeTool = ActiveTool.SUPPR;
-                    System.out.println(BarreOutils.activeTool+" est actif !");
+                    //System.out.println(BarreOutils.activeTool+" est actif !");
                     prop.propSuppr();
                }
           }
@@ -89,7 +89,7 @@ public class BarreOutils extends JToolBar implements ActionListener{
           if(btn == btnScreenshot){
                if(!BarreOutils.activeTool.equals(ActiveTool.SCREENSHOT)){
                     BarreOutils.activeTool = ActiveTool.SCREENSHOT;
-                    System.out.println(BarreOutils.activeTool+" est actif !");
+                    //System.out.println(BarreOutils.activeTool+" est actif !");
                     prop.propScreenshot();
                }
           }

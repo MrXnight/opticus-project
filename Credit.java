@@ -6,11 +6,8 @@ import javax.swing.ImageIcon;
 import javax.swing.BoxLayout;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import java.awt.Font;
 import javax.swing.Timer;
-import java.awt.EventQueue;	
 import java.awt.event.*;
 
 

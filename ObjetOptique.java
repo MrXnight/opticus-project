@@ -1,11 +1,7 @@
 import java.awt.*;      //Import des différentes librairies Java
 import javax.swing.*;
-import javax.swing.event.MouseInputAdapter;
-import javax.swing.event.MouseInputListener;
-import java.awt.event.MouseEvent;
 import java.awt.geom.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 
 
 /**
@@ -178,7 +174,7 @@ public abstract class ObjetOptique implements Serializable{        /** The angle
 			if (point1.equals(clickedPoint)) {
 				if (Math.abs(Point2D.distance(newPoint.getX(), newPoint.getY(), point2.getX(), point2.getY()))>= 50) {
 					this.point1 = new Point2D.Double(newPoint.getX(),newPoint.getY());
-					System.out.println(point1);
+					//System.out.println(point1);
 				} else {
 					newPoint = point1;
 					Point point1Screen = new Point((int) point1.getX(), (int) point1.getY());
@@ -193,7 +189,7 @@ public abstract class ObjetOptique implements Serializable{        /** The angle
 					Point point2Screen = new Point((int) point2.getX(), (int) point2.getY());
 					SwingUtilities.convertPointToScreen(point2Screen, parent);
 					robot.mouseMove(point2Screen.x, point2Screen.y);
-					System.out.println("robot");
+					//System.out.println("robot");
 				}
 			}
 			taille = Math.abs(Point.distance(point1.getX(), point1.getY(), point2.getX(), point2.getY())) / 2;
