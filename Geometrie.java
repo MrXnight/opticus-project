@@ -1,9 +1,21 @@
 import java.awt.geom.Line2D;        //Import des différentes librairies Java
 import java.awt.geom.Point2D;
 
-public final class Geometrie{       //Cette classe contient les différentes méthodes qui réaliset des calculs de géométrie utile pour la zone de dessin
+/**
+ * La Classe Geometrie.
+ * Cette classe contient les différentes méthodes qui réaliset des calculs de géométrie utile pour la zone de dessin
+ */
+public final class Geometrie{       
 
-     public static Line2D.Double translateLine(Line2D line,double transx, double transy){      //Méthode qui translate des lignes
+     /**
+        * Translate line.Méthode qui translate des lignes
+        *
+        * @param line la ligne que l'on veut translater
+        * @param transx la valeur en x dont on souhaite déplacer la ligne
+        * @param transy la valeur en y dont on souhaite déplacer la ligne
+        * @return the line 2D.Double translatée
+        */
+       public static Line2D.Double translateLine(Line2D line,double transx, double transy){     
 
            Point2D p1 = new Point2D.Double(line.getP1().getX() + transx, line.getP1().getY() + transy);
            Point2D p2 = new Point2D.Double(line.getP2().getX() + transx, line.getP2().getY() + transy);
@@ -11,11 +23,29 @@ public final class Geometrie{       //Cette classe contient les différentes mé
            return result;
      }
 
+     /**
+      * Line line.
+      * Méthode qui détermine l'intersection entre deux droites dirigées par deux lignes données 
+      * (Détermine l'intersection comme si les droites étaient infinies)
+      *
+      * @param a the a
+      * @param b the b
+      * @return the point 2 D
+      */
      public static Point2D lineLine(ObjetOptique a, ObjetOptique b){
           return lineLine(a.getLine(),b.getLine());
      }
 
-     public static Point2D lineLine(Line2D a, Line2D b){        //Méthode qui détermine l'intersection entre deux droites dirigées par deux lignes données (Détermine l'intersection comme si les droites étaient infinies)
+     /**
+      * Line line.
+      * Line line.Méthode qui détermine l'intersection entre deux droites dirigées par deux lignes données 
+      * (Détermine l'intersection comme si les droites étaient infinies)
+      *
+      * @param a le premier point
+      * @param b le deuxième point
+      * @return the point 2 D
+      */
+     public static Point2D lineLine(Line2D a, Line2D b){   
           double x1 = a.getP1().getX();
           double y1 = a.getP1().getY();
           double x2 = a.getP2().getX();
@@ -35,7 +65,15 @@ public final class Geometrie{       //Cette classe contient les différentes mé
 
      }
 
-     public static double produitScalaire(Line2D line1, Line2D line2){  //Méthode qui renvoie le produit scalaire canonique usuel entre deux lignes
+     /**
+      * Produit scalaire.
+      * Méthode qui renvoie le produit scalaire canonique usuel entre deux lignes
+      *
+      * @param line1 la ligne 1
+      * @param line2 la ligne 2
+      * @return la valeur du produit scalaire
+      */
+     public static double produitScalaire(Line2D line1, Line2D line2){
           double x1 = line1.getP2().getX() - line1.getP1().getX();
           double x2 = line2.getP2().getX() - line2.getP1().getX();
           double y1 = line1.getP2().getY() - line1.getP1().getY();
