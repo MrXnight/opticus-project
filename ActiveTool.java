@@ -1,5 +1,5 @@
 public enum ActiveTool{
-     LENTILLE("Lentille"),SOURCE("Source"),MIROIR("Miroir"),NULL("Aucun"),SELECT("Select"),SUPPR("Supprimer"), SCREENSHOT("CaptureEcran");
+     LENTILLE("Lentille"),SOURCE("Source"),MIROIR("Miroir"),NULL("Aucun"),SELECT("Select"),SUPPR("Supprimer"), SCREENSHOT("CaptureEcran"); // les différents outils actifs
 
      private String name;
 
@@ -13,5 +13,4 @@ public enum ActiveTool{
 
 }
 
-//La méthode ActiveTool est une énumération, elle possède en attribut plusieurs chaines de caractères et un nom qui est susceptible de changer en prenant la valeur d'une de ses chaines.
-//C'est cet objet qui stockera l'information de quel outil est actif
+//La méthode ActiveTool est une énumération, elle va définir les valeurs que va pouvoir prendre l'attribut activeTool qui définit l'outil actif

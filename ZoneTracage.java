@@ -166,7 +166,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
 
      @Override
      public void mousePressed(MouseEvent e) {
-          int distanceMin = 5;
+          double distanceMin = 5;
           selectedObject = null;
           selectedPoint = null;
           //System.out.println("Pressed");

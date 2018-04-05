@@ -11,33 +11,19 @@ public class Miroir extends ObjetOptique {
 
 	/** On déclare l'écart. */
 	private final Double ecart = 10.0;
-	
+
 	/** On déclare le compteur pour définir le nom d'un nouveau miroir*/
 	protected static int compteNumero;
-	
+
 	/** Le numéro du miroir instancié */
 	protected int numero;
-	
+
 	/** Booléen pour définir si le miroir est semi-reflechissant ou non */
 	protected boolean semiReflechissant;
 
-	/**
-	 * Instantiates a new miroir.
-	 *
-	 * @param posx la position en x
-	 * @param posy la position en y
-	 * @param angle l'angle entre la lentille et le repère du plan
-	 * @param col la couleur
-	 * @param taille la taille
-	 * @param parent le parent
-	 */
 	public Miroir(double posx, double posy, double angle, Color col, double taille, JComponent parent) {
-		super(posx, posy, angle, col, taille);
+		super(posx, posy, angle, col, taille,parent);
 		semiReflechissant = false;
-		point1 = new Point2D.Double((centrex - taille * Math.cos(angle)), (centrey - taille * Math.sin(-angle)));
-		point2 = new Point2D.Double((centrex + taille * Math.cos(angle)), (centrey + taille * Math.sin(-angle)));
-		line = new Line2D.Double(point1, point2);
-		this.parent = parent;
 		compteNumero += 1;
 		numero = compteNumero;
 	}
@@ -62,23 +48,6 @@ public class Miroir extends ObjetOptique {
 		numero = compteNumero;
 	}
 
-
-
-
-	/* (non-Javadoc)
-	 * @see ObjetOptique#distancePoint(java.awt.geom.Point2D)
-	 */
-	public int distancePoint(Point2D p) {
-		return (int) (line.ptSegDist(p));
-	}
-
-
-	/* (non-Javadoc)
-	 * @see ObjetOptique#getLine()
-	 */
-	public Line2D getLine() {
-		return (line);
-	}
 
 	/**
 	 * Recupérer le numéro du miroir.
@@ -127,12 +96,14 @@ public class Miroir extends ObjetOptique {
 			Double deltaX = Math.cos(angle) * ecart;
 			Double deltaY = Math.sin(angle) * ecart;
 
+			//On affiche un nombre de hachure dépendant de la taille du miroir
 			for (int i = (int) -taille / 10; i < (int) taille / 10 + 1; i++) {
 				g2d.draw(Geometrie.translateLine(hachure, deltaX * i, -deltaY * i));
 			}
+
 		}
 
-		//On trace les hitobox du miroir
+		//Si le miroir a le focus on déssine une croix au point 1 et 2 et le carré au centre pour les différents mouvements
 
 		if(hasFocus()){
 			g2d.setColor(Color.black);

@@ -3,7 +3,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.BorderLayout;
 
-public class FenetrePrincipale extends JFrame implements ActionListener{        //Cette classe correspond à la fenêtre dans laquelle toute l'interface graphique va être affichée
+public class FenetrePrincipale extends JFrame{        //Cette classe correspond à la fenêtre dans laquelle toute l'interface graphique va être affichée
 
 	private final double ratio = 0.8;
 	private JPanel mainPanel;
@@ -22,16 +22,15 @@ public class FenetrePrincipale extends JFrame implements ActionListener{        
 		int height = (int)(ratio*screenSize.getHeight());
 
 
-		this.setSize(width,height);         //On paramètre le titre la dimension de la fenêtre
+		this.setSize(width,height);         //On paramètre la dimension de la fenêtre
 		this.setTitle("Opticus Magicus");
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(false);
 		//on crée le panel principal
 		mainPanel = new JPanel();
 		mainPanel.setLayout(new BorderLayout());
 
-		panelDessin = new ZoneTracage(this);
+		panelDessin = new ZoneTracage(this); //On instancie notre panelDessin
 
 		//on instancie la barre de menu
 		Toolbar tool = new Toolbar(panelDessin);
@@ -49,7 +48,7 @@ public class FenetrePrincipale extends JFrame implements ActionListener{        
 
 		this.add(mainPanel);
 
-		prop.setZoneTracage(panelDessin);
+		prop.setZoneTracage(panelDessin); //panelDessin et prop doivent pouvoir interagir entre eux, donc on les références chez chacun
 		panelDessin.setPropriete(prop);
 
 		this.setVisible(true);
@@ -58,9 +57,6 @@ public class FenetrePrincipale extends JFrame implements ActionListener{        
 
 	public static void main(String[] args){
 		FenetrePrincipale fen = new FenetrePrincipale();
-	}
-
-	public void actionPerformed(ActionEvent e) {
 	}
 
 }

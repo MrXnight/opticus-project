@@ -11,12 +11,7 @@ public class Source extends ObjetOptique {
 
 
 	public Source (double posx, double posy, double angle, Color col, double taille,JComponent parent) {
-		super(posx, posy, angle, col, taille);
-		focus = false;
-		point1 = new Point2D.Double((centrex - taille*Math.cos(angle)), (centrey - taille*Math.sin(-angle)));
-		point2 = new Point2D.Double((centrex + taille*Math.cos(angle)), (centrey + taille*Math.sin(-angle)));
-		line = new Line2D.Double(point1,point2);
-		this.parent = parent;
+		super(posx, posy, angle, col, taille,parent);
 		tabFaisceau = new ArrayList<Line2D.Double>();
 		tabFaisceau.add(line);
 		compteNumero += 1;
@@ -25,8 +20,6 @@ public class Source extends ObjetOptique {
 
 	public Source (double posx, double posy, double angle, double taille,JComponent parent) {
 		this(posx, posy, angle, Color.BLACK, taille,parent);
-		compteNumero += 1;
-		numero = compteNumero;
 	}
 
 	public Source (Point2D point1,Point2D point2,Color couleur,JComponent parent){
@@ -78,16 +71,6 @@ public class Source extends ObjetOptique {
 		parent.repaint();
 	}
 
-	public int distancePoint(Point2D p){
-		return (int)(line.ptSegDist(p));
-	}
-
-	public Point2D getPoint1(){
-		return point1;
-	}
-	public Point2D getPoint2(){
-		return point2;
-	}
 
 	public void draw(Graphics2D g2d) {
 		final int rayonCercleSource = 20;
@@ -131,11 +114,6 @@ public class Source extends ObjetOptique {
 	public ArrayList<Line2D.Double> getTabFaisceau(){
 		return tabFaisceau;
 	}
-
-
-    public Line2D getLine(){
-      return(line);
-    }
 
     public int getNum(){
         return numero;

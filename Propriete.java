@@ -54,11 +54,12 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         labelAngle = new JLabel("Angle =");
         labelFocal = new JLabel("f = ");
 
-        
+
 
         entreX = new JTextField();
-        entreX.setFont(font1); 
+        entreX.setFont(font1);
         entreX.setHorizontalAlignment(JTextField.CENTER);
+        //Les actionPerformed sont appelé lorsque l'on appuie sur entrée dans un JTextField
         Action actionEntreX = new AbstractAction()      //Permet d'actualiser les coordonnée X d'un objet sélectionné
         {
             @Override
@@ -96,7 +97,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreAngle = new JTextField();
         entreAngle.setFont(font1);
         entreAngle.setHorizontalAlignment(JTextField.CENTER);
-    
+
         Action actionEntreAngle = new AbstractAction()  //Permet d'actualiser l'angle d'un objet sélectionné
         {
              @Override
@@ -213,7 +214,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreY.setText(String.valueOf(s.getCentrey()));
         entreTaille.setText(String.valueOf(s.getTaille()));
         entreTaille.setEditable(false);
-        entreAngle.setText(String.valueOf(Math.round((s.getAngle()*180/Math.PI*100))/100.0));
+        entreAngle.setText(String.valueOf(Math.round((s.getAngle()*180/Math.PI*100))/100.0)); //On convertit l'angle de radian vers degré
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
@@ -268,7 +269,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreTaille.setEditable(false);
         entreFocal.setText(String.valueOf(l.getFocal()));
         boxPlans.setSelected(l.getAffichagePlanFocal());
-        entreAngle.setText(String.valueOf(Math.round((l.getAngle()*180/Math.PI*100))/100.0));
+        entreAngle.setText(String.valueOf(Math.round((l.getAngle()*180/Math.PI*100))/100.0)); //On convertit l'angle de radian vers degré
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         this.add(labelX);
         this.add(entreX);
@@ -287,7 +288,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         this.repaint();
 
     }
-    
+
 
     public void propSelect() {      //Méthode qui permet d'afficher les propriété de l'outil sélectionner
          if(panelDessin != null){
@@ -337,7 +338,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreTaille.setText(String.valueOf(m.getTaille()));
         entreTaille.setEditable(false);
         boxSemiReflet.setSelected(m.getSemiReflechissant());
-        entreAngle.setText(String.valueOf(Math.round((m.getAngle()*180/Math.PI*100))/100.0));
+        entreAngle.setText(String.valueOf(Math.round((m.getAngle()*180/Math.PI*100))/100.0)); //On convertit l'angle de radian vers degré
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
@@ -447,7 +448,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
                        double positionX = Double.parseDouble(entreX.getText());
                        double positionY = Double.parseDouble(entreY.getText());
                        double taille = Double.parseDouble(entreTaille.getText());
-                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180;
+                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180; //On convertit l'angle de degré vers radian
                        panelDessin.addObjetOptique(new Lentille(positionX,positionY,angle,couleurChoisi,taille,focal,panelDessin));
                        panelDessin.repaint();
                   }
@@ -460,7 +461,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
                        double positionX = Double.parseDouble(entreX.getText());
                        double positionY = Double.parseDouble(entreY.getText());
                        double taille = Double.parseDouble(entreTaille.getText());
-                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180;
+                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180; //On convertit l'angle de degré vers radian
                        panelDessin.addObjetOptique(new Source(positionX,positionY,angle,couleurChoisi,taille,panelDessin));
                        panelDessin.repaint();
                   }
@@ -473,7 +474,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
                        double positionX = Double.parseDouble(entreX.getText());
                        double positionY = Double.parseDouble(entreY.getText());
                        double taille = Double.parseDouble(entreTaille.getText());
-                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180;
+                       double angle = Double.parseDouble(entreAngle.getText())*Math.PI/180; //On convertit l'angle de degré vers radian
                        panelDessin.addObjetOptique(new Miroir(positionX,positionY,angle,couleurChoisi,taille,panelDessin));
                        panelDessin.repaint();
                   }
