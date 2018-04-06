@@ -310,7 +310,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
         entreTaille.setEditable(true);
         this.add(nomOutil);
         this.add(description);
-        nomOutil.setText("Mirroir");
+        nomOutil.setText("Miroir");
         description.setText(
             "<html>Cet outil vous permet de créer un nouveau miroir en definissant deux point dans l'espace.</html>");
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
@@ -404,7 +404,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
               return Double.parseDouble(entreFocal.getText());
          }
          catch(Exception e){
-              JOptionPane.showMessageDialog(null,"Veuillez entrer une valeur de focal f.");
+              JOptionPane.showMessageDialog(null,"Veuillez entrer une valeur de focale f.");
          }
          return 0.0;
     }
