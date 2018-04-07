@@ -13,7 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-public class Propriete extends JPanel implements ActionListener{           //Cette classe correspond au paneau de droite dans le programme
+public class Propriete extends JPanel implements ActionListener{           //Cette classe correspond au paneau de droite dans le programme qui permet de modifier les paramètres d'un objet existant ou de créer un objet en renseignant différents paramètres
     protected JLabel nomOutil, changerCouleur, description, labelFocal, labelTaille, labelX, labelY, labelAngle;
     protected JCheckBox boxPlans, boxSemiReflet;
     protected JTextField entreX, entreY, entreTaille, entreAngle, entreFocal;
@@ -66,7 +66,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
             public void actionPerformed(ActionEvent e)
             {
                   if(panelDessin.getSelectedObject() != null){
-                     panelDessin.getSelectedObject().setCentreX(Double.parseDouble(entreX.getText()));
+                     panelDessin.getSelectedObject().setCentreX(Double.parseDouble(entreX.getText())); //On récupère la coordonnée en de l'objet et on set la nouvelle coordonnée en x
                      panelDessin.repaint();
                  }
             }
@@ -83,7 +83,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
             public void actionPerformed(ActionEvent e)
             {
                   if(panelDessin.getSelectedObject() != null){
-                     panelDessin.getSelectedObject().setCentreY(Double.parseDouble(entreY.getText()));
+                     panelDessin.getSelectedObject().setCentreY(Double.parseDouble(entreY.getText())); //On récupère la coordonnée en de l'objet et on set la nouvelle coordonnée en y
                      panelDessin.repaint();
                  }
             }
@@ -104,7 +104,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
              public void actionPerformed(ActionEvent e)
              {
                   if(panelDessin.getSelectedObject() != null){
-                      panelDessin.getSelectedObject().setAngle(Double.parseDouble(entreAngle.getText())*Math.PI/180.0);
+                      panelDessin.getSelectedObject().setAngle(Double.parseDouble(entreAngle.getText())*Math.PI/180.0); // on récupère la valeur de l'angle dans la zone de texte et on le convertit en radian pour set le nouvelle angle
                       panelDessin.repaint();
                  }
              }
@@ -120,7 +120,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
              public void actionPerformed(ActionEvent e)
              {
                   if(panelDessin.getSelectedObject() instanceof Lentille){
-                    ((Lentille)panelDessin.getSelectedObject()).setFocal(Double.parseDouble(entreFocal.getText()));
+                    ((Lentille)panelDessin.getSelectedObject()).setFocal(Double.parseDouble(entreFocal.getText())); //Pour les lentilles on récupère la focal et on set la nouvelle focal
                     panelDessin.repaint();
                }
              }
@@ -208,13 +208,13 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     public void propSource(Source s) {      //Methode qui affiche tout les caractéristique relative à un objet Source lorsqu'il est sélectionné (affichage appelé par le clic sur une source)
         this.removeAll();
         this.add(nomOutil);
-        nomOutil.setText("Source S" + s.getNum());
+        nomOutil.setText("Source S" + s.getNum()); //On affiche les propriétés de l'objet selectionné
         this.add(new JSeparator(SwingConstants.HORIZONTAL));
         entreX.setText(String.valueOf(s.getCentrex()));
         entreY.setText(String.valueOf(s.getCentrey()));
         entreTaille.setText(String.valueOf(s.getTaille()));
         entreTaille.setEditable(false);
-        entreAngle.setText(String.valueOf(Math.round((s.getAngle()*180/Math.PI*100))/100.0)); //On convertit l'angle de radian vers degré
+        entreAngle.setText(String.valueOf(Math.round((s.getAngle()*180/Math.PI*100))/100.0)); //On convertit l'angle de radian vers degré de l'objet selectionné
         this.add(labelX);
         this.add(entreX);
         this.add(labelY);
@@ -262,7 +262,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     public void propLentille(Lentille l) {      //Methode qui affiche tout les caractéristique relative à un objet Lentille lorsqu'il est sélectionné (affichage appelé par le clic sur une lentille)
         this.removeAll();
         this.add(nomOutil);
-        nomOutil.setText("Lentille L" + l.getNum());
+        nomOutil.setText("Lentille L" + l.getNum()); //On affiche les propriétés de l'objet selectionné
         entreX.setText(String.valueOf(l.getCentrex()));
         entreY.setText(String.valueOf(l.getCentrey()));
         entreTaille.setText(String.valueOf(l.getTaille()));
@@ -441,7 +441,7 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
             }
             //System.out.println(couleurChoisi);
         }
-        if(e.getSource() == btnValider){                    //Actualisation des propriété d'un objet sélectionné par le clic sur le bouton valider
+        if(e.getSource() == btnValider){                    //On valide les paramètres rentré dans les zones de textes pour créer l'objet correspondant à l'outil selectionné
              if(BarreOutils.activeTool.equals(ActiveTool.LENTILLE)){
                   try{
                        double focal = Double.parseDouble(entreFocal.getText());
