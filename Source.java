@@ -5,15 +5,15 @@ import java.util.ArrayList;
 
 public class Source extends ObjetOptique {
 	protected int TAILLE_MINIMALE = 30;
-	protected ArrayList<Line2D.Double> tabFaisceau;
-	protected static int compteNumero;
+	protected ArrayList<Line2D.Double> tabFaisceau; //On utilise un ArrayList de Line2D pour stocker tous les faisceaux d'une source
+	protected static int compteNumero; //Pour compter le nombre de lentille instanciées depuis le début du programme
 	protected int numero;
 
 
-	public Source (double posx, double posy, double angle, Color col, double taille,JComponent parent) {
+	public Source (double posx, double posy, double angle, Color col, double taille,JComponent parent) { //Constructeur de l'objet Source
 		super(posx, posy, angle, col, taille,parent);
 		tabFaisceau = new ArrayList<Line2D.Double>();
-		tabFaisceau.add(line);
+		tabFaisceau.add(line); //On ajoute au tableau la line qui est le premier faisceu de base
 		compteNumero += 1;
 		numero = compteNumero;
 	}
@@ -36,7 +36,7 @@ public class Source extends ObjetOptique {
 	}
 
 	public Point2D movePoint(Point2D newPoint,Point2D clickedPoint){
-			Point2D result = super.movePoint(newPoint,clickedPoint);
+			Point2D result = super.movePoint(newPoint,clickedPoint); //On utilise le movePoint de la classe mère et on clear notre ArrayList et on remet la line de base pour recalculer tous faisceaux et intersections
 			tabFaisceau.clear();
 			tabFaisceau.add(line);
 			parent.repaint();
@@ -44,28 +44,28 @@ public class Source extends ObjetOptique {
 	}
 
 	public void setAngle(double angle){
-		super.setAngle(angle);
+		super.setAngle(angle); //De meme on change l'angle, on clear l'ArrayList et on remet la line de base
 		tabFaisceau.clear();
 		tabFaisceau.add(line);
 		parent.repaint();
 	}
 
 	public void setCentreX(double centreX){
-		super.setCentreX(centreX);
+		super.setCentreX(centreX); //On change la coordonnée centreX, on clear l'ArrayList et on remet la line de base
 		tabFaisceau.clear();
 		tabFaisceau.add(line);
 		parent.repaint();
 	}
 
 	public void setCentreY(double centreY){
-		super.setCentreY(centreY);
+		super.setCentreY(centreY); //On change la coordonnée centreY, on clear l'ArrayList et on remet la line de base
 		tabFaisceau.clear();
 		tabFaisceau.add(line);
 		parent.repaint();
 	}
 
 	public void move(Point2D newPosition){
-		super.move(newPosition);
+		super.move(newPosition); //On le centre, on clear l'ArrayList et on remet la line de base
 		tabFaisceau.clear();
 		tabFaisceau.add(line);
 		parent.repaint();
@@ -75,37 +75,22 @@ public class Source extends ObjetOptique {
 	public void draw(Graphics2D g2d) {
 		final int rayonCercleSource = 20;
 		g2d.setColor(Color.YELLOW);
-		g2d.fillOval((int)point1.getX()-rayonCercleSource/2,(int)point1.getY()-rayonCercleSource/2,20,20);
+		g2d.fillOval((int)point1.getX()-rayonCercleSource/2,(int)point1.getY()-rayonCercleSource/2,20,20); //On dessine l'origine de la source qui sert de repère (mettre en commentaire ces lignes pour enlever le cercle jaune)
 		g2d.setColor(couleur);
-		for(Line2D i : tabFaisceau){
+		for(Line2D i : tabFaisceau){ //On draw tous les faisceaux de la source
 			g2d.draw(i);
 		}
-		Point2D pointGauche,pointDroite;
-		if(point1.getX() <= point2.getX()){
-			pointGauche = point1;
-			pointDroite = point2;
-		}
-		else{
-			pointGauche = point2;
-			pointDroite = point1;
-		}
-		if(hasFocus()){
+
+		if(hasFocus()){ //Comme pour les autres objets, on trace les croix et le carré centrale si l'objet a le focus
 			g2d.setColor(Color.black);
 			g2d.drawRect((int)centrex-5, (int)centrey-5,10,10);
 			g2d.drawLine((int)point1.getX()+5,(int)point1.getY(),(int)point1.getX()-5,(int)point1.getY());
 			g2d.drawLine((int)point1.getX(),(int)point1.getY()-5,(int)point1.getX(),(int)point1.getY()+5);
 			g2d.drawLine((int)point2.getX()+5,(int)point2.getY(),(int)point2.getX()-5,(int)point2.getY());
 			g2d.drawLine((int)point2.getX(),(int)point2.getY()-5,(int)point2.getX(),(int)point2.getY()+5);
-		}/*
-		for(Line2D l : tabFaisceau){
-			g2d.draw(l);
-		}*/
+		}
+	}
 
-	}
-	public void ajouterFaisceau(Point2D point1, Point2D point2){
-		Line2D.Double lineFaisceau = new Line2D.Double(point1,point2);
-		tabFaisceau.add(lineFaisceau);
-	}
 
 	public void setTabFaisceau(ArrayList<Line2D.Double> tabFaisceau){
 		this.tabFaisceau = tabFaisceau;

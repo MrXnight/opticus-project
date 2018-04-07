@@ -15,11 +15,11 @@ public class OpticusFilter extends FileFilter{
           }
           else {
                String path = file.getAbsolutePath().toLowerCase();
-               if ((path.endsWith(EXTENSION) && (path.charAt(path.length()- EXTENSION.length() - 1)) == '.')) { //On renvoie true seulemnt si l'extension est .opticus"
+               if ((path.endsWith(EXTENSION) && (path.charAt(path.length()- EXTENSION.length() - 1)) == '.')) { //On renvoie true seulement si l'extension est .opticus"
                     return true;
                }
           }
-          return false; 
+          return false;
      }
      public String getDescription(){
           return description;
