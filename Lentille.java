@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class Lentille extends ObjetOptique implements Serializable{
 	protected double f;
-	protected int TAILLE_MINIMALE = 30; //Taille minimal d'une lentille
 	protected Line2D.Double planFocal1;
 	protected Line2D.Double planFocal2;
 	protected static int compteNumero; // compteur des lentilles instanciés

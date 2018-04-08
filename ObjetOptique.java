@@ -13,6 +13,8 @@ public abstract class ObjetOptique implements Serializable{ //Seriazable est uti
         //Classe abstraite de laquelle héritera tout ce qui peut être tracé dans la zone de dessin : lentilles, sources et mirroir
 	protected double angle;
 
+	protected final int TAILLE_MINIMALE = 30;
+
 	/** la couleur. */
 	protected Color couleur;
 

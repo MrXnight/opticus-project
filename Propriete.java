@@ -20,8 +20,6 @@ public class Propriete extends JPanel implements ActionListener{           //Cet
     protected JButton btnValider,btnCouleur, btnSupprimer;
     protected ZoneTracage panelDessin;
     protected Color couleurChoisi;
-    protected static double f=10;
-    protected static int n=0;
     protected Font font1;
 
     protected final int hauteurTextField = 15;

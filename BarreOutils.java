@@ -5,9 +5,9 @@ import javax.swing.*;
 
 public class BarreOutils extends JToolBar implements ActionListener{
 
-     JButton btnSelect, btnSource, btnLentille, btnMiroir, btnSuppr, btnScreenshot;
+     private JButton btnSelect, btnSource, btnLentille, btnMiroir, btnSuppr, btnScreenshot;
      public static ActiveTool activeTool = ActiveTool.SELECT;
-     Propriete prop;
+     private Propriete prop;
 
      public BarreOutils(Propriete prop) {       //Constructeur de la classe qui affiche tout les boutons de la barre d'outil et qui choisit l'outil sélection au lancement du programme
           super("Barre d'outils",JToolBar.VERTICAL);

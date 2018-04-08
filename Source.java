@@ -4,7 +4,6 @@ import java.awt.geom.*;
 import java.util.ArrayList;
 
 public class Source extends ObjetOptique {
-	protected int TAILLE_MINIMALE = 30;
 	protected ArrayList<Line2D.Double> tabFaisceau; //On utilise un ArrayList de Line2D pour stocker tous les faisceaux d'une source
 	protected static int compteNumero; //Pour compter le nombre de lentille instanciées depuis le début du programme
 	protected int numero;

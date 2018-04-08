@@ -40,7 +40,7 @@ public class ZoneTracage extends JPanel implements MouseMotionListener,MouseList
      private Point2D positionningPoint1 , positionningPoint2 ;
      private Line2D.Double postionningLine;
      private JFrame parentFrame;
-     public static Line2D[] bordures;
+     public Line2D[] bordures;
 
      public ZoneTracage(JFrame parentFrame){
           mooving = false;
