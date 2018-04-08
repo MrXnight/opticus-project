@@ -24,6 +24,7 @@ public class Toolbar extends JMenuBar {
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("Importation demandee");
 				final JFileChooser fc = new JFileChooser();
+				fc.setCurrentDirectory(new File("."));
 				fc.setFileFilter(new OpticusFilter()); //On définie le filtre à utiliser
     			int returnVal = fc.showOpenDialog(Toolbar.this); //On ouvre la fenêtre de dialogue
     			if(returnVal == JFileChooser.APPROVE_OPTION) {
@@ -56,6 +57,7 @@ public class Toolbar extends JMenuBar {
 			public void actionPerformed(ActionEvent event) { //De même que pour le chargement de fichier mais ici on sauvegarde
 				//System.out.println("Importation demandee");
 				final JFileChooser fc = new JFileChooser();
+				fc.setCurrentDirectory(new File("."));
 				fc.setFileFilter(new OpticusFilter());
 				int returnVal = fc.showSaveDialog(Toolbar.this);
 				if(returnVal == JFileChooser.APPROVE_OPTION) {
